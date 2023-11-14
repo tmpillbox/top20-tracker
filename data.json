@@ -130,6 +130,16 @@
     "73": { "name": "At the Gates of Loyang", "own": true, "wishlist": "no", "played": true },
     "72": { "name": "Cthulhu: Death May Die", "own": true, "wishlist": "no", "played": true },
     "71": { "name": "ROVE: Results-Oriented Versatile Explorer", "own": false, "wishlist": "no", "played": false },
+    "70": { "name": "Maquis", "own": false, "wishlist": "no", "played": false },
+    "69": { "name": "Pandemic", "own": true, "wishlist": "no", "played": true },
+    "68": { "name": "Roll Player", "own": true, "wishlist": "no", "played": true },
+    "67": { "name": "Viscounts of the West Kingdom", "own": true, "wishlist": "no", "played": true },
+    "66": { "name": "Arkham Horror (Third Edition)", "own": false, "wishlist": "no", "played": false },
+    "65": { "name": "One Deck Dungeon", "own": false, "wishlist": "no", "played": true },
+    "64": { "name": "Legendary: A Marvel Deck Building Game", "own": true, "wishlist": "no", "played": false, "owned": [ "Legendary: Big Trouble in Little China", "Legendary: A James Bond Deck Building Game", "Legendary Encounters: A Firefly Deck Building Game"] },
+    "63": { "name": "Onirim", "own": false, "wishlist": "no", "played": true },
+    "62": { "name": "Star Wars: Outer Rim", "own": true, "wishlist": "no", "played": true },
+    "61": { "name": "Frostpunk: The Board Game", "own": true, "wishlist": "no", "played": false },
     "": { "name": "", "own": false, "wishlist": "no", "played": false }
   },
   "votes": {
