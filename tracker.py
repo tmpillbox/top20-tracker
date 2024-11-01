@@ -162,6 +162,7 @@ class Markup:
       result = f'{rank:>3}'
     else:
       result = '  ?'
+      game_name = ''.join([ '?' ] * len(game_name))
     rank_result = f'[b]#{position:>2} ({result})[/b]'
     return f'{leader}{rank_result}  {game_name.ljust(72 - len(rank_result))}{trailer}'
 
