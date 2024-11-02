@@ -1,0 +1,30 @@
+{
+  "year": "2024",
+  "results": {
+    "200": { "name": "Fleet: The Dice Game", "own": true, "wishlist": "no", "played": true },
+    "199": { "name": "Pax Renaissance: 2nd Edition", "own": true, "wishlist": "no", "played": false },
+    "198": { "name": "Burgle Bros.", "own": true, "wishlist": "no", "played": false },
+    "197": { "name": "Leviathan Wilds", "own": false, "wishlist": "no", "played": false },
+    "196": { "name": "High Frontier 4 All", "own": true, "wishlist": "no", "played": false },
+    "195": { "name": "Dewllings of Eldervale", "own": false, "wishlist": "no", "played": false },
+    "194": { "name": "Skoventyr", "own": false, "wishlist": "no", "played": false },
+    "193": { "name": "Dungeon Degenerates: Hand of Doom", "own": false, "wishlist": "no", "played": false },
+    "192": { "name": "Sherlock Holmes Consulting Detective: Jack the Ripper & West End Adventures", "own": true, "wishlist": "no", "played": false, "owned": [
+      "Sherlock Holmes Consulting Detective: Jack the Ripper & West End Adventures",
+      "Sherlock Holmes Consulting Detective: Carlton House & Queen's Park",
+      "Sherlock Holmes Consulting Detective: The Baker Street Irregulars",
+      "Sherlock Holmes Consulting Detective: The Thames Murders & Other Cases"
+    ]},
+    "191": { "name": "Machina Arcana (Second/Third Edition)", "own": false, "wishlist": "no", "played": false },
+    "190": { "name": "Euthia: Torment of Resurrection", "own": false, "wishlist": "no", "played": false },
+    "189": { "name": "Apiary", "own": false, "wishlist": "no", "played": false },
+    "188": { "name": "Cyberion", "own": false, "wishlist": "no", "played": false },
+    "187": { "name": "Wayfarers of the South Tigris", "own": false, "wishlist": "no", "played": false },
+    "186": { "name": "Fliptown", "own": false, "wishlist": "no", "played": false },
+    "185": { "name": "51st State: Ultimate Edition", "own": true, "wishlist": "no", "played": true },
+    "184": { "name": "Pandemic Legacy: Season 1", "own": true, "wishlist": "no", "played": false, "owned": ["Pandemic Legacy: Season 0"] },
+    "183": { "name": "Thunderbolt Apache Leader", "own": false, "wishlist": "no", "played": false },
+    "182": { "name": "Pavlov's House", "own": false, "wishlist": "no", "played": false },
+    "181": { "name": "Pathfinder Adventure Card Game: Core Set", "own": true, "wishlist": "no", "played": true }
+  }
+}
