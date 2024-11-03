@@ -25,6 +25,21 @@
     "184": { "name": "Pandemic Legacy: Season 1", "own": true, "wishlist": "no", "played": false, "owned": ["Pandemic Legacy: Season 0"] },
     "183": { "name": "Thunderbolt Apache Leader", "own": false, "wishlist": "no", "played": false },
     "182": { "name": "Pavlov's House", "own": false, "wishlist": "no", "played": false },
-    "181": { "name": "Pathfinder Adventure Card Game: Core Set", "own": true, "wishlist": "no", "played": true }
+    "181": { "name": "Pathfinder Adventure Card Game: Core Set", "own": true, "wishlist": "no", "played": true },
+    "180": { "name": "The Lost Expedition", "own": false, "wishlist": "no", "played": false },
+    "179": { "name": "Space Empires 4X", "own": true, "wishlist": "no", "played": false },
+    "178": { "name": "Sky Team", "own": false, "wishlist": "no", "played": false },
+    "177": { "name": "Tiny Epic Dungeons", "own": false, "wishlist": "no", "played": false },
+    "176": { "name": "Railroad Ink: Deep Blue Edition", "own": false, "wishlist": "no", "played": true, "owned": [
+      "Railroad Ink: Blazing Red Edition",
+      "Railroad Ink: Deep Blue Edition",
+      "Railroad Ink Challenge: Shining Yellow Edition",
+      "Railroad Ink Challenge: Lush Green Edition"
+    ] },
+    "175": { "name": "Baseball Highlights: 2045", "own": true, "wishlist": "no", "played": true },
+    "174": { "name": "Brass: Birmingham", "own": true, "wishlist": "no", "played": true, "owned": ["Brass: Lancashire"] },
+    "173": { "name": "Fields of Fire: Deluxe Edition", "own": false, "wishlist": "no", "played": false },
+    "172": { "name": "Trickerion: Legends of Illusion", "own": false, "wishlist": "no", "played": false },
+    "171": { "name": "Runebound (Third Edition)", "own": false, "wishlist": "no", "played": false }
   }
 }
