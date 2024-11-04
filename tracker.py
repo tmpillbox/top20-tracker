@@ -220,7 +220,7 @@ class BBCode(Markup):
     name_format = game_name.ljust(58)
     if len(name_format) > 58:
       name_format = name_format[:55] + '...'
-    return f'║ {leader}#[b]{n:>3}[/b]  {name_format}({wishlist_priority}){trailer} ║\n'
+    return f'║ {leader}#[b]{rank:>3}[/b]  {name_format}({wishlist_priority}){trailer} ║\n'
 
   @classmethod
   def row_leader(cls, rank):
@@ -264,7 +264,7 @@ class Markdown(Markup):
     name_format = game_name.ljust(58)
     if len(name_format) > 58:
       name_format = name_format[:57] + '...'
-    return f'║ {leader}#**{n:>3}**  {name_format}({wishlist_priority}){trailer} ║\n'
+    return f'║ {leader}#**{rank:>3}**  {name_format}({wishlist_priority}){trailer} ║\n'
 
   @classmethod
   def row_leader(cls, rank):
