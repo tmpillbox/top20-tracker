@@ -50,6 +50,16 @@
     "164": { "name": "Meadow", "own": false, "wishlist": "no", "played": false },
     "163": { "name": "Oranienburger Kanal", "own": false, "wishlist": "High", "played": false },
     "162": { "name": "Primal: The Awakening", "own": false, "wishlist": "no", "played": false },
-    "161": { "name": "Fantastic Factories", "own": true, "wishlist": "no", "played": true }
+    "161": { "name": "Fantastic Factories", "own": true, "wishlist": "no", "played": true },
+    "160": { "name": "Bloodborne: The Board Game", "own": false, "wishlist": "no", "played": false },
+    "159": { "name": "Dragons Down", "own": false, "wishlist": "Low", "played": false },
+    "158": { "name": "Teotihuacan: City of Gods", "own": true, "wishlist": "no", "played": false },
+    "157": { "name": "Kinfire Delve: Vainglory's Grotto", "own": false, "wishlist": "no", "played": false },
+    "156": { "name": "Endeavor: Deep Sea", "own": false, "wishlist": "no", "played": false },
+    "155": { "name": "Lands of Galzyr", "own": false, "wishlist": "no", "played": false },
+    "154": { "name": "Scholars of the South Tigris", "own": false, "wishlist": "no", "played": false },
+    "153": { "name": "Astro Knights", "own": true, "wishlist": "no", "played": true },
+    "152": { "name": "SpaceCorp: 2025-2300AD", "own": false, "wishlist": "no", "played": false },
+    "151": { "name": "Carnegie", "own": true, "wishlist": "no", "played": true }
   }
 }
