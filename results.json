@@ -60,6 +60,16 @@
     "154": { "name": "Scholars of the South Tigris", "own": false, "wishlist": "no", "played": false },
     "153": { "name": "Astro Knights", "own": true, "wishlist": "no", "played": true },
     "152": { "name": "SpaceCorp: 2025-2300AD", "own": false, "wishlist": "no", "played": false },
-    "151": { "name": "Carnegie", "own": true, "wishlist": "no", "played": true }
+    "151": { "name": "Carnegie", "own": true, "wishlist": "no", "played": true },
+    "150": { "name": "Ezra and Nehemiah", "own": false, "wishlist": "no", "played": false },
+    "149": { "name": "Kingdom Legacy: Feudal Kingdom", "own": false, "wishlist": "no", "played": false },
+    "148": { "name": "Wyrmspan", "own": false, "wishlist": "no", "played": false },
+    "147": { "name": "Earth", "own": false, "wishlist": "Low", "played": false },
+    "146": { "name": "John Company: Second Edition", "own": true, "wishlist": "no", "played": false },
+    "145": { "name": "Undaunted: Normandy", "own": false, "wishlist": "no", "played": false },
+    "144": { "name": "Horrified", "own": true, "wishlist": "no", "played": false },
+    "143": { "name": "Architects of the West Kingdom", "own": true, "wishlist": "no", "played": true },
+    "142": { "name": "Regicide", "own": false, "wishlist": "no", "played": false },
+    "141": { "name": "Black Sonata", "own": true, "wishlist": "no", "played": true }
   }
 }
