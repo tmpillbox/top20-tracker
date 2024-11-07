@@ -70,6 +70,16 @@
     "144": { "name": "Horrified", "own": true, "wishlist": "no", "played": false },
     "143": { "name": "Architects of the West Kingdom", "own": true, "wishlist": "no", "played": true },
     "142": { "name": "Regicide", "own": false, "wishlist": "no", "played": false },
-    "141": { "name": "Black Sonata", "own": true, "wishlist": "no", "played": true }
+    "141": { "name": "Black Sonata", "own": true, "wishlist": "no", "played": true },
+    "140": { "name": "Warfighter: The Tactical Special Forces Card Game", "own": false, "wishlist": "no", "played": false },
+    "139": { "name": "Mr. President: The American Presidency, 2001-2020", "own": false, "wishlist": "Low", "played": false },
+    "138": { "name": "Paleo", "own": false, "wishlist": "no", "played": false },
+    "137": { "name": "Food Chain Island", "own": false, "wishlist": "no", "played": false },
+    "136": { "name": "Shadowrun: Crossfire — Prime Runner Edition", "own": false, "wishlist": "no", "played": false },
+    "135": { "name": "Unsettled", "own": false, "wishlist": "no", "played": false },
+    "134": { "name": "That's Pretty Clever", "own": false, "wishlist": "no", "played": false },
+    "133": { "name": "A Gentle Rain", "own": false, "wishlist": "no", "played": false },
+    "132": { "name": "Darwin's Journey", "own": false, "wishlist": "Medium", "played": false },
+    "131": { "name": "G.I. JOE Deck-Building Game", "own": false, "wishlist": "no", "played": false }
   }
 }
