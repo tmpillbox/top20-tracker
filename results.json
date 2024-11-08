@@ -80,6 +80,16 @@
     "134": { "name": "That's Pretty Clever", "own": false, "wishlist": "no", "played": false },
     "133": { "name": "A Gentle Rain", "own": false, "wishlist": "no", "played": false },
     "132": { "name": "Darwin's Journey", "own": false, "wishlist": "Medium", "played": false },
-    "131": { "name": "G.I. JOE Deck-Building Game", "own": false, "wishlist": "no", "played": false }
+    "131": { "name": "G.I. JOE Deck-Building Game", "own": false, "wishlist": "no", "played": false },
+    "130": { "name": "Expeditions", "own": false, "wishlist": "no", "played": false },
+    "129": { "name": "Hostage Negotiator", "own": true, "wishlist": "no", "played": true },
+    "128": { "name": "Root", "own": true, "wishlist": "no", "played": true },
+    "127": { "name": "Glass Road", "own": true, "wishlist": "no", "played": true },
+    "126": { "name": "Uprising: Curse of the Last Emperor", "own": false, "wishlist": "no", "played": false },
+    "125": { "name": "Paper Tales", "own": false, "wishlist": "no", "played": false },
+    "124": { "name": "Roll Player", "own": true, "wishlist": "no", "played": true },
+    "123": { "name": "Star Wars: Imperial Assault", "own": false, "wishlist": "Low", "played": false },
+    "122": { "name": "Set a Watch", "own": false, "wishlist": "no", "played": true, "prev_owned": true },
+    "121": { "name": "At the Gates of Loyang", "own": true, "wishlist": "no", "played": true }
   }
 }
