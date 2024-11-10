@@ -90,6 +90,16 @@
     "124": { "name": "Roll Player", "own": true, "wishlist": "no", "played": true },
     "123": { "name": "Star Wars: Imperial Assault", "own": false, "wishlist": "Low", "played": false },
     "122": { "name": "Set a Watch", "own": false, "wishlist": "no", "played": true, "prev_owned": true },
-    "121": { "name": "At the Gates of Loyang", "own": true, "wishlist": "no", "played": true }
+    "121": { "name": "At the Gates of Loyang", "own": true, "wishlist": "no", "played": true },
+    "120": { "name": "Street Masters", "own": false, "wishlist": "no", "played": false },
+    "119": { "name": "Jump Drive", "own": true, "wishlist": "no", "played": true },
+    "118": { "name": "Xia: Legends of a Drift System", "own": true, "wishlist": "no", "played": true },
+    "117": { "name": "Coffee Roaster", "own": true, "wishlist": "no", "played": true },
+    "116": { "name": "Skytear Horde", "own": false, "wishlist": "no", "played": false },
+    "115": { "name": "D-Day at Omaha Beach", "own": false, "wishlist": "no", "played": false },
+    "114": { "name": "Glood of Kilforth", "own": false, "wishlist": "no", "played": false },
+    "113": { "name": "Mansions of Madness: Second Edition", "own": false, "wishlist": "no", "played": false },
+    "112": { "name": "Renegade", "own": false, "wishlist": "Medium", "played": false },
+    "111": { "name": "Middara: Unintenional Malum – Act 1", "own": false, "wishlist": "no", "played": false }
   }
 }
