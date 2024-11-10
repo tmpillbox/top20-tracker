@@ -100,6 +100,16 @@
     "114": { "name": "Glood of Kilforth", "own": false, "wishlist": "no", "played": false },
     "113": { "name": "Mansions of Madness: Second Edition", "own": false, "wishlist": "no", "played": false },
     "112": { "name": "Renegade", "own": false, "wishlist": "Medium", "played": false },
-    "111": { "name": "Middara: Unintenional Malum – Act 1", "own": false, "wishlist": "no", "played": false }
+    "111": { "name": "Middara: Unintenional Malum – Act 1", "own": false, "wishlist": "no", "played": false },
+    "110": { "name": "Terra Mystica", "own": false, "wishlist": "no", "played": false },
+    "109": { "name": "Conservas", "own": false, "wishlist": "no", "played": false },
+    "108": { "name": "Kanban EV", "own": true, "wishlist": "no", "played": true },
+    "107": { "name": "Pandemic", "own": true, "wishlist": "no", "played": true },
+    "106": { "name": "The LOOP", "own": false, "wishlist": "Medium", "played": false },
+    "105": { "name": "Mini Rogue", "own": false, "wishlist": "no", "played": false },
+    "104": { "name": "Hallertau", "own": true, "wishlist": "no", "played": false },
+    "103": { "name": "Resist!", "own": false, "wishlist": "no", "played": false },
+    "102": { "name": "Viscounts of the West Kingdom", "own": true, "wishlist": "no", "played": true },
+    "101": { "name": "The Search for Planet X", "own": true, "wishlist": "no", "played": true }
   }
 }
