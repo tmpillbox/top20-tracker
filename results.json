@@ -110,6 +110,16 @@
     "104": { "name": "Hallertau", "own": true, "wishlist": "no", "played": false },
     "103": { "name": "Resist!", "own": false, "wishlist": "no", "played": false },
     "102": { "name": "Viscounts of the West Kingdom", "own": true, "wishlist": "no", "played": true },
-    "101": { "name": "The Search for Planet X", "own": true, "wishlist": "no", "played": true }
+    "101": { "name": "The Search for Planet X", "own": true, "wishlist": "no", "played": true },
+    "100": { "name": "The Isofarian Guard", "own": false, "wishlist": "no", "played": false },
+    "99": { "name": "Grimm World", "own": false, "wishlist": "no", "played": false },
+    "98": { "name": "Halls of Hegra", "own": false, "wishlist": "no", "played": false },
+    "97": { "name": "burncycle", "own": false, "wishlist": "no", "played": false },
+    "96": { "name": "Nemesis", "own": false, "wishlist": "no", "played": false },
+    "95": { "name": "Onirim", "own": false, "wishlist": "no", "played": false },
+    "94": { "name": "Agricola (Revised Edition)", "own": false, "wishlist": "no", "played": true, "owned": ["Agricola", "Agricola: All Creatures Big and Small"] },
+    "93": { "name": "The Lord of the Rings: Journeys in Middle-Earth", "own": false, "wishlist": "no", "played": false },
+    "92": { "name": "Raiders of the North Sea", "own": false, "wishlist": "no", "played": false },
+    "91": { "name": "The Guild of Merchant Explorers", "own": false, "wishlist": "Low", "played": false }
   }
 }
