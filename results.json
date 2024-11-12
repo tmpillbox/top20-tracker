@@ -120,6 +120,16 @@
     "94": { "name": "Agricola (Revised Edition)", "own": false, "wishlist": "no", "played": true, "owned": ["Agricola", "Agricola: All Creatures Big and Small"] },
     "93": { "name": "The Lord of the Rings: Journeys in Middle-Earth", "own": false, "wishlist": "no", "played": false },
     "92": { "name": "Raiders of the North Sea", "own": false, "wishlist": "no", "played": false },
-    "91": { "name": "The Guild of Merchant Explorers", "own": false, "wishlist": "Low", "played": false }
+    "91": { "name": "The Guild of Merchant Explorers", "own": false, "wishlist": "Low", "played": false },
+    "90": { "name": "One Deck Dungeon", "own": false, "wishlist": "no", "played": false },
+    "89": { "name": "Concordia", "own": true, "wishlist": "no", "played": true },
+    "88": { "name": "Zombicide: 2nd Edition", "own": false, "wishlist": "no", "played": false },
+    "87": { "name": "The 7th Citadel", "own": false, "wishlist": "no", "played": false },
+    "86": { "name": "HEXplore It: The Valley of the Dead King", "own": false, "wishlist": "no", "played": false },
+    "85": { "name": "Ashes Reborn: Rise of the Phoenixborn", "own": true, "wishlist": "no", "played": true },
+    "84": { "name": "Harmonies", "own": false, "wishlist": "no", "played": false },
+    "83": { "name": "Frostpunk: The Board Game", "own": true, "wishlist": "no", "played": false },
+    "82": { "name": "Fields of Arle", "own": true, "wishlist": "no", "played": true },
+    "81": { "name": "Gloomhaven: Buttons & Bugs", "own": false, "wishlist": "no", "played": false }
   }
 }
