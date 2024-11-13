@@ -130,6 +130,16 @@
     "84": { "name": "Harmonies", "own": false, "wishlist": "no", "played": false },
     "83": { "name": "Frostpunk: The Board Game", "own": true, "wishlist": "no", "played": false },
     "82": { "name": "Fields of Arle", "own": true, "wishlist": "no", "played": true },
-    "81": { "name": "Gloomhaven: Buttons & Bugs", "own": false, "wishlist": "no", "played": false }
+    "81": { "name": "Gloomhaven: Buttons & Bugs", "own": false, "wishlist": "no", "played": false },
+    "80": { "name": "Maquis", "own": false, "wishlist": "no", "played": false },
+    "79": { "name": "Maracaibo", "own": true, "wishlist": "no", "played": true },
+    "78": { "name": "Keep the Heroes Out!", "own": false, "wishlist": "High", "played": false },
+    "77": { "name": "After the Virus", "own": false, "wishlist": "no", "played": false },
+    "76": { "name": "Tapestry", "own": false, "wishlist": "no", "played": false },
+    "75": { "name": "Dorfromantik: The Board Game", "own": false, "wishlist": "Medium", "played": false },
+    "74": { "name": "Witchcraft!", "own": false, "wishlist": "no", "played": false },
+    "73": { "name": "Space Hulk: Death Angel – The Card Game", "own": false, "wishlist": "Low", "played": false },
+    "72": { "name": "Legendary Encounters: An Alien Deck Building Game", "own": false, "wishlist": "no", "played": false },
+    "71": { "name": "Star Wars: Outer Rim", "own": true, "wishlist": "no", "played": true }
   }
 }
