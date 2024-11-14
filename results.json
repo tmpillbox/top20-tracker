@@ -140,6 +140,19 @@
     "74": { "name": "Witchcraft!", "own": false, "wishlist": "no", "played": false },
     "73": { "name": "Space Hulk: Death Angel – The Card Game", "own": false, "wishlist": "Low", "played": false },
     "72": { "name": "Legendary Encounters: An Alien Deck Building Game", "own": false, "wishlist": "no", "played": false },
-    "71": { "name": "Star Wars: Outer Rim", "own": true, "wishlist": "no", "played": true }
+    "71": { "name": "Star Wars: Outer Rim", "own": true, "wishlist": "no", "played": true },
+    "70": { "name": "The White Castle", "own": false, "wishlist": "no", "played": false },
+    "69": { "name": "Legendary: A Marvel Deck Building Game", "own": true, "wishlist": "no", "played": true, "owned": [
+      "Legendary: A James Bond Deck Building Game",
+      "Legendary: Big Trouble in Little China"
+    ] },
+    "68": { "name": "ROVE: Results-Oriented Versatile Explorer", "own": false, "wishlist": "no", "played": false },
+    "67": { "name": "Race for the Galaxy", "own": true, "wishlist": "no", "played": true },
+    "66": { "name": "Welcome to the Moon", "own": true, "wishlist": "no", "played": false, "owned": [ "Welcome To..." ] },
+    "65": { "name": "Kingdom Death: Monster", "own": false, "wishlist": "no", "played": false },
+    "64": { "name": "The Castles of Burgundy: Special Edition", "own": true, "wishlist": "no", "played": true },
+    "63": { "name": "Turing Machine", "own": true, "wishlist": "no", "played": true },
+    "62": { "name": "Sentinels of the Multiverse: Definitive Edition", "own": false, "wishlist": "no", "played": false },
+    "61": { "name": "The 7th Continent", "own": false, "wishlist": "no", "played": false }
   }
 }
