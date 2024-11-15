@@ -153,6 +153,16 @@
     "64": { "name": "The Castles of Burgundy: Special Edition", "own": true, "wishlist": "no", "played": true },
     "63": { "name": "Turing Machine", "own": true, "wishlist": "no", "played": true },
     "62": { "name": "Sentinels of the Multiverse: Definitive Edition", "own": false, "wishlist": "no", "played": false },
-    "61": { "name": "The 7th Continent", "own": false, "wishlist": "no", "played": false }
+    "61": { "name": "The 7th Continent", "own": false, "wishlist": "no", "played": false },
+    "60": { "name": "Viticulture Essential Edition", "own": false, "wishlist": "no", "played": true },
+    "59": { "name": "Aeon Tresspass: Odyssey", "own": false, "wishlist": "no", "played": false },
+    "58": { "name": "Great Western Trail: Second Edition", "own": true, "wishlist": "no", "played": false, "owned": [ "Great Western Trail" ] },
+    "57": { "name": "Paladins of the West Kingdom", "own": true, "wishlist": "no", "played": true },
+    "56": { "name": "Everdell", "own": false, "wishlist": "Medium", "played": false },
+    "55": { "name": "ISS Vanguard", "own": false, "wishlist": "no", "played": false },
+    "54": { "name": "Earthborn Rangers", "own": false, "wishlist": "Low", "played": false },
+    "53": { "name": "Oathsworn: Into the Deepwood", "own": false, "wishlist": "no", "played": false },
+    "52": { "name": "Underwater Cities", "own": true, "wishlist": "no", "played": true },
+    "51": { "name": "Arkham Horror (Third Edition)", "own": false, "wishlist": "no", "played": false }
   }
 }
