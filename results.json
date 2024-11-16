@@ -163,6 +163,16 @@
     "54": { "name": "Earthborn Rangers", "own": false, "wishlist": "Low", "played": false },
     "53": { "name": "Oathsworn: Into the Deepwood", "own": false, "wishlist": "no", "played": false },
     "52": { "name": "Underwater Cities", "own": true, "wishlist": "no", "played": true },
-    "51": { "name": "Arkham Horror (Third Edition)", "own": false, "wishlist": "no", "played": false }
+    "51": { "name": "Arkham Horror (Third Edition)", "own": false, "wishlist": "no", "played": false },
+    "50": { "name": "This War of Mine: The Board Game", "own": false, "wishlist": "no", "played": false },
+    "49": { "name": "Bullet★", "own": true, "wishlist": "no", "played": true, "owned": [ "Bullet♥︎" ] },
+    "48": { "name": "Terraforming Mars: Ares Expedition", "own": false, "wishlist": "no", "played": false },
+    "47": { "name": "Slay the Spire: The Board Game", "own": false, "wishlist": "no", "played": false },
+    "46": { "name": "Cartographers", "own": true, "wishlist": "no", "played": true },
+    "45": { "name": "Marvel United", "own": false, "wishlist": "no", "played": false },
+    "44": { "name": "Tainted Grail: The Fall of Avalon", "own": false, "wishlist": "no", "played": false },
+    "43": { "name": "Anachrony", "own": true, "wishlist": "no", "played": true },
+    "42": { "name": "Orchard: 9 card solitaire game", "own": false, "wishlist": "no", "played": false },
+    "41": { "name": "Cthulhu: Death May Die", "own": true, "wishlist": "no", "played": true }
   }
 }
