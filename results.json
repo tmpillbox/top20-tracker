@@ -173,6 +173,16 @@
     "44": { "name": "Tainted Grail: The Fall of Avalon", "own": false, "wishlist": "no", "played": false },
     "43": { "name": "Anachrony", "own": true, "wishlist": "no", "played": true },
     "42": { "name": "Orchard: 9 card solitaire game", "own": false, "wishlist": "no", "played": false },
-    "41": { "name": "Cthulhu: Death May Die", "own": true, "wishlist": "no", "played": true }
+    "41": { "name": "Cthulhu: Death May Die", "own": true, "wishlist": "no", "played": true },
+    "40": { "name": "It's a Wonderful World", "own": true, "wishlist": "no", "played": true },
+    "39": { "name": "Friday", "own": true, "wishlist": "no", "played": false },
+    "38": { "name": "Scythe", "own": false, "wishlist": "no", "played": false },
+    "37": { "name": "Pax Pamir: Second Edition", "own": false, "wishlist": "no", "played": false },
+    "36": { "name": "Dawn of the Zeds (Third Edition)", "own": false, "wishlist": "no", "played": false },
+    "35": { "name": "Nemo's War: The Ultimate Edition", "own": true, "wishlist": "no", "played": false, "owned": [ "Nemo's War (Second Edition)" ] },
+    "34": { "name": "Wingspan", "own": true, "wishlist": "no", "played": true },
+    "33": { "name": "Legacy of Yu", "own": false, "wishlist": "no", "played": false },
+    "32": { "name": "Nusfjord", "own": true, "wishlist": "no", "played": true },
+    "31": { "name": "Heat: Pedal to the Metal", "own": true, "wishlist": "no", "played": true }
   }
 }
