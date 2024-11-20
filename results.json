@@ -183,6 +183,31 @@
     "34": { "name": "Wingspan", "own": true, "wishlist": "no", "played": true },
     "33": { "name": "Legacy of Yu", "own": false, "wishlist": "no", "played": false },
     "32": { "name": "Nusfjord", "own": true, "wishlist": "no", "played": true },
-    "31": { "name": "Heat: Pedal to the Metal", "own": true, "wishlist": "no", "played": true }
+    "31": { "name": "Heat: Pedal to the Metal", "own": true, "wishlist": "no", "played": true },
+    "30": { "name": "Eldritch Horror", "own": true, "wishlist": "no", "played": true },
+    "29": { "name": "20 Strong", "own": false, "wishlist": "no", "played": false },
+    "28": { "name": "Sprawlopolis", "own": true, "wishlist": "no", "played": true },
+    "27": { "name": "Sleeping Gods", "own": false, "wishlist": "no", "played": false },
+    "26": { "name": "Warp's Edge", "own": false, "wishlist": "no", "played": false },
+    "25": { "name": "Hoplomachus: Victorum", "own": false, "wishlist": "no", "played": false },
+    "24": { "name": "Voidfall", "own": false, "wishlist": "no", "played": false },
+    "23": { "name": "Cloudspire", "own": false, "wishlist": "no", "played": false },
+    "22": { "name": "A Feast for Odin", "own": false, "wishlist": "no", "played": false },
+    "21": { "name": "Hadrian's Wall", "own": false, "wishlist": "no", "played": false },
+    "20": { "name": "For Northwood! A Solo Trick-Taking Game", "own": true, "wishlist": "no", "played": true },
+    "19": { "name": "Obession", "own": true, "wishlist": "no", "played": true },
+    "18": { "name": "Under Falling Skies", "own": false, "wishlist": "no", "played": true, "prev_owned": true },
+    "17": { "name": "Gaia Project", "own": true, "wishlist": "no", "played": false },
+    "16": { "name": "Lost Ruins of Arnak", "own": false, "wishlist": "Medium", "played": false },
+    "15": { "name": "Terraforming Mars", "own": false, "wishlist": "no", "played": true },
+    "14": { "name": "Cascadia", "own": false, "wishlist": "no", "played": false },
+    "13": { "name": "Aeon's End", "own": true, "wishlist": "no", "played": true, "owned": [
+      "Aeon's End",
+      "Aeon's End: War Eternal",
+      "Aeon's End: The New Age",
+      "Aeon's End: Outcasts"
+    ] },
+    "12": { "name": "Robinson Crusoe: Adventures on the Cursed Island", "own": false, "wishlist": "no", "played": false },
+    "11": { "name": "Gloomhaven", "own": true, "wishlist": "no", "played": false }
   }
 }
