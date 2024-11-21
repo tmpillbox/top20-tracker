@@ -208,6 +208,16 @@
       "Aeon's End: Outcasts"
     ] },
     "12": { "name": "Robinson Crusoe: Adventures on the Cursed Island", "own": false, "wishlist": "no", "played": false },
-    "11": { "name": "Gloomhaven", "own": true, "wishlist": "no", "played": false }
+    "11": { "name": "Gloomhaven", "own": true, "wishlist": "no", "played": false },
+    "10": { "name": "Ark Nova", "own": true, "wishlist": "no", "played": false },
+    "9": { "name": "Imperium: Classics", "own": false, "wishlist": "High", "played": false },
+    "8": { "name": "Dune: Imperium", "own": false, "wishlist": "no", "played": false },
+    "7": { "name": "Final Girl", "own": false, "wishlist": "no", "played": false },
+    "6": { "name": "The Lord of the Rings: The Card Game", "own": true, "wishlist": "no", "played": true },
+    "5": { "name": "Too Many Bones", "own": false, "wishlist": "no", "played": true, "prev_owned": true },
+    "4": { "name": "Arkham Horror: The Card Game", "own": false, "wishlist": "no", "played": false },
+    "3": { "name": "Marvel Champions: The Card Game", "own": false, "wishlist": "no", "played": false },
+    "2": { "name": "Mage Knight: Ultimate Edition", "own": true, "wishlist": "no", "played": false },
+    "1": { "name": "Spirit Island", "own": true, "wishlist": "no", "played": true }
   }
 }
