@@ -89,7 +89,14 @@ class GameVote:
       self.votes[int(self.position)] = self
     except:
       pass
-
+  
+  @property
+  def is_top_20(self) -> bool:
+    try:
+      pos = int(self.position)
+      return pos <= 20
+    except:
+      return False
 
 class Markup:
   BLOCK_START = ''
@@ -197,9 +204,9 @@ class BBCode(Markup):
     leader = cls.row_leader(rank)
     trailer = cls.row_trailer(rank)
     if rank:
-      result = f'{rank:>3}'
+      result = f'{rank:>4}'
     else:
-      result = '  ?'
+      result = '   ?'
       game_name = ''.join([ '?' ] * len(game_name))
     rank_result = f'[b]#{position:>2} ({result})[/b]'
     return f'{leader}{rank_result}  {game_name.ljust(72 - len(rank_result))}{trailer}'
@@ -313,6 +320,8 @@ def main(args):
       game: GameVote = GameVote(game_name, game_data['vote_ranks'])
       if game_name in GameResult.by_name:
         GameResult.by_name[game_name].vote(game.position)
+      elif game.is_top_20:
+        print(f'# MISSING Result: {game_name}')
 
   output = f"""{markup.BLOCK_START}
 ╔═════════════════════════════════════════════════════════════════════╗
