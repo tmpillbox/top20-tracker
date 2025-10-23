@@ -1,235 +1,1829 @@
 {
-  "2022": {
-
-  },
-  "2023": {
-
-  },
-  "2024": {
-    "1689": { "name": "Empyreal: Spells & Steam", "own": true, "wishlist": "no", "played": true },
-    "919": { "name": "Tramways Engineer's Workbook", "own": true, "wishlist": "no", "played": true },
-    "386": { "name": "Clinic: Deluxe Edition", "own": true, "wishlist": "no", "played": true },
-    "342": { "name": "The Hunters: German U-Boats at War, 1939-43", "own": true, "wishlist": "no", "played": true },
-    "236": { "name": "AuZtralia", "own": true, "wishlist": "no", "played": true },
-    "218": { "name": "1862: Railway Mania in the Eastern Counties", "own": true, "wishlist": "no", "played": true },
-    "207": { "name": "Grand Austria Hotel", "own": true, "wishlist": "no", "played": true },
-    "200": { "name": "Fleet: The Dice Game", "own": true, "wishlist": "no", "played": true },
-    "199": { "name": "Pax Renaissance: 2nd Edition", "own": true, "wishlist": "no", "played": false },
-    "198": { "name": "Burgle Bros.", "own": true, "wishlist": "no", "played": false },
-    "197": { "name": "Leviathan Wilds", "own": false, "wishlist": "no", "played": false },
-    "196": { "name": "High Frontier 4 All", "own": true, "wishlist": "no", "played": false },
-    "195": { "name": "Dewllings of Eldervale", "own": false, "wishlist": "no", "played": false },
-    "194": { "name": "Skoventyr", "own": false, "wishlist": "no", "played": false },
-    "193": { "name": "Dungeon Degenerates: Hand of Doom", "own": false, "wishlist": "no", "played": false },
-    "192": { "name": "Sherlock Holmes Consulting Detective: Jack the Ripper & West End Adventures", "own": true, "wishlist": "no", "played": false, "owned": [
-      "Sherlock Holmes Consulting Detective: Jack the Ripper & West End Adventures",
-      "Sherlock Holmes Consulting Detective: Carlton House & Queen's Park",
-      "Sherlock Holmes Consulting Detective: The Baker Street Irregulars",
-      "Sherlock Holmes Consulting Detective: The Thames Murders & Other Cases"
-    ]},
-    "191": { "name": "Machina Arcana (Second/Third Edition)", "own": false, "wishlist": "no", "played": false },
-    "190": { "name": "Euthia: Torment of Resurrection", "own": false, "wishlist": "no", "played": false },
-    "189": { "name": "Apiary", "own": false, "wishlist": "no", "played": false },
-    "188": { "name": "Cyberion", "own": false, "wishlist": "no", "played": false },
-    "187": { "name": "Wayfarers of the South Tigris", "own": false, "wishlist": "no", "played": false },
-    "186": { "name": "Fliptown", "own": false, "wishlist": "no", "played": false },
-    "185": { "name": "51st State: Ultimate Edition", "own": true, "wishlist": "no", "played": true },
-    "184": { "name": "Pandemic Legacy: Season 1", "own": true, "wishlist": "no", "played": false, "owned": ["Pandemic Legacy: Season 0"] },
-    "183": { "name": "Thunderbolt Apache Leader", "own": false, "wishlist": "no", "played": false },
-    "182": { "name": "Pavlov's House", "own": false, "wishlist": "no", "played": false },
-    "181": { "name": "Pathfinder Adventure Card Game: Core Set", "own": true, "wishlist": "no", "played": true },
-    "180": { "name": "The Lost Expedition", "own": false, "wishlist": "no", "played": false },
-    "179": { "name": "Space Empires 4X", "own": true, "wishlist": "no", "played": false },
-    "178": { "name": "Sky Team", "own": false, "wishlist": "no", "played": false },
-    "177": { "name": "Tiny Epic Dungeons", "own": false, "wishlist": "no", "played": false },
-    "176": { "name": "Railroad Ink: Deep Blue Edition", "own": true, "wishlist": "no", "played": true, "owned": [
-      "Railroad Ink: Blazing Red Edition",
-      "Railroad Ink: Deep Blue Edition",
-      "Railroad Ink Challenge: Shining Yellow Edition",
-      "Railroad Ink Challenge: Lush Green Edition"
-    ] },
-    "175": { "name": "Baseball Highlights: 2045", "own": true, "wishlist": "no", "played": true },
-    "174": { "name": "Brass: Birmingham", "own": true, "wishlist": "no", "played": true, "owned": ["Brass: Lancashire"] },
-    "173": { "name": "Fields of Fire: Deluxe Edition", "own": false, "wishlist": "no", "played": false },
-    "172": { "name": "Trickerion: Legends of Illusion", "own": false, "wishlist": "no", "played": false },
-    "171": { "name": "Runebound (Third Edition)", "own": false, "wishlist": "no", "played": false },
-    "170": { "name": "Nucleum", "own": false, "wishlist": "Low", "played": false },
-    "169": { "name": "Leaving Earth", "own": true, "wishlist": "no", "played": true },
-    "168": { "name": "Revive", "own": false, "wishlist": "no", "played": false },
-    "167": { "name": "Elder Sign", "own": true, "wishlist": "no", "played": false },
-    "166": { "name": "Calico", "own": false, "wishlist": "no", "played": true },
-    "165": { "name": "Palm Island", "own": false, "wishlist": "no", "played": false },
-    "164": { "name": "Meadow", "own": false, "wishlist": "no", "played": false },
-    "163": { "name": "Oranienburger Kanal", "own": false, "wishlist": "High", "played": false },
-    "162": { "name": "Primal: The Awakening", "own": false, "wishlist": "no", "played": false },
-    "161": { "name": "Fantastic Factories", "own": true, "wishlist": "no", "played": true },
-    "160": { "name": "Bloodborne: The Board Game", "own": false, "wishlist": "no", "played": false },
-    "159": { "name": "Dragons Down", "own": false, "wishlist": "Low", "played": false },
-    "158": { "name": "Teotihuacan: City of Gods", "own": true, "wishlist": "no", "played": false },
-    "157": { "name": "Kinfire Delve: Vainglory's Grotto", "own": false, "wishlist": "no", "played": false },
-    "156": { "name": "Endeavor: Deep Sea", "own": false, "wishlist": "no", "played": false },
-    "155": { "name": "Lands of Galzyr", "own": false, "wishlist": "no", "played": false },
-    "154": { "name": "Scholars of the South Tigris", "own": false, "wishlist": "no", "played": false },
-    "153": { "name": "Astro Knights", "own": true, "wishlist": "no", "played": true },
-    "152": { "name": "SpaceCorp: 2025-2300AD", "own": false, "wishlist": "no", "played": false },
-    "151": { "name": "Carnegie", "own": true, "wishlist": "no", "played": true },
-    "150": { "name": "Ezra and Nehemiah", "own": false, "wishlist": "no", "played": false },
-    "149": { "name": "Kingdom Legacy: Feudal Kingdom", "own": false, "wishlist": "no", "played": false },
-    "148": { "name": "Wyrmspan", "own": false, "wishlist": "no", "played": false },
-    "147": { "name": "Earth", "own": false, "wishlist": "Low", "played": false },
-    "146": { "name": "John Company: Second Edition", "own": true, "wishlist": "no", "played": false },
-    "145": { "name": "Undaunted: Normandy", "own": false, "wishlist": "no", "played": false },
-    "144": { "name": "Horrified", "own": true, "wishlist": "no", "played": false },
-    "143": { "name": "Architects of the West Kingdom", "own": true, "wishlist": "no", "played": true },
-    "142": { "name": "Regicide", "own": false, "wishlist": "no", "played": false },
-    "141": { "name": "Black Sonata", "own": true, "wishlist": "no", "played": true },
-    "140": { "name": "Warfighter: The Tactical Special Forces Card Game", "own": false, "wishlist": "no", "played": false },
-    "139": { "name": "Mr. President: The American Presidency, 2001-2020", "own": false, "wishlist": "Low", "played": false },
-    "138": { "name": "Paleo", "own": false, "wishlist": "no", "played": false },
-    "137": { "name": "Food Chain Island", "own": false, "wishlist": "no", "played": false },
-    "136": { "name": "Shadowrun: Crossfire — Prime Runner Edition", "own": false, "wishlist": "no", "played": false },
-    "135": { "name": "Unsettled", "own": false, "wishlist": "no", "played": false },
-    "134": { "name": "That's Pretty Clever", "own": false, "wishlist": "no", "played": false },
-    "133": { "name": "A Gentle Rain", "own": false, "wishlist": "no", "played": false },
-    "132": { "name": "Darwin's Journey", "own": false, "wishlist": "Medium", "played": false },
-    "131": { "name": "G.I. JOE Deck-Building Game", "own": false, "wishlist": "no", "played": false },
-    "130": { "name": "Expeditions", "own": false, "wishlist": "no", "played": false },
-    "129": { "name": "Hostage Negotiator", "own": true, "wishlist": "no", "played": true },
-    "128": { "name": "Root", "own": true, "wishlist": "no", "played": true },
-    "127": { "name": "Glass Road", "own": true, "wishlist": "no", "played": true },
-    "126": { "name": "Uprising: Curse of the Last Emperor", "own": false, "wishlist": "no", "played": false },
-    "125": { "name": "Paper Tales", "own": false, "wishlist": "no", "played": false },
-    "124": { "name": "Roll Player", "own": true, "wishlist": "no", "played": true },
-    "123": { "name": "Star Wars: Imperial Assault", "own": false, "wishlist": "Low", "played": false },
-    "122": { "name": "Set a Watch", "own": false, "wishlist": "no", "played": true, "prev_owned": true },
-    "121": { "name": "At the Gates of Loyang", "own": true, "wishlist": "no", "played": true },
-    "120": { "name": "Street Masters", "own": false, "wishlist": "no", "played": false },
-    "119": { "name": "Jump Drive", "own": true, "wishlist": "no", "played": true },
-    "118": { "name": "Xia: Legends of a Drift System", "own": true, "wishlist": "no", "played": true },
-    "117": { "name": "Coffee Roaster", "own": true, "wishlist": "no", "played": true },
-    "116": { "name": "Skytear Horde", "own": false, "wishlist": "no", "played": false },
-    "115": { "name": "D-Day at Omaha Beach", "own": false, "wishlist": "no", "played": false },
-    "114": { "name": "Glood of Kilforth", "own": false, "wishlist": "no", "played": false },
-    "113": { "name": "Mansions of Madness: Second Edition", "own": false, "wishlist": "no", "played": false },
-    "112": { "name": "Renegade", "own": false, "wishlist": "Medium", "played": false },
-    "111": { "name": "Middara: Unintenional Malum – Act 1", "own": false, "wishlist": "no", "played": false },
-    "110": { "name": "Terra Mystica", "own": false, "wishlist": "no", "played": false },
-    "109": { "name": "Conservas", "own": false, "wishlist": "no", "played": false },
-    "108": { "name": "Kanban EV", "own": true, "wishlist": "no", "played": true },
-    "107": { "name": "Pandemic", "own": true, "wishlist": "no", "played": true },
-    "106": { "name": "The LOOP", "own": false, "wishlist": "Medium", "played": false },
-    "105": { "name": "Mini Rogue", "own": false, "wishlist": "no", "played": false },
-    "104": { "name": "Hallertau", "own": true, "wishlist": "no", "played": false },
-    "103": { "name": "Resist!", "own": false, "wishlist": "no", "played": false },
-    "102": { "name": "Viscounts of the West Kingdom", "own": true, "wishlist": "no", "played": true },
-    "101": { "name": "The Search for Planet X", "own": true, "wishlist": "no", "played": true },
-    "100": { "name": "The Isofarian Guard", "own": false, "wishlist": "no", "played": false },
-    "99": { "name": "Grimm World", "own": false, "wishlist": "no", "played": false },
-    "98": { "name": "Halls of Hegra", "own": false, "wishlist": "no", "played": false },
-    "97": { "name": "burncycle", "own": false, "wishlist": "no", "played": false },
-    "96": { "name": "Nemesis", "own": false, "wishlist": "no", "played": false },
-    "95": { "name": "Onirim", "own": false, "wishlist": "no", "played": false },
-    "94": { "name": "Agricola (Revised Edition)", "own": false, "wishlist": "no", "played": true, "owned": ["Agricola", "Agricola: All Creatures Big and Small"] },
-    "93": { "name": "The Lord of the Rings: Journeys in Middle-Earth", "own": false, "wishlist": "no", "played": false },
-    "92": { "name": "Raiders of the North Sea", "own": false, "wishlist": "no", "played": false },
-    "91": { "name": "The Guild of Merchant Explorers", "own": false, "wishlist": "Low", "played": false },
-    "90": { "name": "One Deck Dungeon", "own": false, "wishlist": "no", "played": false },
-    "89": { "name": "Concordia", "own": true, "wishlist": "no", "played": true },
-    "88": { "name": "Zombicide: 2nd Edition", "own": false, "wishlist": "no", "played": false },
-    "87": { "name": "The 7th Citadel", "own": false, "wishlist": "no", "played": false },
-    "86": { "name": "HEXplore It: The Valley of the Dead King", "own": false, "wishlist": "no", "played": false },
-    "85": { "name": "Ashes Reborn: Rise of the Phoenixborn", "own": true, "wishlist": "no", "played": true, "owned": [ "Ashes: Rise of the Phoenixborn" ] },
-    "84": { "name": "Harmonies", "own": false, "wishlist": "no", "played": false },
-    "83": { "name": "Frostpunk: The Board Game", "own": true, "wishlist": "no", "played": false },
-    "82": { "name": "Fields of Arle", "own": true, "wishlist": "no", "played": true },
-    "81": { "name": "Gloomhaven: Buttons & Bugs", "own": false, "wishlist": "no", "played": false },
-    "80": { "name": "Maquis", "own": false, "wishlist": "no", "played": false },
-    "79": { "name": "Maracaibo", "own": true, "wishlist": "no", "played": true },
-    "78": { "name": "Keep the Heroes Out!", "own": false, "wishlist": "High", "played": false },
-    "77": { "name": "After the Virus", "own": false, "wishlist": "no", "played": false },
-    "76": { "name": "Tapestry", "own": false, "wishlist": "no", "played": false },
-    "75": { "name": "Dorfromantik: The Board Game", "own": false, "wishlist": "Medium", "played": false },
-    "74": { "name": "Witchcraft!", "own": false, "wishlist": "no", "played": false },
-    "73": { "name": "Space Hulk: Death Angel – The Card Game", "own": false, "wishlist": "Low", "played": false },
-    "72": { "name": "Legendary Encounters: An Alien Deck Building Game", "own": false, "wishlist": "no", "played": false },
-    "71": { "name": "Star Wars: Outer Rim", "own": true, "wishlist": "no", "played": true },
-    "70": { "name": "The White Castle", "own": false, "wishlist": "no", "played": false },
-    "69": { "name": "Legendary: A Marvel Deck Building Game", "own": true, "wishlist": "no", "played": true, "owned": [
-      "Legendary: A James Bond Deck Building Game",
-      "Legendary: Big Trouble in Little China"
-    ] },
-    "68": { "name": "ROVE: Results-Oriented Versatile Explorer", "own": false, "wishlist": "no", "played": false },
-    "67": { "name": "Race for the Galaxy", "own": true, "wishlist": "no", "played": true },
-    "66": { "name": "Welcome to the Moon", "own": true, "wishlist": "no", "played": false, "owned": [ "Welcome To..." ] },
-    "65": { "name": "Kingdom Death: Monster", "own": false, "wishlist": "no", "played": false },
-    "64": { "name": "The Castles of Burgundy: Special Edition", "own": true, "wishlist": "no", "played": true },
-    "63": { "name": "Turing Machine", "own": true, "wishlist": "no", "played": true },
-    "62": { "name": "Sentinels of the Multiverse: Definitive Edition", "own": false, "wishlist": "no", "played": false },
-    "61": { "name": "The 7th Continent", "own": false, "wishlist": "no", "played": false },
-    "60": { "name": "Viticulture Essential Edition", "own": false, "wishlist": "no", "played": true },
-    "59": { "name": "Aeon Tresspass: Odyssey", "own": false, "wishlist": "no", "played": false },
-    "58": { "name": "Great Western Trail: Second Edition", "own": true, "wishlist": "no", "played": false, "owned": [ "Great Western Trail" ] },
-    "57": { "name": "Paladins of the West Kingdom", "own": true, "wishlist": "no", "played": true },
-    "56": { "name": "Everdell", "own": false, "wishlist": "Medium", "played": false },
-    "55": { "name": "ISS Vanguard", "own": false, "wishlist": "no", "played": false },
-    "54": { "name": "Earthborn Rangers", "own": false, "wishlist": "Low", "played": false },
-    "53": { "name": "Oathsworn: Into the Deepwood", "own": false, "wishlist": "no", "played": false },
-    "52": { "name": "Underwater Cities", "own": true, "wishlist": "no", "played": true },
-    "51": { "name": "Arkham Horror (Third Edition)", "own": false, "wishlist": "no", "played": false },
-    "50": { "name": "This War of Mine: The Board Game", "own": false, "wishlist": "no", "played": false },
-    "49": { "name": "Bullet★", "own": true, "wishlist": "no", "played": true, "owned": [ "Bullet♥︎" ] },
-    "48": { "name": "Terraforming Mars: Ares Expedition", "own": false, "wishlist": "no", "played": false },
-    "47": { "name": "Slay the Spire: The Board Game", "own": false, "wishlist": "no", "played": false },
-    "46": { "name": "Cartographers", "own": true, "wishlist": "no", "played": true },
-    "45": { "name": "Marvel United", "own": false, "wishlist": "no", "played": false },
-    "44": { "name": "Tainted Grail: The Fall of Avalon", "own": false, "wishlist": "no", "played": false },
-    "43": { "name": "Anachrony", "own": true, "wishlist": "no", "played": true },
-    "42": { "name": "Orchard: 9 card solitaire game", "own": false, "wishlist": "no", "played": false },
-    "41": { "name": "Cthulhu: Death May Die", "own": true, "wishlist": "no", "played": true },
-    "40": { "name": "It's a Wonderful World", "own": true, "wishlist": "no", "played": true },
-    "39": { "name": "Friday", "own": true, "wishlist": "no", "played": false },
-    "38": { "name": "Scythe", "own": false, "wishlist": "no", "played": false },
-    "37": { "name": "Pax Pamir: Second Edition", "own": false, "wishlist": "no", "played": false },
-    "36": { "name": "Dawn of the Zeds (Third Edition)", "own": false, "wishlist": "no", "played": false },
-    "35": { "name": "Nemo's War: The Ultimate Edition", "own": true, "wishlist": "no", "played": false, "owned": [ "Nemo's War (Second Edition)" ] },
-    "34": { "name": "Wingspan", "own": true, "wishlist": "no", "played": true },
-    "33": { "name": "Legacy of Yu", "own": false, "wishlist": "no", "played": false },
-    "32": { "name": "Nusfjord", "own": true, "wishlist": "no", "played": true },
-    "31": { "name": "Heat: Pedal to the Metal", "own": true, "wishlist": "no", "played": true },
-    "30": { "name": "Eldritch Horror", "own": true, "wishlist": "no", "played": true },
-    "29": { "name": "20 Strong", "own": false, "wishlist": "no", "played": false },
-    "28": { "name": "Sprawlopolis", "own": true, "wishlist": "no", "played": true },
-    "27": { "name": "Sleeping Gods", "own": false, "wishlist": "no", "played": false },
-    "26": { "name": "Warp's Edge", "own": false, "wishlist": "no", "played": false },
-    "25": { "name": "Hoplomachus: Victorum", "own": false, "wishlist": "no", "played": false },
-    "24": { "name": "Voidfall", "own": false, "wishlist": "no", "played": false },
-    "23": { "name": "Cloudspire", "own": false, "wishlist": "no", "played": false },
-    "22": { "name": "A Feast for Odin", "own": false, "wishlist": "no", "played": false },
-    "21": { "name": "Hadrian's Wall", "own": false, "wishlist": "no", "played": false },
-    "20": { "name": "For Northwood! A Solo Trick-Taking Game", "own": true, "wishlist": "no", "played": true },
-    "19": { "name": "Obession", "own": true, "wishlist": "no", "played": true },
-    "18": { "name": "Under Falling Skies", "own": false, "wishlist": "no", "played": true, "prev_owned": true },
-    "17": { "name": "Gaia Project", "own": true, "wishlist": "no", "played": false },
-    "16": { "name": "Lost Ruins of Arnak", "own": false, "wishlist": "Medium", "played": false },
-    "15": { "name": "Terraforming Mars", "own": false, "wishlist": "no", "played": true },
-    "14": { "name": "Cascadia", "own": false, "wishlist": "no", "played": false },
-    "13": { "name": "Aeon's End", "own": true, "wishlist": "no", "played": true, "owned": [
-      "Aeon's End",
-      "Aeon's End: War Eternal",
-      "Aeon's End: The New Age",
-      "Aeon's End: Outcasts"
-    ] },
-    "12": { "name": "Robinson Crusoe: Adventures on the Cursed Island", "own": false, "wishlist": "no", "played": false },
-    "11": { "name": "Gloomhaven", "own": true, "wishlist": "no", "played": false },
-    "10": { "name": "Ark Nova", "own": true, "wishlist": "no", "played": false },
-    "9": { "name": "Imperium: Classics", "own": false, "wishlist": "High", "played": false },
-    "8": { "name": "Dune: Imperium", "own": false, "wishlist": "no", "played": false },
-    "7": { "name": "Final Girl", "own": false, "wishlist": "no", "played": false },
-    "6": { "name": "The Lord of the Rings: The Card Game", "own": true, "wishlist": "no", "played": true },
-    "5": { "name": "Too Many Bones", "own": false, "wishlist": "no", "played": true, "prev_owned": true },
-    "4": { "name": "Arkham Horror: The Card Game", "own": false, "wishlist": "no", "played": false },
-    "3": { "name": "Marvel Champions: The Card Game", "own": false, "wishlist": "no", "played": false },
-    "2": { "name": "Mage Knight: Ultimate Edition", "own": true, "wishlist": "no", "played": false },
-    "1": { "name": "Spirit Island", "own": true, "wishlist": "no", "played": true }
-  }
+    "2022": {},
+    "2023": {},
+    "2024": {
+        "1689": {
+            "name": "Empyreal: Spells & Steam",
+            "own": true,
+            "wishlist": "no",
+            "played": true,
+            "prev_owned": false,
+            "owned": [
+                "Empyreal: Spells & Steam"
+            ]
+        },
+        "919": {
+            "name": "Tramways Engineer's Workbook",
+            "own": true,
+            "wishlist": "no",
+            "played": true,
+            "prev_owned": false,
+            "owned": [
+                "Tramways Engineer's Workbook"
+            ]
+        },
+        "386": {
+            "name": "Clinic: Deluxe Edition",
+            "own": true,
+            "wishlist": "no",
+            "played": true,
+            "prev_owned": false,
+            "owned": [
+                "Clinic: Deluxe Edition"
+            ]
+        },
+        "342": {
+            "name": "The Hunters: German U-Boats at War, 1939-43",
+            "own": true,
+            "wishlist": "no",
+            "played": true,
+            "prev_owned": false,
+            "owned": [
+                "The Hunters: German U-Boats at War, 1939-43"
+            ]
+        },
+        "236": {
+            "name": "AuZtralia",
+            "own": true,
+            "wishlist": "no",
+            "played": true,
+            "prev_owned": false,
+            "owned": [
+                "AuZtralia"
+            ]
+        },
+        "218": {
+            "name": "1862: Railway Mania in the Eastern Counties",
+            "own": true,
+            "wishlist": "no",
+            "played": true,
+            "prev_owned": false,
+            "owned": [
+                "1862: Railway Mania in the Eastern Counties"
+            ]
+        },
+        "207": {
+            "name": "Grand Austria Hotel",
+            "own": true,
+            "wishlist": "no",
+            "played": true,
+            "prev_owned": false,
+            "owned": [
+                "Grand Austria Hotel"
+            ]
+        },
+        "200": {
+            "name": "Fleet: The Dice Game",
+            "own": true,
+            "wishlist": "no",
+            "played": true,
+            "prev_owned": false,
+            "owned": [
+                "Fleet: The Dice Game"
+            ]
+        },
+        "199": {
+            "name": "Pax Renaissance: 2nd Edition",
+            "own": true,
+            "wishlist": "no",
+            "played": false,
+            "prev_owned": false,
+            "owned": [
+                "Pax Renaissance: 2nd Edition"
+            ]
+        },
+        "198": {
+            "name": "Burgle Bros.",
+            "own": true,
+            "wishlist": "no",
+            "played": false,
+            "prev_owned": false,
+            "owned": [
+                "Burgle Bros."
+            ]
+        },
+        "197": {
+            "name": "Leviathan Wilds",
+            "own": false,
+            "wishlist": "no",
+            "played": false,
+            "prev_owned": false,
+            "owned": []
+        },
+        "196": {
+            "name": "High Frontier 4 All",
+            "own": true,
+            "wishlist": "no",
+            "played": false,
+            "prev_owned": false,
+            "owned": [
+                "High Frontier 4 All"
+            ]
+        },
+        "195": {
+            "name": "Dewllings of Eldervale",
+            "own": false,
+            "wishlist": "no",
+            "played": false,
+            "prev_owned": false,
+            "owned": []
+        },
+        "194": {
+            "name": "Skoventyr",
+            "own": false,
+            "wishlist": "no",
+            "played": false,
+            "prev_owned": false,
+            "owned": []
+        },
+        "193": {
+            "name": "Dungeon Degenerates: Hand of Doom",
+            "own": false,
+            "wishlist": "no",
+            "played": false,
+            "prev_owned": false,
+            "owned": []
+        },
+        "192": {
+            "name": "Sherlock Holmes Consulting Detective: Jack the Ripper & West End Adventures",
+            "own": true,
+            "wishlist": "no",
+            "played": false,
+            "prev_owned": false,
+            "owned": [
+                "Sherlock Holmes Consulting Detective: Jack the Ripper & West End Adventures",
+                "Sherlock Holmes Consulting Detective: Carlton House & Queen's Park",
+                "Sherlock Holmes Consulting Detective: The Baker Street Irregulars",
+                "Sherlock Holmes Consulting Detective: The Thames Murders & Other Cases"
+            ]
+        },
+        "191": {
+            "name": "Machina Arcana (Second/Third Edition)",
+            "own": false,
+            "wishlist": "no",
+            "played": false,
+            "prev_owned": false,
+            "owned": []
+        },
+        "190": {
+            "name": "Euthia: Torment of Resurrection",
+            "own": false,
+            "wishlist": "no",
+            "played": false,
+            "prev_owned": false,
+            "owned": []
+        },
+        "189": {
+            "name": "Apiary",
+            "own": false,
+            "wishlist": "no",
+            "played": false,
+            "prev_owned": false,
+            "owned": []
+        },
+        "188": {
+            "name": "Cyberion",
+            "own": false,
+            "wishlist": "no",
+            "played": false,
+            "prev_owned": false,
+            "owned": []
+        },
+        "187": {
+            "name": "Wayfarers of the South Tigris",
+            "own": false,
+            "wishlist": "no",
+            "played": false,
+            "prev_owned": false,
+            "owned": []
+        },
+        "186": {
+            "name": "Fliptown",
+            "own": false,
+            "wishlist": "no",
+            "played": false,
+            "prev_owned": false,
+            "owned": []
+        },
+        "185": {
+            "name": "51st State: Ultimate Edition",
+            "own": true,
+            "wishlist": "no",
+            "played": true,
+            "prev_owned": false,
+            "owned": [
+                "51st State: Ultimate Edition"
+            ]
+        },
+        "184": {
+            "name": "Pandemic Legacy: Season 1",
+            "own": true,
+            "wishlist": "no",
+            "played": false,
+            "prev_owned": false,
+            "owned": [
+                "Pandemic Legacy: Season 0"
+            ]
+        },
+        "183": {
+            "name": "Thunderbolt Apache Leader",
+            "own": false,
+            "wishlist": "no",
+            "played": false,
+            "prev_owned": false,
+            "owned": []
+        },
+        "182": {
+            "name": "Pavlov's House",
+            "own": false,
+            "wishlist": "no",
+            "played": false,
+            "prev_owned": false,
+            "owned": []
+        },
+        "181": {
+            "name": "Pathfinder Adventure Card Game: Core Set",
+            "own": true,
+            "wishlist": "no",
+            "played": true,
+            "prev_owned": false,
+            "owned": [
+                "Pathfinder Adventure Card Game: Core Set"
+            ]
+        },
+        "180": {
+            "name": "The Lost Expedition",
+            "own": false,
+            "wishlist": "no",
+            "played": false,
+            "prev_owned": false,
+            "owned": []
+        },
+        "179": {
+            "name": "Space Empires 4X",
+            "own": true,
+            "wishlist": "no",
+            "played": false,
+            "prev_owned": false,
+            "owned": [
+                "Space Empires 4X"
+            ]
+        },
+        "178": {
+            "name": "Sky Team",
+            "own": false,
+            "wishlist": "no",
+            "played": false,
+            "prev_owned": false,
+            "owned": []
+        },
+        "177": {
+            "name": "Tiny Epic Dungeons",
+            "own": false,
+            "wishlist": "no",
+            "played": false,
+            "prev_owned": false,
+            "owned": []
+        },
+        "176": {
+            "name": "Railroad Ink: Deep Blue Edition",
+            "own": true,
+            "wishlist": "no",
+            "played": true,
+            "prev_owned": false,
+            "owned": [
+                "Railroad Ink: Blazing Red Edition",
+                "Railroad Ink: Deep Blue Edition",
+                "Railroad Ink Challenge: Shining Yellow Edition",
+                "Railroad Ink Challenge: Lush Green Edition"
+            ]
+        },
+        "175": {
+            "name": "Baseball Highlights: 2045",
+            "own": true,
+            "wishlist": "no",
+            "played": true,
+            "prev_owned": false,
+            "owned": [
+                "Baseball Highlights: 2045"
+            ]
+        },
+        "174": {
+            "name": "Brass: Birmingham",
+            "own": true,
+            "wishlist": "no",
+            "played": true,
+            "prev_owned": false,
+            "owned": [
+                "Brass: Lancashire"
+            ]
+        },
+        "173": {
+            "name": "Fields of Fire: Deluxe Edition",
+            "own": false,
+            "wishlist": "no",
+            "played": false,
+            "prev_owned": false,
+            "owned": []
+        },
+        "172": {
+            "name": "Trickerion: Legends of Illusion",
+            "own": false,
+            "wishlist": "no",
+            "played": false,
+            "prev_owned": false,
+            "owned": []
+        },
+        "171": {
+            "name": "Runebound (Third Edition)",
+            "own": false,
+            "wishlist": "no",
+            "played": false,
+            "prev_owned": false,
+            "owned": []
+        },
+        "170": {
+            "name": "Nucleum",
+            "own": false,
+            "wishlist": "Low",
+            "played": false,
+            "prev_owned": false,
+            "owned": []
+        },
+        "169": {
+            "name": "Leaving Earth",
+            "own": true,
+            "wishlist": "no",
+            "played": true,
+            "prev_owned": false,
+            "owned": [
+                "Leaving Earth"
+            ]
+        },
+        "168": {
+            "name": "Revive",
+            "own": false,
+            "wishlist": "no",
+            "played": false,
+            "prev_owned": false,
+            "owned": []
+        },
+        "167": {
+            "name": "Elder Sign",
+            "own": true,
+            "wishlist": "no",
+            "played": false,
+            "prev_owned": false,
+            "owned": [
+                "Elder Sign"
+            ]
+        },
+        "166": {
+            "name": "Calico",
+            "own": false,
+            "wishlist": "no",
+            "played": true,
+            "prev_owned": false,
+            "owned": []
+        },
+        "165": {
+            "name": "Palm Island",
+            "own": false,
+            "wishlist": "no",
+            "played": false,
+            "prev_owned": false,
+            "owned": []
+        },
+        "164": {
+            "name": "Meadow",
+            "own": false,
+            "wishlist": "no",
+            "played": false,
+            "prev_owned": false,
+            "owned": []
+        },
+        "163": {
+            "name": "Oranienburger Kanal",
+            "own": false,
+            "wishlist": "High",
+            "played": false,
+            "prev_owned": false,
+            "owned": []
+        },
+        "162": {
+            "name": "Primal: The Awakening",
+            "own": false,
+            "wishlist": "no",
+            "played": false,
+            "prev_owned": false,
+            "owned": []
+        },
+        "161": {
+            "name": "Fantastic Factories",
+            "own": true,
+            "wishlist": "no",
+            "played": true,
+            "prev_owned": false,
+            "owned": [
+                "Fantastic Factories"
+            ]
+        },
+        "160": {
+            "name": "Bloodborne: The Board Game",
+            "own": false,
+            "wishlist": "no",
+            "played": false,
+            "prev_owned": false,
+            "owned": []
+        },
+        "159": {
+            "name": "Dragons Down",
+            "own": false,
+            "wishlist": "Low",
+            "played": false,
+            "prev_owned": false,
+            "owned": []
+        },
+        "158": {
+            "name": "Teotihuacan: City of Gods",
+            "own": true,
+            "wishlist": "no",
+            "played": false,
+            "prev_owned": false,
+            "owned": [
+                "Teotihuacan: City of Gods"
+            ]
+        },
+        "157": {
+            "name": "Kinfire Delve: Vainglory's Grotto",
+            "own": false,
+            "wishlist": "no",
+            "played": false,
+            "prev_owned": false,
+            "owned": []
+        },
+        "156": {
+            "name": "Endeavor: Deep Sea",
+            "own": false,
+            "wishlist": "no",
+            "played": false,
+            "prev_owned": false,
+            "owned": []
+        },
+        "155": {
+            "name": "Lands of Galzyr",
+            "own": false,
+            "wishlist": "no",
+            "played": false,
+            "prev_owned": false,
+            "owned": []
+        },
+        "154": {
+            "name": "Scholars of the South Tigris",
+            "own": false,
+            "wishlist": "no",
+            "played": false,
+            "prev_owned": false,
+            "owned": []
+        },
+        "153": {
+            "name": "Astro Knights",
+            "own": true,
+            "wishlist": "no",
+            "played": true,
+            "prev_owned": false,
+            "owned": [
+                "Astro Knights"
+            ]
+        },
+        "152": {
+            "name": "SpaceCorp: 2025-2300AD",
+            "own": false,
+            "wishlist": "no",
+            "played": false,
+            "prev_owned": false,
+            "owned": []
+        },
+        "151": {
+            "name": "Carnegie",
+            "own": true,
+            "wishlist": "no",
+            "played": true,
+            "prev_owned": false,
+            "owned": [
+                "Carnegie"
+            ]
+        },
+        "150": {
+            "name": "Ezra and Nehemiah",
+            "own": false,
+            "wishlist": "no",
+            "played": false,
+            "prev_owned": false,
+            "owned": []
+        },
+        "149": {
+            "name": "Kingdom Legacy: Feudal Kingdom",
+            "own": false,
+            "wishlist": "no",
+            "played": false,
+            "prev_owned": false,
+            "owned": []
+        },
+        "148": {
+            "name": "Wyrmspan",
+            "own": false,
+            "wishlist": "no",
+            "played": false,
+            "prev_owned": false,
+            "owned": []
+        },
+        "147": {
+            "name": "Earth",
+            "own": false,
+            "wishlist": "Low",
+            "played": false,
+            "prev_owned": false,
+            "owned": []
+        },
+        "146": {
+            "name": "John Company: Second Edition",
+            "own": true,
+            "wishlist": "no",
+            "played": false,
+            "prev_owned": false,
+            "owned": [
+                "John Company: Second Edition"
+            ]
+        },
+        "145": {
+            "name": "Undaunted: Normandy",
+            "own": false,
+            "wishlist": "no",
+            "played": false,
+            "prev_owned": false,
+            "owned": []
+        },
+        "144": {
+            "name": "Horrified",
+            "own": true,
+            "wishlist": "no",
+            "played": false,
+            "prev_owned": false,
+            "owned": [
+                "Horrified"
+            ]
+        },
+        "143": {
+            "name": "Architects of the West Kingdom",
+            "own": true,
+            "wishlist": "no",
+            "played": true,
+            "prev_owned": false,
+            "owned": [
+                "Architects of the West Kingdom"
+            ]
+        },
+        "142": {
+            "name": "Regicide",
+            "own": false,
+            "wishlist": "no",
+            "played": false,
+            "prev_owned": false,
+            "owned": []
+        },
+        "141": {
+            "name": "Black Sonata",
+            "own": true,
+            "wishlist": "no",
+            "played": true,
+            "prev_owned": false,
+            "owned": [
+                "Black Sonata"
+            ]
+        },
+        "140": {
+            "name": "Warfighter: The Tactical Special Forces Card Game",
+            "own": false,
+            "wishlist": "no",
+            "played": false,
+            "prev_owned": false,
+            "owned": []
+        },
+        "139": {
+            "name": "Mr. President: The American Presidency, 2001-2020",
+            "own": false,
+            "wishlist": "Low",
+            "played": false,
+            "prev_owned": false,
+            "owned": []
+        },
+        "138": {
+            "name": "Paleo",
+            "own": false,
+            "wishlist": "no",
+            "played": false,
+            "prev_owned": false,
+            "owned": []
+        },
+        "137": {
+            "name": "Food Chain Island",
+            "own": false,
+            "wishlist": "no",
+            "played": false,
+            "prev_owned": false,
+            "owned": []
+        },
+        "136": {
+            "name": "Shadowrun: Crossfire \u2014 Prime Runner Edition",
+            "own": false,
+            "wishlist": "no",
+            "played": false,
+            "prev_owned": false,
+            "owned": []
+        },
+        "135": {
+            "name": "Unsettled",
+            "own": false,
+            "wishlist": "no",
+            "played": false,
+            "prev_owned": false,
+            "owned": []
+        },
+        "134": {
+            "name": "That's Pretty Clever",
+            "own": false,
+            "wishlist": "no",
+            "played": false,
+            "prev_owned": false,
+            "owned": []
+        },
+        "133": {
+            "name": "A Gentle Rain",
+            "own": false,
+            "wishlist": "no",
+            "played": false,
+            "prev_owned": false,
+            "owned": []
+        },
+        "132": {
+            "name": "Darwin's Journey",
+            "own": false,
+            "wishlist": "Medium",
+            "played": false,
+            "prev_owned": false,
+            "owned": []
+        },
+        "131": {
+            "name": "G.I. JOE Deck-Building Game",
+            "own": false,
+            "wishlist": "no",
+            "played": false,
+            "prev_owned": false,
+            "owned": []
+        },
+        "130": {
+            "name": "Expeditions",
+            "own": false,
+            "wishlist": "no",
+            "played": false,
+            "prev_owned": false,
+            "owned": []
+        },
+        "129": {
+            "name": "Hostage Negotiator",
+            "own": true,
+            "wishlist": "no",
+            "played": true,
+            "prev_owned": false,
+            "owned": [
+                "Hostage Negotiator"
+            ]
+        },
+        "128": {
+            "name": "Root",
+            "own": true,
+            "wishlist": "no",
+            "played": true,
+            "prev_owned": false,
+            "owned": [
+                "Root"
+            ]
+        },
+        "127": {
+            "name": "Glass Road",
+            "own": true,
+            "wishlist": "no",
+            "played": true,
+            "prev_owned": false,
+            "owned": [
+                "Glass Road"
+            ]
+        },
+        "126": {
+            "name": "Uprising: Curse of the Last Emperor",
+            "own": false,
+            "wishlist": "no",
+            "played": false,
+            "prev_owned": false,
+            "owned": []
+        },
+        "125": {
+            "name": "Paper Tales",
+            "own": false,
+            "wishlist": "no",
+            "played": false,
+            "prev_owned": false,
+            "owned": []
+        },
+        "124": {
+            "name": "Roll Player",
+            "own": true,
+            "wishlist": "no",
+            "played": true,
+            "prev_owned": false,
+            "owned": [
+                "Roll Player"
+            ]
+        },
+        "123": {
+            "name": "Star Wars: Imperial Assault",
+            "own": false,
+            "wishlist": "Low",
+            "played": false,
+            "prev_owned": false,
+            "owned": []
+        },
+        "122": {
+            "name": "Set a Watch",
+            "own": false,
+            "wishlist": "no",
+            "played": true,
+            "prev_owned": true,
+            "owned": []
+        },
+        "121": {
+            "name": "At the Gates of Loyang",
+            "own": true,
+            "wishlist": "no",
+            "played": true,
+            "prev_owned": false,
+            "owned": [
+                "At the Gates of Loyang"
+            ]
+        },
+        "120": {
+            "name": "Street Masters",
+            "own": false,
+            "wishlist": "no",
+            "played": false,
+            "prev_owned": false,
+            "owned": []
+        },
+        "119": {
+            "name": "Jump Drive",
+            "own": true,
+            "wishlist": "no",
+            "played": true,
+            "prev_owned": false,
+            "owned": [
+                "Jump Drive"
+            ]
+        },
+        "118": {
+            "name": "Xia: Legends of a Drift System",
+            "own": true,
+            "wishlist": "no",
+            "played": true,
+            "prev_owned": false,
+            "owned": [
+                "Xia: Legends of a Drift System"
+            ]
+        },
+        "117": {
+            "name": "Coffee Roaster",
+            "own": true,
+            "wishlist": "no",
+            "played": true,
+            "prev_owned": false,
+            "owned": [
+                "Coffee Roaster"
+            ]
+        },
+        "116": {
+            "name": "Skytear Horde",
+            "own": false,
+            "wishlist": "no",
+            "played": false,
+            "prev_owned": false,
+            "owned": []
+        },
+        "115": {
+            "name": "D-Day at Omaha Beach",
+            "own": false,
+            "wishlist": "no",
+            "played": false,
+            "prev_owned": false,
+            "owned": []
+        },
+        "114": {
+            "name": "Glood of Kilforth",
+            "own": false,
+            "wishlist": "no",
+            "played": false,
+            "prev_owned": false,
+            "owned": []
+        },
+        "113": {
+            "name": "Mansions of Madness: Second Edition",
+            "own": false,
+            "wishlist": "no",
+            "played": false,
+            "prev_owned": false,
+            "owned": []
+        },
+        "112": {
+            "name": "Renegade",
+            "own": false,
+            "wishlist": "Medium",
+            "played": false,
+            "prev_owned": false,
+            "owned": []
+        },
+        "111": {
+            "name": "Middara: Unintenional Malum \u2013 Act 1",
+            "own": false,
+            "wishlist": "no",
+            "played": false,
+            "prev_owned": false,
+            "owned": []
+        },
+        "110": {
+            "name": "Terra Mystica",
+            "own": false,
+            "wishlist": "no",
+            "played": false,
+            "prev_owned": false,
+            "owned": []
+        },
+        "109": {
+            "name": "Conservas",
+            "own": false,
+            "wishlist": "no",
+            "played": false,
+            "prev_owned": false,
+            "owned": []
+        },
+        "108": {
+            "name": "Kanban EV",
+            "own": true,
+            "wishlist": "no",
+            "played": true,
+            "prev_owned": false,
+            "owned": [
+                "Kanban EV"
+            ]
+        },
+        "107": {
+            "name": "Pandemic",
+            "own": true,
+            "wishlist": "no",
+            "played": true,
+            "prev_owned": false,
+            "owned": [
+                "Pandemic"
+            ]
+        },
+        "106": {
+            "name": "The LOOP",
+            "own": false,
+            "wishlist": "Medium",
+            "played": false,
+            "prev_owned": false,
+            "owned": []
+        },
+        "105": {
+            "name": "Mini Rogue",
+            "own": false,
+            "wishlist": "no",
+            "played": false,
+            "prev_owned": false,
+            "owned": []
+        },
+        "104": {
+            "name": "Hallertau",
+            "own": true,
+            "wishlist": "no",
+            "played": false,
+            "prev_owned": false,
+            "owned": [
+                "Hallertau"
+            ]
+        },
+        "103": {
+            "name": "Resist!",
+            "own": false,
+            "wishlist": "no",
+            "played": false,
+            "prev_owned": false,
+            "owned": []
+        },
+        "102": {
+            "name": "Viscounts of the West Kingdom",
+            "own": true,
+            "wishlist": "no",
+            "played": true,
+            "prev_owned": false,
+            "owned": [
+                "Viscounts of the West Kingdom"
+            ]
+        },
+        "101": {
+            "name": "The Search for Planet X",
+            "own": true,
+            "wishlist": "no",
+            "played": true,
+            "prev_owned": false,
+            "owned": [
+                "The Search for Planet X"
+            ]
+        },
+        "100": {
+            "name": "The Isofarian Guard",
+            "own": false,
+            "wishlist": "no",
+            "played": false,
+            "prev_owned": false,
+            "owned": []
+        },
+        "99": {
+            "name": "Grimm World",
+            "own": false,
+            "wishlist": "no",
+            "played": false,
+            "prev_owned": false,
+            "owned": []
+        },
+        "98": {
+            "name": "Halls of Hegra",
+            "own": false,
+            "wishlist": "no",
+            "played": false,
+            "prev_owned": false,
+            "owned": []
+        },
+        "97": {
+            "name": "burncycle",
+            "own": false,
+            "wishlist": "no",
+            "played": false,
+            "prev_owned": false,
+            "owned": []
+        },
+        "96": {
+            "name": "Nemesis",
+            "own": false,
+            "wishlist": "no",
+            "played": false,
+            "prev_owned": false,
+            "owned": []
+        },
+        "95": {
+            "name": "Onirim",
+            "own": false,
+            "wishlist": "no",
+            "played": false,
+            "prev_owned": false,
+            "owned": []
+        },
+        "94": {
+            "name": "Agricola (Revised Edition)",
+            "own": false,
+            "wishlist": "no",
+            "played": true,
+            "prev_owned": false,
+            "owned": [
+                "Agricola",
+                "Agricola: All Creatures Big and Small"
+            ]
+        },
+        "93": {
+            "name": "The Lord of the Rings: Journeys in Middle-Earth",
+            "own": false,
+            "wishlist": "no",
+            "played": false,
+            "prev_owned": false,
+            "owned": []
+        },
+        "92": {
+            "name": "Raiders of the North Sea",
+            "own": false,
+            "wishlist": "no",
+            "played": false,
+            "prev_owned": false,
+            "owned": []
+        },
+        "91": {
+            "name": "The Guild of Merchant Explorers",
+            "own": false,
+            "wishlist": "Low",
+            "played": false,
+            "prev_owned": false,
+            "owned": []
+        },
+        "90": {
+            "name": "One Deck Dungeon",
+            "own": false,
+            "wishlist": "no",
+            "played": false,
+            "prev_owned": false,
+            "owned": []
+        },
+        "89": {
+            "name": "Concordia",
+            "own": true,
+            "wishlist": "no",
+            "played": true,
+            "prev_owned": false,
+            "owned": [
+                "Concordia"
+            ]
+        },
+        "88": {
+            "name": "Zombicide: 2nd Edition",
+            "own": false,
+            "wishlist": "no",
+            "played": false,
+            "prev_owned": false,
+            "owned": []
+        },
+        "87": {
+            "name": "The 7th Citadel",
+            "own": false,
+            "wishlist": "no",
+            "played": false,
+            "prev_owned": false,
+            "owned": []
+        },
+        "86": {
+            "name": "HEXplore It: The Valley of the Dead King",
+            "own": false,
+            "wishlist": "no",
+            "played": false,
+            "prev_owned": false,
+            "owned": []
+        },
+        "85": {
+            "name": "Ashes Reborn: Rise of the Phoenixborn",
+            "own": true,
+            "wishlist": "no",
+            "played": true,
+            "prev_owned": false,
+            "owned": [
+                "Ashes: Rise of the Phoenixborn"
+            ]
+        },
+        "84": {
+            "name": "Harmonies",
+            "own": false,
+            "wishlist": "no",
+            "played": false,
+            "prev_owned": false,
+            "owned": []
+        },
+        "83": {
+            "name": "Frostpunk: The Board Game",
+            "own": true,
+            "wishlist": "no",
+            "played": false,
+            "prev_owned": false,
+            "owned": [
+                "Frostpunk: The Board Game"
+            ]
+        },
+        "82": {
+            "name": "Fields of Arle",
+            "own": true,
+            "wishlist": "no",
+            "played": true,
+            "prev_owned": false,
+            "owned": [
+                "Fields of Arle"
+            ]
+        },
+        "81": {
+            "name": "Gloomhaven: Buttons & Bugs",
+            "own": false,
+            "wishlist": "no",
+            "played": false,
+            "prev_owned": false,
+            "owned": []
+        },
+        "80": {
+            "name": "Maquis",
+            "own": false,
+            "wishlist": "no",
+            "played": false,
+            "prev_owned": false,
+            "owned": []
+        },
+        "79": {
+            "name": "Maracaibo",
+            "own": true,
+            "wishlist": "no",
+            "played": true,
+            "prev_owned": false,
+            "owned": [
+                "Maracaibo"
+            ]
+        },
+        "78": {
+            "name": "Keep the Heroes Out!",
+            "own": false,
+            "wishlist": "High",
+            "played": false,
+            "prev_owned": false,
+            "owned": []
+        },
+        "77": {
+            "name": "After the Virus",
+            "own": false,
+            "wishlist": "no",
+            "played": false,
+            "prev_owned": false,
+            "owned": []
+        },
+        "76": {
+            "name": "Tapestry",
+            "own": false,
+            "wishlist": "no",
+            "played": false,
+            "prev_owned": false,
+            "owned": []
+        },
+        "75": {
+            "name": "Dorfromantik: The Board Game",
+            "own": false,
+            "wishlist": "Medium",
+            "played": false,
+            "prev_owned": false,
+            "owned": []
+        },
+        "74": {
+            "name": "Witchcraft!",
+            "own": false,
+            "wishlist": "no",
+            "played": false,
+            "prev_owned": false,
+            "owned": []
+        },
+        "73": {
+            "name": "Space Hulk: Death Angel \u2013 The Card Game",
+            "own": false,
+            "wishlist": "Low",
+            "played": false,
+            "prev_owned": false,
+            "owned": []
+        },
+        "72": {
+            "name": "Legendary Encounters: An Alien Deck Building Game",
+            "own": false,
+            "wishlist": "no",
+            "played": false,
+            "prev_owned": false,
+            "owned": []
+        },
+        "71": {
+            "name": "Star Wars: Outer Rim",
+            "own": true,
+            "wishlist": "no",
+            "played": true,
+            "prev_owned": false,
+            "owned": [
+                "Star Wars: Outer Rim"
+            ]
+        },
+        "70": {
+            "name": "The White Castle",
+            "own": false,
+            "wishlist": "no",
+            "played": false,
+            "prev_owned": false,
+            "owned": []
+        },
+        "69": {
+            "name": "Legendary: A Marvel Deck Building Game",
+            "own": true,
+            "wishlist": "no",
+            "played": true,
+            "prev_owned": false,
+            "owned": [
+                "Legendary: A James Bond Deck Building Game",
+                "Legendary: Big Trouble in Little China"
+            ]
+        },
+        "68": {
+            "name": "ROVE: Results-Oriented Versatile Explorer",
+            "own": false,
+            "wishlist": "no",
+            "played": false,
+            "prev_owned": false,
+            "owned": []
+        },
+        "67": {
+            "name": "Race for the Galaxy",
+            "own": true,
+            "wishlist": "no",
+            "played": true,
+            "prev_owned": false,
+            "owned": [
+                "Race for the Galaxy"
+            ]
+        },
+        "66": {
+            "name": "Welcome to the Moon",
+            "own": true,
+            "wishlist": "no",
+            "played": false,
+            "prev_owned": false,
+            "owned": [
+                "Welcome To..."
+            ]
+        },
+        "65": {
+            "name": "Kingdom Death: Monster",
+            "own": false,
+            "wishlist": "no",
+            "played": false,
+            "prev_owned": false,
+            "owned": []
+        },
+        "64": {
+            "name": "The Castles of Burgundy: Special Edition",
+            "own": true,
+            "wishlist": "no",
+            "played": true,
+            "prev_owned": false,
+            "owned": [
+                "The Castles of Burgundy: Special Edition"
+            ]
+        },
+        "63": {
+            "name": "Turing Machine",
+            "own": true,
+            "wishlist": "no",
+            "played": true,
+            "prev_owned": false,
+            "owned": [
+                "Turing Machine"
+            ]
+        },
+        "62": {
+            "name": "Sentinels of the Multiverse: Definitive Edition",
+            "own": false,
+            "wishlist": "no",
+            "played": false,
+            "prev_owned": false,
+            "owned": []
+        },
+        "61": {
+            "name": "The 7th Continent",
+            "own": false,
+            "wishlist": "no",
+            "played": false,
+            "prev_owned": false,
+            "owned": []
+        },
+        "60": {
+            "name": "Viticulture Essential Edition",
+            "own": false,
+            "wishlist": "no",
+            "played": true,
+            "prev_owned": false,
+            "owned": []
+        },
+        "59": {
+            "name": "Aeon Tresspass: Odyssey",
+            "own": false,
+            "wishlist": "no",
+            "played": false,
+            "prev_owned": false,
+            "owned": []
+        },
+        "58": {
+            "name": "Great Western Trail: Second Edition",
+            "own": true,
+            "wishlist": "no",
+            "played": false,
+            "prev_owned": false,
+            "owned": [
+                "Great Western Trail"
+            ]
+        },
+        "57": {
+            "name": "Paladins of the West Kingdom",
+            "own": true,
+            "wishlist": "no",
+            "played": true,
+            "prev_owned": false,
+            "owned": [
+                "Paladins of the West Kingdom"
+            ]
+        },
+        "56": {
+            "name": "Everdell",
+            "own": false,
+            "wishlist": "Medium",
+            "played": false,
+            "prev_owned": false,
+            "owned": []
+        },
+        "55": {
+            "name": "ISS Vanguard",
+            "own": false,
+            "wishlist": "no",
+            "played": false,
+            "prev_owned": false,
+            "owned": []
+        },
+        "54": {
+            "name": "Earthborn Rangers",
+            "own": false,
+            "wishlist": "Low",
+            "played": false,
+            "prev_owned": false,
+            "owned": []
+        },
+        "53": {
+            "name": "Oathsworn: Into the Deepwood",
+            "own": false,
+            "wishlist": "no",
+            "played": false,
+            "prev_owned": false,
+            "owned": []
+        },
+        "52": {
+            "name": "Underwater Cities",
+            "own": true,
+            "wishlist": "no",
+            "played": true,
+            "prev_owned": false,
+            "owned": [
+                "Underwater Cities"
+            ]
+        },
+        "51": {
+            "name": "Arkham Horror (Third Edition)",
+            "own": false,
+            "wishlist": "no",
+            "played": false,
+            "prev_owned": false,
+            "owned": []
+        },
+        "50": {
+            "name": "This War of Mine: The Board Game",
+            "own": false,
+            "wishlist": "no",
+            "played": false,
+            "prev_owned": false,
+            "owned": []
+        },
+        "49": {
+            "name": "Bullet\u2605",
+            "own": true,
+            "wishlist": "no",
+            "played": true,
+            "prev_owned": false,
+            "owned": [
+                "Bullet\u2665\ufe0e"
+            ]
+        },
+        "48": {
+            "name": "Terraforming Mars: Ares Expedition",
+            "own": false,
+            "wishlist": "no",
+            "played": false,
+            "prev_owned": false,
+            "owned": []
+        },
+        "47": {
+            "name": "Slay the Spire: The Board Game",
+            "own": false,
+            "wishlist": "no",
+            "played": false,
+            "prev_owned": false,
+            "owned": []
+        },
+        "46": {
+            "name": "Cartographers",
+            "own": true,
+            "wishlist": "no",
+            "played": true,
+            "prev_owned": false,
+            "owned": [
+                "Cartographers"
+            ]
+        },
+        "45": {
+            "name": "Marvel United",
+            "own": false,
+            "wishlist": "no",
+            "played": false,
+            "prev_owned": false,
+            "owned": []
+        },
+        "44": {
+            "name": "Tainted Grail: The Fall of Avalon",
+            "own": false,
+            "wishlist": "no",
+            "played": false,
+            "prev_owned": false,
+            "owned": []
+        },
+        "43": {
+            "name": "Anachrony",
+            "own": true,
+            "wishlist": "no",
+            "played": true,
+            "prev_owned": false,
+            "owned": [
+                "Anachrony"
+            ]
+        },
+        "42": {
+            "name": "Orchard: 9 card solitaire game",
+            "own": false,
+            "wishlist": "no",
+            "played": false,
+            "prev_owned": false,
+            "owned": []
+        },
+        "41": {
+            "name": "Cthulhu: Death May Die",
+            "own": true,
+            "wishlist": "no",
+            "played": true,
+            "prev_owned": false,
+            "owned": [
+                "Cthulhu: Death May Die"
+            ]
+        },
+        "40": {
+            "name": "It's a Wonderful World",
+            "own": true,
+            "wishlist": "no",
+            "played": true,
+            "prev_owned": false,
+            "owned": [
+                "It's a Wonderful World"
+            ]
+        },
+        "39": {
+            "name": "Friday",
+            "own": true,
+            "wishlist": "no",
+            "played": false,
+            "prev_owned": false,
+            "owned": [
+                "Friday"
+            ]
+        },
+        "38": {
+            "name": "Scythe",
+            "own": false,
+            "wishlist": "no",
+            "played": false,
+            "prev_owned": false,
+            "owned": []
+        },
+        "37": {
+            "name": "Pax Pamir: Second Edition",
+            "own": false,
+            "wishlist": "no",
+            "played": false,
+            "prev_owned": false,
+            "owned": []
+        },
+        "36": {
+            "name": "Dawn of the Zeds (Third Edition)",
+            "own": false,
+            "wishlist": "no",
+            "played": false,
+            "prev_owned": false,
+            "owned": []
+        },
+        "35": {
+            "name": "Nemo's War: The Ultimate Edition",
+            "own": true,
+            "wishlist": "no",
+            "played": false,
+            "prev_owned": false,
+            "owned": [
+                "Nemo's War (Second Edition)"
+            ]
+        },
+        "34": {
+            "name": "Wingspan",
+            "own": true,
+            "wishlist": "no",
+            "played": true,
+            "prev_owned": false,
+            "owned": [
+                "Wingspan"
+            ]
+        },
+        "33": {
+            "name": "Legacy of Yu",
+            "own": false,
+            "wishlist": "no",
+            "played": false,
+            "prev_owned": false,
+            "owned": []
+        },
+        "32": {
+            "name": "Nusfjord",
+            "own": true,
+            "wishlist": "no",
+            "played": true,
+            "prev_owned": false,
+            "owned": [
+                "Nusfjord"
+            ]
+        },
+        "31": {
+            "name": "Heat: Pedal to the Metal",
+            "own": true,
+            "wishlist": "no",
+            "played": true,
+            "prev_owned": false,
+            "owned": [
+                "Heat: Pedal to the Metal"
+            ]
+        },
+        "30": {
+            "name": "Eldritch Horror",
+            "own": true,
+            "wishlist": "no",
+            "played": true,
+            "prev_owned": false,
+            "owned": [
+                "Eldritch Horror"
+            ]
+        },
+        "29": {
+            "name": "20 Strong",
+            "own": false,
+            "wishlist": "no",
+            "played": false,
+            "prev_owned": false,
+            "owned": []
+        },
+        "28": {
+            "name": "Sprawlopolis",
+            "own": true,
+            "wishlist": "no",
+            "played": true,
+            "prev_owned": false,
+            "owned": [
+                "Sprawlopolis"
+            ]
+        },
+        "27": {
+            "name": "Sleeping Gods",
+            "own": false,
+            "wishlist": "no",
+            "played": false,
+            "prev_owned": false,
+            "owned": []
+        },
+        "26": {
+            "name": "Warp's Edge",
+            "own": false,
+            "wishlist": "no",
+            "played": false,
+            "prev_owned": false,
+            "owned": []
+        },
+        "25": {
+            "name": "Hoplomachus: Victorum",
+            "own": false,
+            "wishlist": "no",
+            "played": false,
+            "prev_owned": false,
+            "owned": []
+        },
+        "24": {
+            "name": "Voidfall",
+            "own": false,
+            "wishlist": "no",
+            "played": false,
+            "prev_owned": false,
+            "owned": []
+        },
+        "23": {
+            "name": "Cloudspire",
+            "own": false,
+            "wishlist": "no",
+            "played": false,
+            "prev_owned": false,
+            "owned": []
+        },
+        "22": {
+            "name": "A Feast for Odin",
+            "own": false,
+            "wishlist": "no",
+            "played": false,
+            "prev_owned": false,
+            "owned": []
+        },
+        "21": {
+            "name": "Hadrian's Wall",
+            "own": false,
+            "wishlist": "no",
+            "played": false,
+            "prev_owned": false,
+            "owned": []
+        },
+        "20": {
+            "name": "For Northwood! A Solo Trick-Taking Game",
+            "own": true,
+            "wishlist": "no",
+            "played": true,
+            "prev_owned": false,
+            "owned": [
+                "For Northwood! A Solo Trick-Taking Game"
+            ]
+        },
+        "19": {
+            "name": "Obession",
+            "own": true,
+            "wishlist": "no",
+            "played": true,
+            "prev_owned": false,
+            "owned": [
+                "Obession"
+            ]
+        },
+        "18": {
+            "name": "Under Falling Skies",
+            "own": false,
+            "wishlist": "no",
+            "played": true,
+            "prev_owned": true,
+            "owned": []
+        },
+        "17": {
+            "name": "Gaia Project",
+            "own": true,
+            "wishlist": "no",
+            "played": false,
+            "prev_owned": false,
+            "owned": [
+                "Gaia Project"
+            ]
+        },
+        "16": {
+            "name": "Lost Ruins of Arnak",
+            "own": false,
+            "wishlist": "Medium",
+            "played": false,
+            "prev_owned": false,
+            "owned": []
+        },
+        "15": {
+            "name": "Terraforming Mars",
+            "own": false,
+            "wishlist": "no",
+            "played": true,
+            "prev_owned": false,
+            "owned": []
+        },
+        "14": {
+            "name": "Cascadia",
+            "own": false,
+            "wishlist": "no",
+            "played": false,
+            "prev_owned": false,
+            "owned": []
+        },
+        "13": {
+            "name": "Aeon's End",
+            "own": true,
+            "wishlist": "no",
+            "played": true,
+            "prev_owned": false,
+            "owned": [
+                "Aeon's End",
+                "Aeon's End: War Eternal",
+                "Aeon's End: The New Age",
+                "Aeon's End: Outcasts"
+            ]
+        },
+        "12": {
+            "name": "Robinson Crusoe: Adventures on the Cursed Island",
+            "own": false,
+            "wishlist": "no",
+            "played": false,
+            "prev_owned": false,
+            "owned": []
+        },
+        "11": {
+            "name": "Gloomhaven",
+            "own": true,
+            "wishlist": "no",
+            "played": false,
+            "prev_owned": false,
+            "owned": [
+                "Gloomhaven"
+            ]
+        },
+        "10": {
+            "name": "Ark Nova",
+            "own": true,
+            "wishlist": "no",
+            "played": false,
+            "prev_owned": false,
+            "owned": [
+                "Ark Nova"
+            ]
+        },
+        "9": {
+            "name": "Imperium: Classics",
+            "own": false,
+            "wishlist": "High",
+            "played": false,
+            "prev_owned": false,
+            "owned": []
+        },
+        "8": {
+            "name": "Dune: Imperium",
+            "own": false,
+            "wishlist": "no",
+            "played": false,
+            "prev_owned": false,
+            "owned": []
+        },
+        "7": {
+            "name": "Final Girl",
+            "own": false,
+            "wishlist": "no",
+            "played": false,
+            "prev_owned": false,
+            "owned": []
+        },
+        "6": {
+            "name": "The Lord of the Rings: The Card Game",
+            "own": true,
+            "wishlist": "no",
+            "played": true,
+            "prev_owned": false,
+            "owned": [
+                "The Lord of the Rings: The Card Game"
+            ]
+        },
+        "5": {
+            "name": "Too Many Bones",
+            "own": false,
+            "wishlist": "no",
+            "played": true,
+            "prev_owned": true,
+            "owned": []
+        },
+        "4": {
+            "name": "Arkham Horror: The Card Game",
+            "own": false,
+            "wishlist": "no",
+            "played": false,
+            "prev_owned": false,
+            "owned": []
+        },
+        "3": {
+            "name": "Marvel Champions: The Card Game",
+            "own": false,
+            "wishlist": "no",
+            "played": false,
+            "prev_owned": false,
+            "owned": []
+        },
+        "2": {
+            "name": "Mage Knight: Ultimate Edition",
+            "own": true,
+            "wishlist": "no",
+            "played": false,
+            "prev_owned": false,
+            "owned": [
+                "Mage Knight: Ultimate Edition"
+            ]
+        },
+        "1": {
+            "name": "Spirit Island",
+            "own": true,
+            "wishlist": "no",
+            "played": true,
+            "prev_owned": false,
+            "owned": [
+                "Spirit Island"
+            ]
+        }
+    }
 }

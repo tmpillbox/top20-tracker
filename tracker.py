@@ -83,7 +83,7 @@ class GameVote:
     cls.current_year = year
 
   def __init__(self, name: str, votes: Dict[Union[int, str], Union[int, str]]) -> None:
-    self.position = votes[self.current_year]
+    self.position = votes.get(self.current_year, "N/A")
     self.name = name
     self.by_name[name] = self
     try:
@@ -323,6 +323,8 @@ def main(args):
 
   for game_name, game_data in data_raw_votes.items():
     if 'vote_ranks' in game_data:
+      if current_year not in game_data['vote_ranks']:
+        continue
       game: GameVote = GameVote(game_name, game_data['vote_ranks'])
       if game_name in GameResult.by_name:
         GameResult.by_name[game_name].vote(game.position)
