@@ -79,6 +79,7 @@ class GameVote:
 
   @classmethod
   def set_current_year(cls, year: Union[int, str]) -> None:
+    print(f'# DEBUG: SETTING CURRENT YEAR: {year}')
     cls.current_year = year
 
   def __init__(self, name: str, votes: Dict[Union[int, str], Union[int, str]]) -> None:
@@ -299,10 +300,15 @@ def main(args):
   with open(args.results) as f:
     data_raw_results = json.load(f)
 
-  current_year = data_raw_results['year']
+  years = sorted([ int(k) for k in data_raw_results.keys() if k.isdigit() ], reverse=True)
+  years = [ str(y) for y in years ]
+  current_year = years[0]
+  if args.year and args.year in years:
+    current_year = args.year
+
   GameVote.set_current_year(current_year)
 
-  for rank, result in data_raw_results['results'].items():
+  for rank, result in data_raw_results[current_year].items():
     if rank == '':
       continue
     result.update( { "rank": rank } )
@@ -412,8 +418,21 @@ def main(args):
 
 if __name__ == '__main__':
   parser = argparse.ArgumentParser(prog='top20-tracker', description='Peoples Choice Top20 Results Tracker')
-  parser.add_argument('--votes', nargs='?', type=str, default="votes.json")
-  parser.add_argument('--results', nargs='?', type=str, default="results.json")
-  parser.add_argument('--format', type=str, default="bbcode", choices=["bbcode", "markdown"])
+  parser.add_argument(
+    '--year', '-Y', default="",
+    help="Process a specific year. Default is most recent year"
+  )
+  parser.add_argument(
+    '--votes', nargs='?', type=str,
+    default="votes.json",
+  )
+  parser.add_argument(
+    '--results', nargs='?', type=str,
+    default="results.json"
+  )
+  parser.add_argument(
+    '--format', type=str,
+    default="bbcode", choices=["bbcode", "markdown"]
+  )
   args = parser.parse_args()
   main(args)

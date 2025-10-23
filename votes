@@ -1,0 +1,404 @@
+#!/usr/bin/env python3
+
+import argparse
+from datetime import datetime
+import json
+import shlex
+from typing import List, Optional, Union
+import cmd2
+from rich.console import Console
+from rich.table import Table
+
+
+CALYEAR = datetime.now().year
+
+class Game:
+    def __init__(self, name: str, data: dict) -> None:
+        self.name = name
+        self.data = data
+
+    def has_year(self, year: Union[str, int]) -> bool:
+        year = str(year)
+        if "vote_ranks" in self.data:
+            return year in self.data["vote_ranks"]
+        return False
+    
+    def year_rank(self, year: Union[str, int]) -> Optional[str]:
+        year = str(year)
+        if self.has_year(year):
+            return self.data["vote_ranks"][year]
+        return None
+
+class VotesManager(cmd2.Cmd):
+    @staticmethod
+    def partial_command(arg_string: str, choices: List[str]) -> str:
+        """Returns a full match from a partial string, or raises an error."""
+        matches = [ c for c in choices if c.startswith(arg_string) ]
+
+        if not matches:
+            raise argparse.ArgumentTypeError(f"Invalid choice: '{arg_string}' (choose from {choices})")
+        elif len(matches) > 1:
+            raise argparse.ArgumentTypeError(f"Ambiguous choice: '{arg_string}' (matches {matches})")
+        else:
+            return matches[0]
+        
+    @staticmethod
+    def positive_integer(int_val: str):
+        """Returns a valid positive integer or raises an error"""
+
+        if not int_val.isdigit():
+            raise argparse.ArgumentTypeError(f"Not an integer: {int_val}")
+        elif int(int_val) <= 0:
+            raise argparse.ArgumentTypeError(f"Not a positive integer: {int_val}")
+        else:
+            return int(int_val)
+
+    @staticmethod
+    def combobulate_line(args: List[str]):
+        return ' '.join([ shlex.quote(arg) for arg in args ])
+
+    def __init__(self, votes_file: str, year: int, interactive: bool = False):
+        super(VotesManager, self).__init__(allow_cli_args=False)
+        self.console = Console()
+        self._votes_file = votes_file
+        self._votes = None
+        self.year = year
+        self.interactive = interactive
+        self.hier = ''
+        self._update_prompt()
+        self._load_vote_data()
+
+    def _load_vote_data(self) -> None:
+        with open(self._votes_file, 'r') as f:
+            self._votes = json.load(f)
+    
+    def _save_vote_data(self) -> None:
+        with open(self._votes_file, 'w') as f:
+            json.dump(self._votes, f)
+
+    def _update_prompt(self) -> None:
+        self.prompt = f'{self.year}{self.hier}> '
+
+    def get_year_data(self, year: Union[str, int]) -> dict:
+        year = str(year)
+        year_data = dict()
+        for name, data in self._votes.items():
+            game = Game(name, data)
+            vote = game.year_rank(year)
+            if vote:
+                year_data[vote] = game
+        return year_data
+    
+    def set_vote(self, year: int, vote: str, game: str) -> bool:
+        if game not in self._votes:
+            self.poutput(f'"{game}" not found. Please add it first using the "game" command')
+            return False
+        # Check if there's already a game with the current year and current vote
+        year_data = self.get_year_data(year)
+        if vote in year_data:
+            # Remove vote
+            try_del = self.delete_vote(year, vote, game)
+            if try_del is False:
+                # Delete failed, bail
+                return False
+        if 'vote_ranks' not in self._votes[game]:
+            self._votes[game]["vote_ranks"] = dict()
+        self._votes[game]["vote_ranks"][str(year)] = str(vote)
+        return True
+    
+    def confirm(self, message: str, default=False) -> bool:
+        while True:
+            response = input(f'{message} (y/n): ').lower()
+
+            if response in ['y', 'yes']:
+                return True
+            elif response in ['n', 'no']:
+                return False
+            elif response == '':
+                # Cancel
+                self.poutput('Cancelled')
+                return default
+            else:
+                self.poutput('Invalid response. Please answer \'y\' or \'n\'.')
+
+    def delete_vote(self, year: int, vote: int, game: str, force: bool = False) -> bool:
+        year_data = self.get_year_data(year)
+        if vote in year_data:
+            if year_data[vote].name != game:
+                self.poutput(f'Mismatch! This shouldn\'t happen. Please consult your nearest Tyler McGeorge')
+                return False
+            if force or self.confirm('CONFIRM: delete vote {vote} for game {game}?'):
+                del self._votes[game]["vote_ranks"][str(year)]
+        return True
+    
+    def add_game(self, name: str) -> bool:
+        if name in self._votes:
+            # Game exists
+            self.poutput(f'Game "{name}" already exists')
+            return False
+        self._votes[name] = dict()
+        self._votes[name]['vote_ranks'] = dict()
+    
+    def delete_game(self, name: str, force: bool = False) -> bool:
+        if name in self._votes:
+            if self._votes[name]["vote_ranks"]:
+                # Game has votes registered
+                self.poutput(f'Cannot delete game "{name}". {len(self._votes[name]["vote_ranks"])} votes recorded for game.')
+                return False
+            if force or self.confirm('CONFIRM: delete game "{name}"?'):
+                del self._votes[name]
+                return True
+        elif not force:
+            self.poutput(f'Unable to delete game: does not exist: {name}')
+    
+    @property
+    def max_vote(self) -> int:
+        year = self.get_year_data(self.year)
+        if not year:
+            return 0
+        return max( year.keys() )
+    
+    def choices_game_name(self):
+        return self._sorted_game_names()
+    
+    def _sorted_game_names(self):
+        return sorted([ k for k in self._votes.keys() ])
+
+    def _game_by_vote(self, rank: Union[int, str]) -> Game:
+        year = self.get_year_data(self.year)
+        rank = str(rank)
+        if rank in year:
+            return year[rank]
+        return None
+   
+    def _render_votes_table(self) -> None:
+        table = Table(title='Votes')
+
+        table.add_column('VOTE')
+        table.add_column('GAME')
+
+        year_data = self.get_year_data(self.year)
+        max_vote = 0
+        for vote_rank in year_data:
+            if vote_rank.isdigit():
+                max_vote = max(max_vote, int(vote_rank))
+
+        votes_seen = set()
+        
+        for vote_rank in range(max_vote):
+            votes_seen.add(str(vote_rank + 1))
+            game = self._game_by_vote(vote_rank + 1)
+            if game is None:
+                name = ''
+            else:
+                name = game.name
+            table.add_row(str(vote_rank + 1), name)
+
+        for vote_rank, game in year_data.items():
+            if vote_rank in votes_seen:
+                continue
+            table.add_row(vote_rank, game.name)
+        self.console.print(table)
+
+    def _render_games_table(self) -> None:
+        table = Table(title='Games')
+        table.add_column('Game')
+        game_names = sorted([
+            name for name in self._votes
+        ])
+
+        for name in game_names:
+            table.add_row(name)
+
+        self.console.print(table)
+
+    def _render_one_game(self, game_name: str) -> None:
+        table = Table(title=game_name)
+        table.add_column('YEAR')
+        table.add_column('VOTE')
+        for year, vote in self._votes[game_name]["vote_ranks"].items():
+            table.add_row(year, vote)
+        
+        self.console.print(table)
+
+    delete_parser: cmd2.Cmd2ArgumentParser = cmd2.Cmd2ArgumentParser()
+    delete_parser.add_argument(
+        '--force', action='store_true', default=False
+    )
+    delete_parser_typ = delete_parser.add_subparsers(dest='command', title='commands')
+    delete_typ_vote: cmd2.Cmd2ArgumentParser = delete_parser_typ.add_parser('vote')
+    delete_typ_vote.add_argument(
+        'vote', type=lambda i: VotesManager.positive_integer(i)
+    )
+
+    delete_typ_game: cmd2.Cmd2ArgumentParser = delete_parser_typ.add_parser('game')
+    delete_typ_game.add_argument(
+        'game', type=str,
+        choices_provider=choices_game_name
+    )
+
+    @cmd2.with_argparser(delete_parser)
+    def do_delete(self, args: argparse.Namespace) -> None:
+        if not args.command or args.command not in [ 'vote', 'game' ]:
+            self.poutput('invalid delete command: "delete vote" or "delete game" is required')
+            return
+        match args.command:
+            case 'vote':
+                year = int(self.year)
+                vote = int(args.vote)
+                year_data = self.get_year_data(year)
+                if vote in year_data:
+                    self.delete_vote(year, vote, year_data[vote].name, force=args.force)
+            case 'game':
+                if args.game in self._votes:
+                    self.delete_game(args.game, force=args.force)
+
+    show_parser = cmd2.Cmd2ArgumentParser()
+    show_parser_typ = show_parser.add_subparsers(dest='command', title='commands')
+    show_typ_votes = show_parser_typ.add_parser('votes')
+
+    show_typ_games: cmd2.Cmd2ArgumentParser = show_parser_typ.add_parser('games')
+    show_typ_games.add_argument(
+        'name', nargs='*', type=str,
+        choices_provider=choices_game_name
+    )
+
+    @cmd2.with_argparser(show_parser)
+    def do_show(self, args: argparse.Namespace) -> None:
+        command = args.command
+        if command is None:
+            # Default to show votes
+            self._render_votes_table()
+            return
+        match command:
+            case 'games':
+                game_names = self._sorted_game_names()
+                if args.name:
+                    for name in args.name:
+                        if name in game_names:
+                            self._render_one_game(name)
+                        else:
+                            self.poutput(f'No data found: {name}')
+                    return
+                self._render_games_table()
+            case 'votes':
+                self._render_votes_table()
+            case _:
+                print (f"not found: {command}")
+
+    game_parser: cmd2.Cmd2ArgumentParser = cmd2.Cmd2ArgumentParser()
+    game_parser.add_argument('--force', action='store_true', default=False)
+    game_parser.add_argument(
+        'command', choices=[ 'list', 'show', 'add', 'delete' ] 
+    )
+    game_parser.add_argument(
+        'name', choices_provider=choices_game_name, default='', nargs='?' 
+    )
+
+    @cmd2.with_argparser(game_parser)
+    def do_game(self, args: argparse.Namespace) -> None:
+        if not args.command or args.command not in [ 'list', 'show', 'add', 'delete' ]:
+            self.poutput('Invalid command: must choose \'game show\', \'game add\', or \'game delete\'.')
+            return
+
+        match args.command: 
+            case 'list':
+                return self._render_games_table()
+            case 'show':
+                    if args.name is None or len(args.name) == 0:
+                        self.poutput('game show: must provide game name(s)')
+                    match = self.partial_command(args.name, self._sorted_game_names())
+                    self._render_one_game(match)
+                    return
+            case 'add':
+                return self.add_game(args.name)
+            case 'delete':
+                if args.name is None or len(args.name) == 0:
+                    self.poutput('game delete: must specify game name(s)')
+                    return
+                self.delete_game(args.name, force=args.force)
+                return
+        
+        self.poutput('Invalid \'game\' command. You should not see this.')
+
+
+    vote_parser: argparse.ArgumentParser = cmd2.Cmd2ArgumentParser()
+    vote_parser.add_argument(
+        'vote', type=str
+    )
+    vote_parser.add_argument(
+        'game', choices_provider=choices_game_name
+    )
+
+    @cmd2.with_argparser(vote_parser)
+    def do_vote(self, args: argparse.Namespace) -> None:
+        self.set_vote(self.year, args.vote, args.game)
+
+    def do_rollback(self, args):
+        self._load_vote_data()
+        self.poutput(f'LOADED {len(self._votes)} games')
+    
+    def do_save(self, args):
+        self._save_vote_data()
+        self.poutput(f'SAVED {len(self._votes)} games')
+
+    year_parser = cmd2.Cmd2ArgumentParser()
+    year_parser.add_argument('year', type=int)
+
+    @cmd2.with_argparser(year_parser)
+    def do_year(self, args: argparse.Namespace) -> None:
+        if args.year is not None:
+            self.year = args.year
+            self.poutput(f'Changed year to {self.year}')
+            self._update_prompt()
+        else:
+            self.poutput(f'Invalid year: {args.year}')
+    
+
+def main(params: argparse.Namespace, args: List[str]) -> None:
+    year = params.year
+    if not year:
+        year = CALYEAR
+    interactive = None
+    if params.interactive:
+        interactive = True
+    if params.no_interactive:
+        interactive = False
+    if interactive is None:
+        interactive = not args
+    
+    votes_manager = VotesManager(params.votes_file, year, interactive)
+    if interactive:
+        votes_manager.cmdloop(VotesManager.combobulate_line(args))
+    else:
+        votes_manager.onecmd(VotesManager.combobulate_line(args))
+
+
+if __name__ == '__main__':
+    parser = cmd2.Cmd2ArgumentParser("votes", description="manage votes")
+    parser.add_argument(
+        '--year', '-Y',
+        default='',
+        help=f'Specify a year. Defaults to the current calendar year. CURRENTLY: {CALYEAR}'
+    )
+    parser.add_argument(
+        '--votes-file', '-f',
+        default='votes.json',
+        help='file to load and save voting data'
+    )
+    parser.add_argument(
+        '--interactive', '-i',
+        action='store_true',
+        help='Force interactive mode'
+    )
+    parser.add_argument(
+        '--no-interactive', '-I',
+        action='store_true',
+        help='Force disable interactive mode'
+    )
+
+    params = parser.parse_known_args()
+    args = list()
+    if isinstance(params, tuple):
+        params, args = params
+    main(params, args)
