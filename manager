@@ -4,7 +4,7 @@ import argparse
 from datetime import datetime
 import json
 import shlex
-from typing import Dict, List, Optional, Union
+from typing import Dict, Generator, Iterator, List, Optional, Tuple, Union
 import cmd2
 from rich.console import Console
 from rich.table import Table
@@ -12,9 +12,20 @@ from rich.table import Table
 
 CALYEAR = datetime.now().year
 
+class Utility:
+    @staticmethod
+    def str2bool(arg: str) -> bool:
+        arg = arg.lower()
+        if arg in [ 'yes', 'y', 'true', 't', '1' ]:
+            return True
+        elif arg in [ 'no', 'n', 'false', 'f', '0' ]:
+            return False
+        else:
+            raise argparse.ArgumentTypeError("Invalid option, choose from: y, yes, t, true, n, no, f, false, 0, 1")
+
 
 class CmdResults(cmd2.CommandSet):
-    def __init__(self, parent: cmd2.Cmd):
+    def __init__(self, parent: "TrackerManager"):
         super().__init__()
         self.parent: "TrackerManager" = parent
 
@@ -31,17 +42,58 @@ class CmdResults(cmd2.CommandSet):
     def results_select(self, ns: argparse.Namespace):
         self.parent._results_select(ns.rank)
 
+    clear_parser = cmd2.Cmd2ArgumentParser()
+    
+    @cmd2.as_subcommand_to('results', 'clear', clear_parser)
+    def results_clear(self, ns: argparse.Namespace):
+        self.parent._results_clear()
+
     next_parser = cmd2.Cmd2ArgumentParser()
 
     @cmd2.as_subcommand_to('results', 'next', next_parser)
     def results_next(self, ns: argparse.Namespace):
         self.parent._results_next()
 
+    show_parser = cmd2.Cmd2ArgumentParser()
+
+    @cmd2.as_subcommand_to('results', 'show', show_parser)
+    def results_show(self, ns: argparse.Namespace):
+        self.parent._results_show()
+
     list_parser = cmd2.Cmd2ArgumentParser()
+    list_parser.add_argument(
+        '--max-rank', type=int,
+        help='Only show games ranked numerically equal to or lower than --max-rank'
+    )
+    list_parser.add_argument(
+        '--min-rank', type=int,
+        help='Only show games ranked numerically equal to or higher than --min-rank'
+    )
+    list_parser.add_argument(
+        '--owned', type=Utility.str2bool,
+        help='If specified, only show games either owned or not-owned'
+    )
+    list_parser.add_argument(
+        '--prev-owned', type=Utility.str2bool,
+        help='If specified, only show games either previously owned or not marked previously owned'
+    )
+    list_parser.add_argument(
+        '--played', type=Utility.str2bool,
+        help='If specified, only show games either played or unplayed'
+    )
+    list_parser.add_argument(
+        '--wishlist', nargs='+',
+        choices=[ 'no', 'Low', 'Medium', 'High' ],
+        help='If specified, only show games matching one of the provided Wishlist priorities'        
+    )
+    list_parser.add_argument(
+        '--voted', type=Utility.str2bool,
+        help='If specified, only show games either voted for or not voted for'
+    )
 
     @cmd2.as_subcommand_to('results', 'list', list_parser)
     def results_list(self, ns: argparse.Namespace):
-        self.parent._render_results()
+        self.parent._render_results(ns)
 
     mark_parser = cmd2.Cmd2ArgumentParser()
     mark_parser_cmd = mark_parser.add_subparsers(dest='command')
@@ -114,7 +166,7 @@ class ResultYear:
     def as_dict(self) -> Dict:
         obj = dict()
         for rank in sorted(self._by_rank, reverse=True):
-            obj[str(rank)] = self.by_rank(rank).as_dict
+            obj[str(rank)] = self.by_rank(rank).as_dict # type: ignore
         return obj
     
     @classmethod
@@ -184,11 +236,11 @@ class ResultGame:
     def from_dict(cls, game_data: Dict) -> "ResultGame":
         game = cls(
             game_data['name'],
-            own=game_data.get('own'),
-            wishlist=game_data.get('wishlist'),
-            played=game_data.get('played'),
-            prev_owned=game_data.get('prev_owned'),
-            owned_items=game_data.get('owned')
+            own=game_data.get('own', False),
+            wishlist=game_data.get('wishlist', "no"),
+            played=game_data.get('played', False),
+            prev_owned=game_data.get('prev_owned', False),
+            owned_items=game_data.get('owned', None)
         )
         return game
     
@@ -206,7 +258,7 @@ class Results:
     
     def add_year(self, year: int) -> None:
         if year not in self.years:
-            self.years[year]  = ResultYear()
+            self.years[year]  = ResultYear(year)
         
     def add_result(self, year: int, rank: int, result: ResultGame) -> None:
         if year not in self.years:
@@ -225,7 +277,7 @@ class Results:
         return obj
 
     @classmethod 
-    def from_dict(cls, data: Dict) -> None:
+    def from_dict(cls, data: Dict) -> "Results":
         results: "Results" = cls()
         for year, year_data in data.items():
             int_year = int(year)
@@ -281,12 +333,13 @@ class TrackerManager(cmd2.Cmd):
         self.add_settable(
             cmd2.Settable('hier', str, 'Context level', self, onchange_cb=self._update_hier)
         )
+        self.selected_result = None
         self._update_prompt()
         self._load_vote_data()
         self._load_groupings_data()
         self._load_results_data()
 
-    results_parser = cmd2.Cmd2ArgumentParser()
+    results_parser: cmd2.Cmd2ArgumentParser = cmd2.Cmd2ArgumentParser()
     results_parser_cmd = results_parser.add_subparsers()
 
     @cmd2.with_argparser(results_parser)
@@ -295,10 +348,21 @@ class TrackerManager(cmd2.Cmd):
         if handler is not None:
             handler(ns)
         else:
-            self.perror('unable to process')
             self.do_help('results')
-            import pdb; pdb.set_trace()
 
+    def _results_select(self, rank: int) -> None:
+        self.hier = f'results {rank}'
+        self._update_prompt()
+    
+    def _results_clear(self) -> None:
+        self.hier = ''
+        self._update_prompt()
+
+    def _results_next(self) -> None:
+        if self.hier.startswith('results '):
+            curr_rank = shlex.split(self.hier)[-1]
+            next_rank = int(curr_rank) - 1
+            self._results_select(next_rank)
 
     def _update_year(self, _param_name, _old, new) -> None:
         self._update_prompt()
@@ -353,6 +417,8 @@ class TrackerManager(cmd2.Cmd):
     def get_year_data(self, year: Union[str, int]) -> dict:
         year = str(year)
         year_data = dict()
+        if self._votes is None or year not in self._votes:
+            return dict()
         for name, data in self._votes.items():
             game = VoteGame(name, data)
             vote = game.year_rank(year)
@@ -361,6 +427,8 @@ class TrackerManager(cmd2.Cmd):
         return year_data
     
     def set_vote(self, year: int, vote: str, game: str) -> bool:
+        if self._votes is None:
+            self._votes = dict()
         if game not in self._votes:
             self.perror(f'"{game}" not found. Please add it first using the "game" command')
             return False
@@ -392,25 +460,31 @@ class TrackerManager(cmd2.Cmd):
             else:
                 self.perror('Invalid response. Please answer \'y\' or \'n\'.')
 
-    def delete_vote(self, year: int, vote: int, game: str, force: bool = False) -> bool:
+    def delete_vote(self, year: int, vote: str, game: str, force: bool = False) -> bool:
         year_data = self.get_year_data(year)
         if vote in year_data:
             if year_data[vote].name != game:
                 self.perror(f'Mismatch! This shouldn\'t happen. Please consult your nearest Tyler McGeorge')
                 return False
             if force or self.confirm('CONFIRM: delete vote {vote} for game {game}?'):
-                del self._votes[game]["vote_ranks"][str(year)]
+                if self._votes is not None:
+                    del self._votes[game]["vote_ranks"][str(year)]
         return True
     
     def add_game(self, name: str) -> bool:
+        if self._votes is None:
+            self._votes = dict()
         if name in self._votes:
             # Game exists
             self.pwarning(f'Game "{name}" already exists')
             return False
         self._votes[name] = dict()
         self._votes[name]['vote_ranks'] = dict()
+        return True
     
     def delete_game(self, name: str, force: bool = False) -> bool:
+        if self._votes is None:
+            self._votes = dict()
         if name in self._votes:
             if self._votes[name]["vote_ranks"]:
                 # Game has votes registered
@@ -421,6 +495,8 @@ class TrackerManager(cmd2.Cmd):
                 return True
         elif not force:
             self.perror(f'Unable to delete game: does not exist: {name}')
+            return False
+        return False
     
     @property
     def max_vote(self) -> int:
@@ -436,20 +512,103 @@ class TrackerManager(cmd2.Cmd):
         return self._sorted_groupings_names()
     
     def _sorted_game_names(self):
+        if self._votes is None:
+            return list()
         return sorted([ k for k in self._votes.keys() ])
     
+    def _choices_grouped_items(self) -> List[str]:
+        if self.hier and ' ' in self.hier:
+            target = shlex.split(' ')[-1]
+            # target could be rank or game name
+            if target.isdigit():
+                year_data = self._results.year(self.year)
+                if year_data is not None:
+                    game_name = year_data.by_rank(int(target))
+                    if game_name is not None:
+                        game_name = game_name.name
+                    if game_name is None:
+                        group = self._game_in_grouping(target)
+                        if self._groupings and group:
+                            return self._groupings[group]
+                    if game_name is None:
+                        return list()
+                    group = self._game_in_grouping(game_name)
+                    if self._groupings and group:
+                        return self._groupings[group]
+            else:
+                group = self._game_in_grouping(target)
+                if self._groupings and group:
+                    return self._groupings[group]
+        return list()
+    
+    def _choices_selected_grouped_items(self) -> List[str]:
+        if self.hier and ' ' in self.hier:
+            target = shlex.split(' ')[-1]
+            # target could be rank or game
+            if target.isdigit():
+                year_data = self._results.year(self.year)
+                if year_data is not None:
+                    game_name = year_data.by_rank(int(target))
+                    if game_name is not None:
+                        game_name = game_name.name
+                    if game_name is None:
+                        group = self._game_in_grouping(target)
+                        if self._groupings and group:
+                            return self._groupings[group]
+                    return list()
+            else:
+                group = self._game_in_grouping(target)
+                if self._groupings and group:
+                    return self._groupings[group]
+        return list()
+    
+    def _resolve_results_hier(self):
+        if self.hier.startswith('results '):
+            rank = self.hier[len('results '):]
+            if rank.isdigit():
+                return int(rank)
+    
+    def _results_show(self):
+        rank = self._resolve_results_hier()
+        if rank is None:
+            return
+        year = self._results.year(self.year)
+        if year is None:
+            return
+        result = year.by_rank(rank)
+        if result is None:
+            self.poutput('Not Found')
+            return
+        table = Table(title=result.name)
+        table.show_header = False
+        table.add_column('')
+        table.add_column('')
+        
+        table.add_row('OWN', 'Yes' if result.own else 'No')
+        table.add_row('PREV_OWNED', 'Yes' if result.prev_owned else 'No')
+        table.add_row('WISHLIST', result.wishlist)
+        table.add_row('PLAYED', 'Yes' if result.played else 'No')
+        table.add_row('OWNED ITEMS', '\n'.join(result.owned_items))
+
+        self.console.print(table)
+        
+
     def _sorted_groupings_names(self):
-        return sorted([ k for k in self._groupings.keys() ])
+        if self._groupings is not None:
+            return sorted([ k for k in self._groupings.keys() ])
+        return list()
     
     def _game_in_grouping(self, name: str) -> Union[None, str]:
-        if name in self._groupings:
+        if name in self._groupings: # type: ignore
             return name
+        if self._groupings is None:
+            return None
         for group, entries in self._groupings.items():
             if name in entries:
                 return group
         return None
 
-    def _game_by_vote(self, rank: Union[int, str]) -> VoteGame:
+    def _game_by_vote(self, rank: Union[int, str]) -> Optional[VoteGame]:
         year = self.get_year_data(self.year)
         rank = str(rank)
         if rank in year:
@@ -486,6 +645,8 @@ class TrackerManager(cmd2.Cmd):
         self.console.print(table)
 
     def _render_games_table(self) -> None:
+        if self._votes is None:
+            return
         table = Table(title='Games')
         table.add_column('Game')
         game_names = sorted([
@@ -504,23 +665,30 @@ class TrackerManager(cmd2.Cmd):
             table.caption = f'In Grouping: {grouping}'
         table.add_column('YEAR')
         table.add_column('VOTE')
-        for year, vote in self._votes[game_name]["vote_ranks"].items():
-            table.add_row(year, vote)
+        if self._votes:
+            for year, vote in self._votes[game_name]["vote_ranks"].items():
+                table.add_row(year, vote)
         
         self.console.print(table)
 
     def vote_by_name(self, name: str) -> str:
+        if self._votes is None:
+            return "N/A"
         if name in self._votes and str(self.year) in self._votes[name]['vote_ranks']:
             return self._votes[name]['vote_ranks'][str(self.year)]
         return "N/A"
 
-    def get_result_year_items(self, year: int) -> ResultYear:
+    def get_result_year_items(self, year: int) -> Iterator[Tuple[int, ResultGame]]:
         result_year = self._results.year(year)
+        if result_year is None or not result_year._by_rank:
+            return
         ranks = sorted(result_year._by_rank, reverse=True)
         for rank in ranks:
-            yield (rank, result_year.by_rank(rank))
+            item = result_year.by_rank(rank)
+            if item is not None:
+                yield (rank, item)
     
-    def _render_results(self):
+    def _render_results(self, ns: argparse.Namespace) -> None:
         table = Table(title="Results")
 
         table.add_column('RANK')
@@ -531,7 +699,11 @@ class TrackerManager(cmd2.Cmd):
         table.add_column('PLAYED')
         table.add_column('VOTED')
 
-        for rank, result in self.get_result_year_items(self.year):
+        result_rows: int = 0
+
+        rank: int
+        result: ResultGame
+        for rank, result  in self.get_result_year_items(self.year):
             match result.wishlist:
                 case 'no':
                     wish = '×'
@@ -546,6 +718,30 @@ class TrackerManager(cmd2.Cmd):
             
             vote = self.vote_by_name(result.name)
 
+            if ns.max_rank is not None:
+                if ns.max_rank < rank:
+                    continue
+            if ns.min_rank is not None:
+                if ns.min_rank > rank:
+                    continue
+            if ns.owned is not None:
+                if ns.owned != result.own:
+                    continue
+            if ns.prev_owned is not None:
+                if ns.prev_owned != result.prev_owned:
+                    continue
+            if ns.played is not None:
+                if ns.played != result.played:
+                    continue
+            if ns.wishlist is not None:
+                if result.wishlist not in ns.wishlist:
+                    continue
+            if ns.voted is not None:
+                if ns.voted and vote == 'N/A':
+                    continue
+                if not ns.voted and vote != 'N/A':
+                    continue
+
             table.add_row(
                 str(rank),
                 result.name,
@@ -555,8 +751,10 @@ class TrackerManager(cmd2.Cmd):
                 'Y' if result.played else 'N',
                 vote
             )
+            result_rows += 1
 
-            self.console.print(table)
+        self.console.print(table)
+        self.poutput(f'{result_rows} results')
 
     delete_parser: cmd2.Cmd2ArgumentParser = cmd2.Cmd2ArgumentParser()
     delete_parser.add_argument(
@@ -582,7 +780,7 @@ class TrackerManager(cmd2.Cmd):
         match args.command:
             case 'vote':
                 year = int(self.year)
-                vote = int(args.vote)
+                vote = str(args.vote)
                 year_data = self.get_year_data(year)
                 if vote in year_data:
                     self.delete_vote(year, vote, year_data[vote].name, force=args.force)
@@ -648,7 +846,8 @@ class TrackerManager(cmd2.Cmd):
                     self._render_one_game(match)
                     return
             case 'add':
-                return self.add_game(args.name)
+                self.add_game(args.name)
+                return
             case 'delete':
                 if args.name is None or len(args.name) == 0:
                     self.perror('game delete: must specify game name(s)')
@@ -708,6 +907,8 @@ class TrackerManager(cmd2.Cmd):
         return
 
     def _render_groupings_table(self) -> None:
+        if self._groupings is None:
+            return
         table = Table(title='Groupings')
         table.add_column('# Entries')
         table.add_column('Grouping')
@@ -721,6 +922,8 @@ class TrackerManager(cmd2.Cmd):
         self.console.print(table)
 
     def _render_one_grouping(self, name: str) -> None:
+        if self._groupings is None:
+            return
         if name not in self._groupings:
             self.pwarning(f'warning: could not find grouping: {name}')
             return
@@ -736,6 +939,8 @@ class TrackerManager(cmd2.Cmd):
     def _clear_groupings(self) -> bool:
         if self.confirm('CONFIRM: clear groupings data?'):
             self._groupings = dict()
+            return True
+        return False
 
     def _import_groupings(self, groupings_raw: str) -> None:
         try:
@@ -751,13 +956,13 @@ class TrackerManager(cmd2.Cmd):
             lead_game = group['leadGame']['name']
             if lead_game in self._groupings:
                 self.pwarning(f'EXISTING GROUP: replacing {lead_game}')
-                del self._groupings[lead_game]
+                del self._groupings[lead_game] # type: ignore
             names = [ game['name'] for game in group['games'] ]
             for name in names:
                 existing = self._game_in_grouping(name)
                 if existing is not None:
                     self.pwarning(f'warning: game {name} found in existing grouping: {existing}')
-            self._groupings[lead_game] = list(set(names))
+            self._groupings[lead_game] = list(set(names)) # type: ignore
 
     results_parser: cmd2.Cmd2ArgumentParser = cmd2.Cmd2ArgumentParser()
     results_parser_cmd = results_parser.add_subparsers(dest='command', title='subcommands')
@@ -774,25 +979,25 @@ class TrackerManager(cmd2.Cmd):
     def do_rollback(self, args):
         if args.data in [ 'all', 'votes' ]:
             self._load_vote_data()
-            self.pfeedback(f'LOADED {len(self._votes)} voting record games')
+            self.pfeedback(f'LOADED {len(self._votes)} voting record games') # type: ignore
         if args.data in [ 'all', 'results' ]:
             self._load_results_data()
-            self.pfeedback(f'LOADED {sum([ len(v) for v in self._results.values() ])} results from {len(self._results)} years')
+            self.pfeedback(f'LOADED {sum([ len(v) for v in self._results.values() ])} results from {len(self._results)} years') # type: ignore
         if args.data in [ 'all', 'groupings' ]:
             self._load_groupings_data()
-            self.pfeedback(f'LOADED {sum([ len(v) for v in self._groupings.values() ])} entries in {len(self._groupings)} groups')
+            self.pfeedback(f'LOADED {sum([ len(v) for v in self._groupings.values() ])} entries in {len(self._groupings)} groups') # type: ignore
     
     @cmd2.with_argparser(save_parser)
     def do_save(self, args):
         if args.data in [ 'all', 'votes' ]:
             self._save_votes_data()
-            self.pfeedback(f'SAVED {len(self._votes)} games')
+            self.pfeedback(f'SAVED {len(self._votes)} games') # type: ignore
         if args.data in [ 'all', 'results' ]:
             self._save_results_data()
             self.pfeedback(f'SAVED {self._results.num_results} results from {self._results.num_years} years')
         if args.data in [ 'all', 'groupings' ]:
             self._save_groupings_data()
-            self.pfeedback(f'SAVED {sum([ len(v) for v in self._groupings.values() ])} entries in {len(self._groupings)} groups')
+            self.pfeedback(f'SAVED {sum([ len(v) for v in self._groupings.values() ])} entries in {len(self._groupings)} groups') # type: ignore
 
     year_parser = cmd2.Cmd2ArgumentParser()
     year_parser.add_argument('year', type=int)
