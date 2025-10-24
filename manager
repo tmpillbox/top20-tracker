@@ -221,7 +221,7 @@ class ResultGame:
                     self.owned_items.remove(item)
 
     @property 
-    def as_dict(self):
+    def as_dict(self) -> Dict[str,Union[str,bool,List[str]]]:
         obj = {
             "name": self.name,
             "own": self.own,
@@ -505,13 +505,13 @@ class TrackerManager(cmd2.Cmd):
             return 0
         return max( year.keys() )
     
-    def choices_game_name(self):
+    def choices_game_name(self) -> None:
         return self._sorted_game_names()
     
-    def choices_groupings_name(self):
+    def choices_groupings_name(self) -> None:
         return self._sorted_groupings_names()
     
-    def _sorted_game_names(self):
+    def _sorted_game_names(self) -> List[str]:
         if self._votes is None:
             return list()
         return sorted([ k for k in self._votes.keys() ])
@@ -562,13 +562,14 @@ class TrackerManager(cmd2.Cmd):
                     return self._groupings[group]
         return list()
     
-    def _resolve_results_hier(self):
+    def _resolve_results_hier(self) -> Optional[int]:
         if self.hier.startswith('results '):
             rank = self.hier[len('results '):]
             if rank.isdigit():
                 return int(rank)
+        return None
     
-    def _results_show(self):
+    def _results_show(self) -> None:
         rank = self._resolve_results_hier()
         if rank is None:
             return
@@ -593,7 +594,7 @@ class TrackerManager(cmd2.Cmd):
         self.console.print(table)
         
 
-    def _sorted_groupings_names(self):
+    def _sorted_groupings_names(self) -> List[str]:
         if self._groupings is not None:
             return sorted([ k for k in self._groupings.keys() ])
         return list()
@@ -976,7 +977,7 @@ class TrackerManager(cmd2.Cmd):
     save_parser.add_argument('data', choices=[ 'all', 'votes', 'results', 'groupings'] )
 
     @cmd2.with_argparser(rollback_parser)
-    def do_rollback(self, args):
+    def do_rollback(self, args) -> None:
         if args.data in [ 'all', 'votes' ]:
             self._load_vote_data()
             self.pfeedback(f'LOADED {len(self._votes)} voting record games') # type: ignore
@@ -988,7 +989,7 @@ class TrackerManager(cmd2.Cmd):
             self.pfeedback(f'LOADED {sum([ len(v) for v in self._groupings.values() ])} entries in {len(self._groupings)} groups') # type: ignore
     
     @cmd2.with_argparser(save_parser)
-    def do_save(self, args):
+    def do_save(self, args) -> None:
         if args.data in [ 'all', 'votes' ]:
             self._save_votes_data()
             self.pfeedback(f'SAVED {len(self._votes)} games') # type: ignore
