@@ -1,5 +1,6 @@
 
 import argparse
+from datetime import datetime
 
 
 class Utility:
@@ -12,4 +13,7 @@ class Utility:
             return False
         else:
             raise argparse.ArgumentTypeError("Invalid option, choose from: y, yes, t, true, n, no, f, false, 0, 1")
+
+
+CALYEAR = datetime.now().year
 
