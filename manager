@@ -14,6 +14,7 @@ from src.util.util import Utility
 
 CALYEAR = datetime.now().year
 
+@cmd2.with_default_category('GAMES')
 class CmdGamesMode(cmd2.CommandSet):
     def __init__(self, parent: "GamesMode"):
         super().__init__()
@@ -33,6 +34,8 @@ class CmdGamesMode(cmd2.CommandSet):
         'game', type=str,
         choices_provider=choices_game_name
     )
+
+    @cmd2.with_argparser(show_parser)
     def do_show(self, ns: argparse.Namespace) -> Optional[bool]:
         return self.parent._render_one_game(ns.game)
 
@@ -93,6 +96,7 @@ class CmdGamesMode(cmd2.CommandSet):
         
     #     self.perror('Invalid \'game\' command. You should not see this.')
 
+@cmd2.with_default_category('VOTES')
 class CmdVotesMode(cmd2.CommandSet):
     def __init__(self, parent: "VotesMode"):
         super().__init__()
@@ -179,6 +183,7 @@ class CmdVotesMode(cmd2.CommandSet):
         return self.parent._render_votes_table()
 
 
+@cmd2.with_default_category('GROUPINGS')
 class CmdGroupingsMode(cmd2.CommandSet):
     def __init__(self, parent: "GroupingsMode"):
         super().__init__()
@@ -258,6 +263,7 @@ class CmdGroupingsMode(cmd2.CommandSet):
     #     return
 
 
+@cmd2.with_default_category('RESULTS')
 class CmdResultsMode(cmd2.CommandSet):
     def __init__(self, parent: "ResultsMode"):
         super().__init__()
@@ -534,14 +540,16 @@ class ResultsMode(ManagerMode):
     _cmd_sets = [ CmdResultsMode ]
 
     def _choices_grouped_items(self) -> List[str]:
-        if self.context and len(self.context) == 2:
-            return self.manager._choices_grouped_items(self.context[-1])
-        return list()
+        rank = self._get_context_rank()
+        if rank is None:
+            return list()
+        return self.manager._choices_grouped_items(str(rank))
     
     def _choices_selected_grouped_items(self) -> List[str]:
-        if self.context and len(self.context) == 2:
-            return self.manager._choices_selected_grouped_items(self.context[-1])
-        return list()
+        rank = self._get_context_rank()
+        if rank is None:
+            return list()
+        return self.manager._choices_selected_grouped_items(str(rank))
 
     def _choices_import_result_items(self, year: Optional[Union[int, str]] = None) -> List[str]:
         return self.manager._all_result_games(year)
@@ -700,7 +708,7 @@ class GroupingsMode(ManagerMode):
     _cmd_sets = [ CmdGroupingsMode ]
 
     def choices_groupings_name(self) -> List[str]:
-        return self.choices_groupings_name()
+        return self.manager.choices_groupings_name()
 
     def _render_groupings_table(self) -> None:
         if self.manager._groupings is None:
@@ -742,6 +750,7 @@ class GroupingsMode(ManagerMode):
         return self.manager._import_groupings(groupings_raw)
 
  
+@cmd2.with_default_category('MODE')
 class CmdModeControl(cmd2.CommandSet):
     def __init__(self, parent: "TrackerManager"):
         self.parent: "TrackerManager" = parent
@@ -1219,6 +1228,17 @@ class TrackerManager(cmd2.Cmd):
     def choices_game_name(self) -> List[str]:
         return self._sorted_game_names()
     
+    def choices_all_grouped_games(self) -> List[str]:
+        names = list()
+        if self._groupings is None:
+            return names
+        for group, games in self._groupings.items():
+            if group not in games:
+                names.append(group)
+            for game in games:
+                names.append(game)
+        return names
+    
     def choices_groupings_name(self) -> List[str]:
         return self._sorted_groupings_names()
     
@@ -1260,8 +1280,8 @@ class TrackerManager(cmd2.Cmd):
                     game_name = year_data.by_rank(int(target))
                     if game_name is not None:
                         game_name = game_name.name
-                    if game_name is None:
-                        group = self._game_in_grouping(target)
+                    if game_name is not None:
+                        group = self._game_in_grouping(game_name)
                         if self._groupings and group:
                             return self._groupings[group]
                     return list()
@@ -1275,12 +1295,20 @@ class TrackerManager(cmd2.Cmd):
         if self._groupings is not None:
             return sorted([ k for k in self._groupings.keys() ])
         return list()
-    
+
+    check_game_grouping_parser = cmd2.Cmd2ArgumentParser()
+    check_game_grouping_parser.add_argument('game', type=str, choices_provider=choices_all_grouped_games)
+
+    @cmd2.with_argparser(check_game_grouping_parser)
+    def do_check_game_grouping(self, ns: argparse.Namespace) -> Optional[bool]:
+        self.poutput(str(self._game_in_grouping(ns.game)))
+        return
+
     def _game_in_grouping(self, name: str) -> Union[None, str]:
-        if name in self._groupings: # type: ignore
-            return name
         if self._groupings is None:
             return None
+        if name in self._groupings: # type: ignore
+            return name
         for group, entries in self._groupings.items():
             if name in entries:
                 return group
