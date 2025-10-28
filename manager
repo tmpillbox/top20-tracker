@@ -4,61 +4,307 @@ import argparse
 from datetime import datetime
 import json
 import shlex
-from typing import Dict, Generator, Iterator, List, Optional, Tuple, Union
+from typing import Any, Dict, Generator, Iterator, List, Optional, Set, Tuple, Type, Union
 import cmd2
 from rich.console import Console
 from rich.table import Table
 
+from src.util.util import Utility
+
 
 CALYEAR = datetime.now().year
 
-class Utility:
-    @staticmethod
-    def str2bool(arg: str) -> bool:
-        arg = arg.lower()
-        if arg in [ 'yes', 'y', 'true', 't', '1' ]:
-            return True
-        elif arg in [ 'no', 'n', 'false', 'f', '0' ]:
-            return False
-        else:
-            raise argparse.ArgumentTypeError("Invalid option, choose from: y, yes, t, true, n, no, f, false, 0, 1")
-
-
-class CmdResults(cmd2.CommandSet):
-    def __init__(self, parent: "TrackerManager"):
+class CmdGamesMode(cmd2.CommandSet):
+    def __init__(self, parent: "GamesMode"):
         super().__init__()
-        self.parent: "TrackerManager" = parent
+        self.parent: "GamesMode" = parent
+
+    def choices_game_name(self) -> List[str]:
+        return self.parent.choices_game_name()
+
+    list_parser = cmd2.Cmd2ArgumentParser()
+
+    @cmd2.with_argparser(list_parser)
+    def do_list(self, ns: argparse.Namespace) -> Optional[bool]:
+        return self.parent._render_games_table()
+
+    show_parser = cmd2.Cmd2ArgumentParser()
+    show_parser.add_argument(
+        'game', type=str,
+        choices_provider=choices_game_name
+    )
+    def do_show(self, ns: argparse.Namespace) -> Optional[bool]:
+        return self.parent._render_one_game(ns.game)
+
+    add_parser = cmd2.Cmd2ArgumentParser()
+    add_parser.add_argument('name', type=str, choices_provider=choices_game_name)
+
+    @cmd2.with_argparser(add_parser)
+    def do_add(self, ns: argparse.Namespace) -> Optional[bool]:
+        self.parent.add_game(ns.name)
+        import pdb; pdb.set_trace()
+        return
+
+    delete_parser = cmd2.Cmd2ArgumentParser()
+    delete_parser.add_argument(
+        '--force', action='store_true', default=False
+    )
+    delete_parser.add_argument(
+        'game', type=str, choices_provider=choices_game_name
+    )
+
+    @cmd2.with_argparser(delete_parser)
+    def do_delete(self, ns: argparse.Namespace) -> Optional[bool]:
+        self.parent.delete_game(ns.game, ns.force)
+
+    # game_parser = cmd2.Cmd2ArgumentParser()
+    # game_parser.add_argument('--force', action='store_true', default=False) # type: ignore
+    # game_parser.add_argument( # type: ignore
+    #     'command', choices=[ 'list', 'show', 'add', 'delete' ] 
+    # )
+    # game_parser.add_argument(
+    #     'name', choices_provider=choices_game_name, default='', nargs='?' 
+    # )
+
+    # @cmd2.with_argparser(game_parser)
+    # def do_game(self, args: argparse.Namespace) -> None:
+    #     if not args.command or args.command not in [ 'list', 'show', 'add', 'delete' ]:
+    #         self.perror('Invalid command: must choose \'game show\', \'game add\', or \'game delete\'.')
+    #         return
+
+    #     match args.command: 
+    #         case 'list':
+    #             return self._render_games_table()
+    #         case 'show':
+    #                 if args.name is None or len(args.name) == 0:
+    #                     self.perror('game show: must provide game name(s)')
+    #                 match = self.partial_command(args.name, self._sorted_game_names())
+    #                 self._render_one_game(match)
+    #                 return
+    #         case 'add':
+    #             self.add_game(args.name)
+    #             return
+    #         case 'delete':
+    #             if args.name is None or len(args.name) == 0:
+    #                 self.perror('game delete: must specify game name(s)')
+    #                 return
+    #             self.delete_game(args.name, force=args.force)
+    #             return
+        
+    #     self.perror('Invalid \'game\' command. You should not see this.')
+
+class CmdVotesMode(cmd2.CommandSet):
+    def __init__(self, parent: "VotesMode"):
+        super().__init__()
+        self.parent: "VotesMode" = parent
+
+    @property
+    def year(self) -> int:
+        return self.parent.year
+    
+    def choices_game_name(self) -> List[str]:
+        return self.parent.choices_game_name()
+
+    vote_parser = cmd2.Cmd2ArgumentParser()
+    vote_parser.add_argument( # type: ignore
+        'vote', type=str
+    )
+    vote_parser.add_argument(
+        'game', choices_provider=choices_game_name
+    )
+
+    @cmd2.with_argparser(vote_parser)
+    def do_vote(self, args: argparse.Namespace) -> None:
+        self.parent.set_vote(self.year, args.vote, args.game)
+    
+    delete_parser = cmd2.Cmd2ArgumentParser()
+    delete_parser_cmd = delete_parser.add_subparsers()
+
+    delete_vote_parser = cmd2.Cmd2ArgumentParser()
+    delete_vote_parser.add_argument(
+        '--force',
+        default=False, action='store_true',
+        help='force vote deletion without prompt'
+    )
+    delete_vote_parser.add_argument(
+        'rank', type=str,
+        help='rank of vote to delete'
+    )
+    
+    @cmd2.as_subcommand_to('delete', 'vote', delete_vote_parser)
+    def _delete_vote(self, ns: argparse.Namespace):
+        if ns.rank is None:
+            self.parent.do_help('delete')
+            return
+        game: Optional["VoteGame"] = self.parent._game_by_vote(ns.rank)
+        if game is None:
+            self.parent.perror(f'Vote not found: {ns.rank}')
+            return
+        self.parent.delete_vote(self.year, ns.rank, game.name, ns.force)
+
+    delete_game_parser = cmd2.Cmd2ArgumentParser()
+    delete_game_parser.add_argument(
+        '--force',
+        default=False, action='store_true',
+        help='force vote deletion without prompt'
+    )
+    delete_game_parser.add_argument(
+        'game', type=str,
+        help='game name of vote to delete'
+    )
+
+    @cmd2.as_subcommand_to('delete', 'game', delete_game_parser)
+    def _delete_game(self, ns: argparse.Namespace):
+        if ns.game is None:
+            self.parent.do_help('delete')
+            return
+        rank: Optional[str] = self.parent._vote_by_name(ns.game)
+        if rank is None:
+            self.parent.perror(f'Game not found: {ns.game}')
+            return
+        self.parent.delete_vote(self.year, rank, ns.game, ns.force)
+
+    @cmd2.with_argparser(delete_parser)
+    def do_delete(self, ns: argparse.Namespace) -> Optional[bool]:
+        handler = ns.cmd2_handler.get()
+        if handler is not None:
+            handler(ns)
+        else:
+            self.parent.do_help('delete')
+
+    list_parser = cmd2.Cmd2ArgumentParser()
+
+    @cmd2.with_argparser(list_parser)
+    def do_list(self, ns: argparse.Namespace) -> Optional[bool]:
+        return self.parent._render_votes_table()
+
+
+class CmdGroupingsMode(cmd2.CommandSet):
+    def __init__(self, parent: "GroupingsMode"):
+        super().__init__()
+        self.parent: "GroupingsMode" = parent
+
+    def perror(self, *args, **kwargs) -> Optional[bool]:
+        return self.parent.perror(*args, **kwargs)
+
+    def choices_groupings_name(self) -> List[str]:
+        return self.parent.choices_groupings_name()
+
+    groupings_parser = cmd2.Cmd2ArgumentParser()
+    groupings_parser_cmd = groupings_parser.add_subparsers(dest='command', title='subcommands')
+
+    groupings_parser_list: cmd2.Cmd2ArgumentParser = groupings_parser_cmd.add_parser('list')
+
+    groupings_parser_show = groupings_parser_cmd.add_parser('show')
+    groupings_parser_show.add_argument(
+        'name', choices_provider=choices_groupings_name
+    )
+
+    groupings_parser_clear: cmd2.Cmd2ArgumentParser = groupings_parser_cmd.add_parser('clear')
+
+    groupings_parser_import: cmd2.Cmd2ArgumentParser = groupings_parser_cmd.add_parser('import')
+    groupings_parser_import.add_argument(
+        'import_file', completer=cmd2.Cmd.path_complete,
+        help='Path to raw groupings file'
+    )
+
+    list_parser = cmd2.Cmd2ArgumentParser()
+
+    @cmd2.with_argparser(list_parser)
+    def do_list(self, ns: argparse.Namespace) -> Optional[bool]:
+        return self.parent._render_groupings_table()
+    
+    show_parser = cmd2.Cmd2ArgumentParser()
+    show_parser.add_argument(
+        'name', choices_provider=choices_groupings_name
+    )
+
+    @cmd2.with_argparser(show_parser)
+    def do_show(self, ns: argparse.Namespace) -> Optional[bool]:
+        return self.parent._render_one_grouping(ns.name)
+    
+    import_parser = cmd2.Cmd2ArgumentParser()
+    import_parser.add_argument(
+        'import_file', completer=cmd2.Cmd.path_complete,
+        help='Path to raw groupings file'
+    )
+
+    @cmd2.with_argparser(import_parser)
+    def do_import(self, ns: argparse.Namespace) -> Optional[bool]:
+        return self.parent._import_groupings(ns.import_file)
+    
+    clear_parser = cmd2.Cmd2ArgumentParser()
+
+    @cmd2.with_argparser(clear_parser)
+    def do_clear(self, ns: argparse.Namespace) -> Optional[bool]:
+        return self.parent._clear_groupings()
+    
+    # @cmd2.with_argparser(groupings_parser)
+    # def do_groupings(self, args: argparse.Namespace) -> None:
+    #     if args.command is None:
+    #         self.perror('groupings: must choose subcommand: list, show, import, clear')
+    #         return
+    #     match args.command:
+    #         case 'list':
+    #             self.parent._render_groupings_table()
+    #         case 'show':
+    #             self.parent._render_one_grouping(args.name)
+    #         case 'import':
+    #             self.parent._import_groupings(args.import_file)
+    #         case 'clear':
+    #             self.parent._clear_groupings()
+    #         case _:
+    #             self.perror('groupings: must choose subcommand: list, show, import, clear')
+    #     return
+
+
+class CmdResultsMode(cmd2.CommandSet):
+    def __init__(self, parent: "ResultsMode"):
+        super().__init__()
+        self.parent: "ResultsMode" = parent
 
     def choices_grouped_items(self) -> List[str]:
         return self.parent._choices_grouped_items()
     
     def choices_selected_grouped_items(self) -> List[str]:
         return self.parent._choices_selected_grouped_items()
-
+    
+    def choices_import_result_items(self, arg_tokens: Dict[str, Any]) -> List[str]:
+        if 'year' in arg_tokens:
+            return self.parent._choices_import_result_items(arg_tokens['year'])
+        return self.parent._choices_import_result_items()
+    
+    def choices_result_years(self) -> List[int]:
+        return self.parent._choices_result_years()
+    
     select_parser = cmd2.Cmd2ArgumentParser()
     select_parser.add_argument('rank', type=int)
 
-    @cmd2.as_subcommand_to('results', 'select', select_parser)
-    def results_select(self, ns: argparse.Namespace):
-        self.parent._results_select(ns.rank)
+    @cmd2.with_argparser(select_parser)
+    def do_select(self, ns: argparse.Namespace) -> Optional[bool]:
+        return self.parent._results_select(ns.rank)
 
     clear_parser = cmd2.Cmd2ArgumentParser()
-    
-    @cmd2.as_subcommand_to('results', 'clear', clear_parser)
-    def results_clear(self, ns: argparse.Namespace):
-        self.parent._results_clear()
+
+    @cmd2.with_argparser(clear_parser)
+    def do_clear(self, ns: argparse.Namespace) -> Optional[bool]:
+        return self.parent._results_clear()
 
     next_parser = cmd2.Cmd2ArgumentParser()
 
-    @cmd2.as_subcommand_to('results', 'next', next_parser)
-    def results_next(self, ns: argparse.Namespace):
-        self.parent._results_next()
+    @cmd2.with_argparser(next_parser)
+    def do_next(self, ns: argparse.Namespace) -> Optional[bool]:
+        return self.parent._results_next()
 
     show_parser = cmd2.Cmd2ArgumentParser()
 
-    @cmd2.as_subcommand_to('results', 'show', show_parser)
-    def results_show(self, ns: argparse.Namespace):
-        self.parent._results_show()
+    @cmd2.with_argparser(show_parser)
+    def do_show(self, ns: argparse.Namespace) -> Optional[bool]:
+        return self.parent._results_show()
+
+    # @cmd2.as_subcommand_to('results', 'show', show_parser)
+    # def results_show(self, ns: argparse.Namespace):
+    #     self.parent._results_show()
 
     list_parser = cmd2.Cmd2ArgumentParser()
     list_parser.add_argument(
@@ -91,24 +337,28 @@ class CmdResults(cmd2.CommandSet):
         help='If specified, only show games either voted for or not voted for'
     )
 
-    @cmd2.as_subcommand_to('results', 'list', list_parser)
-    def results_list(self, ns: argparse.Namespace):
+    @cmd2.with_argparser(list_parser)
+    def do_list(self, ns: argparse.Namespace) -> Optional[bool]:
         self.parent._render_results(ns)
+
+    # @cmd2.as_subcommand_to('results', 'list', list_parser)
+    # def results_list(self, ns: argparse.Namespace):
+    #     self.parent._render_results(ns)
 
     mark_parser = cmd2.Cmd2ArgumentParser()
     mark_parser_cmd = mark_parser.add_subparsers(dest='command')
 
     mark_parser_own = mark_parser_cmd.add_parser('own')
-    mark_parser_own.add_argument('val', type=bool)
+    mark_parser_own.add_argument('val', type=Utility.str2bool)
 
     mark_parser_wishlist = mark_parser_cmd.add_parser('wishlist')
     mark_parser_wishlist.add_argument('val', choices=[ 'no', 'High', 'Medium', 'Low' ])
 
     mark_parser_played = mark_parser_cmd.add_parser('played')
-    mark_parser_played.add_argument('val', type=bool)
+    mark_parser_played.add_argument('val', type=Utility.str2bool)
 
     mark_parser_prev_owned = mark_parser_cmd.add_parser('prev_owned')
-    mark_parser_prev_owned.add_argument('val', type=bool)
+    mark_parser_prev_owned.add_argument('val', type=Utility.str2bool)
 
     mark_parser_items = mark_parser_cmd.add_parser('items')
     mark_parser_items_action = mark_parser_items.add_subparsers(dest='action')
@@ -119,6 +369,412 @@ class CmdResults(cmd2.CommandSet):
     mark_parser_items_del = mark_parser_items_action.add_parser('remove')
     mark_parser_items_del.add_argument('item', choices_provider=choices_selected_grouped_items)
 
+    @cmd2.with_argparser(mark_parser)
+    def do_mark(self, ns: argparse.Namespace) -> Optional[bool]:
+        if ns.command is None:
+            self.parent.do_help('mark')
+            return
+        match ns.command:
+            case 'own':
+                return self.parent._mark_own(ns.val)
+            case 'prev_owned':
+                return self.parent._mark_prev_owned(ns.val)
+            case 'wishlist':
+                return self.parent._mark_wishlist(ns.val)
+            case 'played':
+                return self.parent._mark_played(ns.val)
+            case 'items':
+                return self.parent._mark_owned_items(ns.action, ns.item)
+
+    @cmd2.with_argparser(mark_parser_own)
+    def do_own(self, ns: argparse.Namespace) -> Optional[bool]:
+        return self.parent._mark_own(ns.val)
+    
+    @cmd2.with_argparser(mark_parser_prev_owned)
+    def do_prev_owned(self, ns: argparse.Namespace) -> Optional[bool]:
+        return self.parent._mark_prev_owned(ns.val)
+    
+    @cmd2.with_argparser(mark_parser_played)
+    def do_played(self, ns: argparse.Namespace) -> Optional[bool]:
+        return self.parent._mark_played(ns.val)
+    
+    @cmd2.with_argparser(mark_parser_wishlist)
+    def do_wishlist(self, ns: argparse.Namespace) -> Optional[bool]:
+        return self.parent._mark_wishlist(ns.val)
+    
+    @cmd2.with_argparser(mark_parser_items)
+    def do_items(self, ns: argparse.Namespace) -> Optional[bool]:
+        return self.parent._mark_owned_items(ns.action, ns.item)
+
+    add_parser = cmd2.Cmd2ArgumentParser()
+    add_parser.add_argument(
+        'game', type=str,
+        help='Name of the game'
+    )
+
+    @cmd2.with_argparser(add_parser)
+    def do_add(self, ns: argparse.Namespace) -> Optional[bool]:
+        self.parent.set_add(ns.game)
+
+    import_parser = cmd2.Cmd2ArgumentParser()
+    import_parser.add_argument(
+        '--year', '-Y',
+        choices_provider=choices_result_years,
+        help='specify a year to import from. default is previous year'
+    )
+    import_parser.add_argument(
+        'game', type=str,
+        choices_provider=choices_import_result_items
+    )
+
+    @cmd2.with_argparser(import_parser)
+    def do_import(self, ns: argparse.Namespace) -> Optional[bool]:
+        if ns.year is None:
+            year = CALYEAR - 1
+        else:
+            year = ns.year
+        self.parent.set_import(ns.game)
+
+    
+
+class ManagerMode:
+    _cmd_sets = []
+
+    def __init__(self, name: str, manager: "TrackerManager", context: List[str], env: Dict[str, Union[int, str]]):
+        self.name: str = name
+        self._mode_cmd_sets = list()
+        for cmd_set in self._cmd_sets:
+            self._mode_cmd_sets.append(cmd_set(self))
+        self.manager: "TrackerManager" = manager
+        self.context: List[str] = [ ctx for ctx in context ]
+        self.env: Dict[str, Union[int, str]] = { k: v for k, v in env.items() }
+
+    def __str__(self) -> str:
+        if self.context:
+            ctx = ' | ' + ' | '.join(self.context)
+        else:
+            ctx = ''
+        return f' {self.name}{ctx}'
+    
+    @property
+    def console(self) -> Console:
+        return self.manager.console
+    
+    def confirm(self, message: str, default: bool = False) -> Optional[bool]:
+        return self.manager.confirm(message, default)
+    
+    def perror(self, *args, **kwargs) -> None:
+        return self.manager.perror(*args, **kwargs)
+    
+    def pwarning(self, *args, **kwargs) -> None:
+        return self.manager.pwarning(*args, **kwargs)
+    
+    def poutput(self, *args, **kwargs) -> None:
+        return self.manager.poutput(*args, **kwargs)
+    
+    def do_help(self, *args, **kwargs) -> Optional[bool]:
+        return self.manager.do_help(*args, **kwargs)
+
+    @property
+    def year(self) -> int:
+        return self.manager.year
+
+    def _post_init(self) -> None:
+        pass
+    
+    def setup(self, callback_fn=None) -> None:
+        for cmd_set in self._mode_cmd_sets:
+            self.manager.register_command_set(cmd_set)
+        if callable(callback_fn):
+            callback_fn(self, self.manager)
+
+    def teardown(self, callback_fn=None) -> None:
+        for cmd_set in self._mode_cmd_sets:
+            self.manager.unregister_command_set(cmd_set)
+        if callable(callback_fn):
+            callback_fn(self, self.manager)
+
+    def _game_by_vote(self, rank: str) -> Optional["VoteGame"]:
+        return self.manager._game_by_vote(rank)
+    
+    def _vote_by_name(self, game: str) -> Optional[str]:
+        return self.manager._vote_by_game(game)
+
+    def _render_votes_table(self) -> Optional[bool]:
+        return self.manager._render_votes_table()
+    
+    def choices_game_name(self) -> List[str]:
+        return self.manager.choices_game_name()
+    
+    def set_vote(self, year: int, vote: str, game: str) -> Optional[bool]:
+        return self.manager.set_vote(year, vote, game)
+    
+    def delete_vote(self, year: int, vote: str, game: str, force: bool) -> Optional[bool]:
+        return self.manager.delete_vote(year, vote, game, force)
+
+class GamesMode(ManagerMode):
+    _cmd_sets = [ CmdGamesMode ]
+
+    def choices_game_name(self) -> List[str]:
+        return self.manager.choices_game_name()
+
+    def add_game(self, name: str) -> Optional[bool]:
+        return self.manager.add_game(name)
+    
+    def delete_game(self, name: str, force: bool = False) -> Optional[bool]:
+        return self.manager.delete_game(name, force)
+    
+    def _render_games_table(self) -> Optional[bool]:
+        return self.manager._render_games_table()
+    
+    def _render_one_game(self, game_name: str) -> Optional[bool]:
+        return self.manager._render_one_game(game_name)
+
+class ResultsMode(ManagerMode):
+    _cmd_sets = [ CmdResultsMode ]
+
+    def _choices_grouped_items(self) -> List[str]:
+        if self.context and len(self.context) == 2:
+            return self.manager._choices_grouped_items(self.context[-1])
+        return list()
+    
+    def _choices_selected_grouped_items(self) -> List[str]:
+        if self.context and len(self.context) == 2:
+            return self.manager._choices_selected_grouped_items(self.context[-1])
+        return list()
+
+    def _choices_import_result_items(self, year: Optional[Union[int, str]] = None) -> List[str]:
+        return self.manager._all_result_games(year)
+
+    def _choices_result_years(self) -> List[int]:
+        return [ year for year in self.manager._results.years ]
+    
+    def _results_select(self, rank: int) -> None:
+        self.context = [ str(rank) ]
+        self.manager._update_prompt()
+    
+    def _results_clear(self) -> None:
+        self.context = [ ]
+        self.manager._update_prompt()
+    
+    def _results_next(self) -> None:
+        curr_rank = int(self.context[-1])
+        self.context = [ str(curr_rank - 1) ]
+        self.manager._update_prompt()
+    
+    def _get_context_rank(self) -> Optional[int]:
+        if not self.context:
+            return None
+        try:
+            return int(self.context[0])
+        except:
+            return None
+        return None
+    
+    def _results_show(self) -> None:
+        rank = self._get_context_rank()
+
+        if rank is None:
+            return
+        year = self.manager._results.year(self.manager.year)
+        if year is None:
+            return
+        result = year.by_rank(rank)
+        if result is None:
+            self.manager.poutput('Not Found')
+            return
+        table = Table(title=result.name)
+        table.show_header = False
+        table.add_column('')
+        table.add_column('')
+        
+        table.add_row('OWN', 'Yes' if result.own else 'No')
+        table.add_row('PREV_OWNED', 'Yes' if result.prev_owned else 'No')
+        table.add_row('WISHLIST', result.wishlist)
+        table.add_row('PLAYED', 'Yes' if result.played else 'No')
+        table.add_row('OWNED ITEMS', '\n'.join(result.owned_items))
+
+        self.manager.console.print(table)
+     
+    def _render_results(self, ns: argparse.Namespace) -> None:
+        return self.manager._render_results(ns)
+    
+    def get_result(self, rank: int) -> Optional["ResultGame"]:
+        year: Optional[ResultYear] = self.manager._results.year(self.year)
+        while year is None:
+            self.manager._results.add_year(self.year)
+            year = self.manager._results.year(self.year)
+        return year.by_rank(rank)
+    
+    def _pre_mark(self) -> Optional["ResultGame"]:
+        rank = self._get_context_rank()
+        if rank is None:
+            self.perror('results: must select rank before you can mark')
+            return None
+        result: Optional[ResultGame] = self.get_result(rank)
+        if result is None:
+            self.perror('results: must set result game before you can mark')
+            return None
+        return result
+    
+    def _mark_own(self, val: bool) -> Optional[bool]:
+        result = self._pre_mark()
+        if result is not None:
+            result.own = val
+            return
+        return False
+
+    def _mark_prev_owned(self, val: bool) -> Optional[bool]:
+        result = self._pre_mark()
+        if result is not None:
+            result.prev_owned = val
+            return
+        return False
+        
+    def _mark_wishlist(self, val: str) -> Optional[bool]:
+        result = self._pre_mark()
+        if result is not None:
+            result.wishlist = val
+            return
+        return False
+        
+    def _mark_played(self, val: bool) -> Optional[bool]:
+        result = self._pre_mark()
+        if result is not None:
+            result.played = val
+            return
+        return False
+
+    def _mark_owned_items(self, action: str, game: str) -> Optional[bool]:
+        result = self._pre_mark()
+        if result is None:
+            return False
+        match action:
+            case 'add':
+                if game not in result.owned_items:
+                    result.owned_items.append(game)
+            case 'remove':
+                if game in result.owned_items:
+                    result.owned_items.remove(game)
+    
+    def set_add(self, game_name: str) -> Optional[bool]:
+        # year = self.manager._results.year(self.year)
+        # while year is None:
+        #     self.manager._results.add_year(self.year)
+        #     year = self.manager._results.year(self.year)
+        rank = self._get_context_rank()
+        if rank is None:
+            self.perror('results: must select a result ranking before adding a game')
+            return False
+        self.manager._results.add_result(self.year, rank, ResultGame(game_name))
+    
+    def set_import(self, game_name: str, year: Optional[int] = None):
+        if year is None:
+            # Find most recent year other before current year
+            year = max([ y for y in self.manager._results.years.keys() if y < self.year ])
+        target_year = self.manager._results.year(year)
+        if target_year is None:
+            self.perror('results: this can\'t happen. Have a nice day.')
+            return False
+        target_game = target_year.by_name(game_name)
+        if target_game is None:
+            self.perror(f'results: cannot find {game_name} in results year {year}')
+            return False
+        rank = self._get_context_rank()
+        if rank is None:
+            self.perror('results: must select a result ranking before adding a game')
+            return False
+        self.manager._results.add_result(
+            self.year,
+            rank,
+            ResultGame.from_dict(target_game.as_dict)
+        )
+    
+
+class VotesMode(ManagerMode):
+    _cmd_sets = [ CmdVotesMode ]
+
+
+
+class GroupingsMode(ManagerMode):
+    _cmd_sets = [ CmdGroupingsMode ]
+
+    def choices_groupings_name(self) -> List[str]:
+        return self.choices_groupings_name()
+
+    def _render_groupings_table(self) -> None:
+        if self.manager._groupings is None:
+            return
+        table = Table(title='Groupings')
+        table.add_column('# Entries')
+        table.add_column('Grouping')
+        groupings = sorted([
+            name for name in self.manager._groupings
+        ])
+
+        for name in groupings:
+            table.add_row(str(len(self.manager._groupings[name])), name)
+
+        self.console.print(table)
+
+    def _render_one_grouping(self, name: str) -> None:
+        if self.manager._groupings is None:
+            return
+        if name not in self.manager._groupings:
+            self.pwarning(f'warning: could not find grouping: {name}')
+            return
+        table = Table(title='GROUPING DATA')
+        table.add_column(name)
+
+        for entry in self.manager._groupings[name]:
+            if entry != name:
+                table.add_row(entry)
+        
+        self.console.print(table)
+    
+    def _clear_groupings(self) -> Optional[bool]:
+        if self.confirm('CONFIRM: clear groupings data?'):
+            self.manager._groupings = dict()
+            return
+        return False
+    
+    def _import_groupings(self, groupings_raw: str) -> None:
+        return self.manager._import_groupings(groupings_raw)
+
+ 
+class CmdModeControl(cmd2.CommandSet):
+    def __init__(self, parent: "TrackerManager"):
+        self.parent: "TrackerManager" = parent
+        super().__init__()
+
+    def _list_modes(self) -> List[str]:
+        return self.parent._list_modes()
+
+    end_parser = cmd2.Cmd2ArgumentParser()
+
+    @cmd2.with_argparser(end_parser)
+    def do_end(self, ns: argparse.Namespace):
+        self.parent._do_end()
+
+    mode_parser = cmd2.Cmd2ArgumentParser()
+    mode_parser.add_argument('mode', choices_provider=_list_modes)
+
+    @cmd2.with_argparser(mode_parser)
+    def do_mode(self, ns: argparse.Namespace) -> Optional[bool]:
+        if ns.mode is None:
+            self.parent.do_help('mode')
+        elif ns.mode in self.parent._mode_maps:
+            clazz: Type[ManagerMode] = self.parent._mode_maps[ns.mode]
+            mode: ManagerMode = clazz(ns.mode, self.parent, list(), dict())
+            self.parent._update_mode(mode)
+    
+    # @cmd2.with_argparser(mode_parser)
+    # def do_mode(self, ns: argparse.Namespace) -> Optional[bool]:
+    #     handler = ns.cmd2_handler.get()
+    #     if handler is not None:
+    #         handler(ns)
+    #     else:
+    #         self.parent.do_help('mode')
 
 
 class VoteGame:
@@ -161,6 +817,9 @@ class ResultYear:
     
     def by_rank(self, rank: int) -> Optional["ResultGame"]:
         return self._by_rank.get(rank)
+    
+    def all_game_names(self) -> List[str]:
+        return [ k for k in self._by_name ]
     
     @property
     def as_dict(self) -> Dict:
@@ -286,6 +945,16 @@ class Results:
         return results
 
 class TrackerManager(cmd2.Cmd):
+    _static_cmds = [
+        CmdModeControl
+    ]
+    _mode_maps: Dict[str, Type[ManagerMode]] = {
+        'votes': VotesMode,
+        'results': ResultsMode,
+        'groupings': GroupingsMode,
+        'games': GamesMode
+    }
+
     @staticmethod
     def partial_command(arg_string: str, choices: List[str]) -> str:
         """Returns a full match from a partial string, or raises an error."""
@@ -315,7 +984,10 @@ class TrackerManager(cmd2.Cmd):
 
     def __init__(self, votes_file: str, groupings_file: str, results_file: str, year: int, interactive: bool = False):
         super(TrackerManager, self).__init__(allow_cli_args=False, include_ipy=True, include_py=True)
-        self.register_command_set(CmdResults(self))
+
+        # self.register_command_set(CmdResults(self))
+        for cmd_set in self._static_cmds:
+            self.register_command_set(cmd_set(self))
 
         self.console = Console()
         self._votes_file = votes_file
@@ -325,49 +997,68 @@ class TrackerManager(cmd2.Cmd):
         self._groupings = None
         self._results = Results()
         self.year = year
-        self.add_settable(
-            cmd2.Settable('year', int, 'Working Year for Results', self, onchange_cb=self._update_year)
-        )
         self.interactive = interactive
-        self.hier = ''
-        self.add_settable(
-            cmd2.Settable('hier', str, 'Context level', self, onchange_cb=self._update_hier)
-        )
+        self.mode = None
         self.selected_result = None
         self._update_prompt()
         self._load_vote_data()
         self._load_groupings_data()
         self._load_results_data()
 
-    results_parser: cmd2.Cmd2ArgumentParser = cmd2.Cmd2ArgumentParser()
-    results_parser_cmd = results_parser.add_subparsers()
-
-    @cmd2.with_argparser(results_parser)
-    def do_results(self, ns: argparse.Namespace):
-        handler = ns.cmd2_handler.get()
-        if handler is not None:
-            handler(ns)
-        else:
-            self.do_help('results')
-
-    def _results_select(self, rank: int) -> None:
-        self.hier = f'results {rank}'
+    def _update_mode(self, mode: Optional[ManagerMode]) -> None:
+        """Do mode update de-init and init"""
+        if self.mode is not None:
+            self.mode.teardown(self)
+        self.mode = mode
+        if self.mode is not None:
+            self.mode.setup(self)
         self._update_prompt()
+
+    def _do_end(self) -> None:
+        """Clear mode selection"""
+        self._update_mode(None)
+
+    def do_config(self, statement: Union[cmd2.Statement, str]) -> Optional[bool]:
+        return super().do_set(statement)
+
+    debug_parser = cmd2.Cmd2ArgumentParser()
+    debug_parser.add_argument(
+        'status', choices = [ 'true', 'false' ]
+    )
+
+    @cmd2.with_argparser(debug_parser)
+    def do_debug(self, ns: argparse.Namespace) -> Optional[bool]:
+        self.onecmd(f'config debug {ns.status}')
+
+    # results_parser: cmd2.Cmd2ArgumentParser = cmd2.Cmd2ArgumentParser()
+    # results_parser_cmd = results_parser.add_subparsers()
+
+    # @cmd2.with_argparser(results_parser)
+    # def do_results(self, ns: argparse.Namespace):
+    #     handler = ns.cmd2_handler.get()
+    #     if handler is not None:
+    #         handler(ns)
+    #     else:
+    #         self.do_help('results')
+
+    # def _results_select(self, rank: int) -> None:
+    #     self.hier = f'results {rank}'
+    #     self._update_prompt()
     
-    def _results_clear(self) -> None:
-        self.hier = ''
-        self._update_prompt()
+    # def _results_clear(self) -> None:
+    #     self.hier = ''
+    #     self._update_prompt()
 
-    def _results_next(self) -> None:
-        if self.hier.startswith('results '):
-            curr_rank = shlex.split(self.hier)[-1]
-            next_rank = int(curr_rank) - 1
-            self._results_select(next_rank)
+    # def _results_next(self) -> None:
+    #     if self.hier.startswith('results '):
+    #         curr_rank = shlex.split(self.hier)[-1]
+    #         next_rank = int(curr_rank) - 1
+    #         self._results_select(next_rank)
+
+    def _list_modes(self) -> List[str]:
+        return list(self._mode_maps.keys())
 
     def _update_year(self, _param_name, _old, new) -> None:
-        self._update_prompt()
-
-    def _update_hier(self, _param_name, _old, new) -> None:
         self._update_prompt()
 
     def _load_vote_data(self) -> None:
@@ -394,6 +1085,28 @@ class TrackerManager(cmd2.Cmd):
         with open(self._groupings_file, 'w') as f:
             json.dump(self._groupings, f, indent=4)
 
+    def _import_groupings(self, groupings_raw: str) -> None:
+        try:
+            with open(groupings_raw, 'r') as f:
+                raw_groupings = json.load(f)
+        except:
+            import pdb; pdb.set_trace()
+            return
+        if not isinstance(raw_groupings, list):
+            self.perror('error: groupings import: invalid data')
+            return
+        for group in raw_groupings:
+            lead_game = group['leadGame']['name']
+            if lead_game in self._groupings:
+                self.pwarning(f'EXISTING GROUP: replacing {lead_game}')
+                del self._groupings[lead_game] # type: ignore
+            names = [ game['name'] for game in group['games'] ]
+            for name in names:
+                existing = self._game_in_grouping(name)
+                if existing is not None:
+                    self.pwarning(f'warning: game {name} found in existing grouping: {existing}')
+            self._groupings[lead_game] = list(set(names)) # type: ignore
+
     def _load_results_data(self) -> None:
         try:
             with open(self._results_file, 'r') as f:
@@ -408,17 +1121,17 @@ class TrackerManager(cmd2.Cmd):
             json.dump(self._results.as_dict, f, indent=4)
 
     def _update_prompt(self) -> None:
-        if self.hier:
-            hier = f'|{self.hier}'
+        if self.mode is not None:
+            mode = str(self.mode)
         else:
-            hier = ''
-        self.prompt = f'{self.year}{hier}> '
+            mode = ''
+        self.prompt = f'{self.year}{mode}> '
 
     def get_year_data(self, year: Union[str, int]) -> dict:
         year = str(year)
         year_data = dict()
-        if self._votes is None or year not in self._votes:
-            return dict()
+        if self._votes is None:
+            return year_data
         for name, data in self._votes.items():
             game = VoteGame(name, data)
             vote = game.year_rank(year)
@@ -426,7 +1139,7 @@ class TrackerManager(cmd2.Cmd):
                 year_data[vote] = game
         return year_data
     
-    def set_vote(self, year: int, vote: str, game: str) -> bool:
+    def set_vote(self, year: int, vote: str, game: str) -> Optional[bool]:
         if self._votes is None:
             self._votes = dict()
         if game not in self._votes:
@@ -443,14 +1156,14 @@ class TrackerManager(cmd2.Cmd):
         if 'vote_ranks' not in self._votes[game]:
             self._votes[game]["vote_ranks"] = dict()
         self._votes[game]["vote_ranks"][str(year)] = str(vote)
-        return True
+        return 
     
-    def confirm(self, message: str, default=False) -> bool:
+    def confirm(self, message: str, default=False) -> Optional[bool]:
         while True:
             response = input(f'{message} (y/n): ').lower()
 
             if response in ['y', 'yes']:
-                return True
+                return
             elif response in ['n', 'no']:
                 return False
             elif response == '':
@@ -460,7 +1173,7 @@ class TrackerManager(cmd2.Cmd):
             else:
                 self.perror('Invalid response. Please answer \'y\' or \'n\'.')
 
-    def delete_vote(self, year: int, vote: str, game: str, force: bool = False) -> bool:
+    def delete_vote(self, year: int, vote: str, game: str, force: bool = False) -> Optional[bool]:
         year_data = self.get_year_data(year)
         if vote in year_data:
             if year_data[vote].name != game:
@@ -469,9 +1182,8 @@ class TrackerManager(cmd2.Cmd):
             if force or self.confirm('CONFIRM: delete vote {vote} for game {game}?'):
                 if self._votes is not None:
                     del self._votes[game]["vote_ranks"][str(year)]
-        return True
     
-    def add_game(self, name: str) -> bool:
+    def add_game(self, name: str) -> Optional[bool]:
         if self._votes is None:
             self._votes = dict()
         if name in self._votes:
@@ -480,9 +1192,8 @@ class TrackerManager(cmd2.Cmd):
             return False
         self._votes[name] = dict()
         self._votes[name]['vote_ranks'] = dict()
-        return True
     
-    def delete_game(self, name: str, force: bool = False) -> bool:
+    def delete_game(self, name: str, force: bool = False) -> Optional[bool]:
         if self._votes is None:
             self._votes = dict()
         if name in self._votes:
@@ -492,7 +1203,7 @@ class TrackerManager(cmd2.Cmd):
                 return False
             if force or self.confirm('CONFIRM: delete game "{name}"?'):
                 del self._votes[name]
-                return True
+                return
         elif not force:
             self.perror(f'Unable to delete game: does not exist: {name}')
             return False
@@ -505,10 +1216,10 @@ class TrackerManager(cmd2.Cmd):
             return 0
         return max( year.keys() )
     
-    def choices_game_name(self) -> None:
+    def choices_game_name(self) -> List[str]:
         return self._sorted_game_names()
     
-    def choices_groupings_name(self) -> None:
+    def choices_groupings_name(self) -> List[str]:
         return self._sorted_groupings_names()
     
     def _sorted_game_names(self) -> List[str]:
@@ -516,9 +1227,8 @@ class TrackerManager(cmd2.Cmd):
             return list()
         return sorted([ k for k in self._votes.keys() ])
     
-    def _choices_grouped_items(self) -> List[str]:
-        if self.hier and ' ' in self.hier:
-            target = shlex.split(' ')[-1]
+    def _choices_grouped_items(self, target: str) -> List[str]:
+        if target:
             # target could be rank or game name
             if target.isdigit():
                 year_data = self._results.year(self.year)
@@ -540,10 +1250,9 @@ class TrackerManager(cmd2.Cmd):
                 if self._groupings and group:
                     return self._groupings[group]
         return list()
-    
-    def _choices_selected_grouped_items(self) -> List[str]:
-        if self.hier and ' ' in self.hier:
-            target = shlex.split(' ')[-1]
+ 
+    def _choices_selected_grouped_items(self, target: str) -> List[str]:
+        if target:
             # target could be rank or game
             if target.isdigit():
                 year_data = self._results.year(self.year)
@@ -561,38 +1270,6 @@ class TrackerManager(cmd2.Cmd):
                 if self._groupings and group:
                     return self._groupings[group]
         return list()
-    
-    def _resolve_results_hier(self) -> Optional[int]:
-        if self.hier.startswith('results '):
-            rank = self.hier[len('results '):]
-            if rank.isdigit():
-                return int(rank)
-        return None
-    
-    def _results_show(self) -> None:
-        rank = self._resolve_results_hier()
-        if rank is None:
-            return
-        year = self._results.year(self.year)
-        if year is None:
-            return
-        result = year.by_rank(rank)
-        if result is None:
-            self.poutput('Not Found')
-            return
-        table = Table(title=result.name)
-        table.show_header = False
-        table.add_column('')
-        table.add_column('')
-        
-        table.add_row('OWN', 'Yes' if result.own else 'No')
-        table.add_row('PREV_OWNED', 'Yes' if result.prev_owned else 'No')
-        table.add_row('WISHLIST', result.wishlist)
-        table.add_row('PLAYED', 'Yes' if result.played else 'No')
-        table.add_row('OWNED ITEMS', '\n'.join(result.owned_items))
-
-        self.console.print(table)
-        
 
     def _sorted_groupings_names(self) -> List[str]:
         if self._groupings is not None:
@@ -614,6 +1291,13 @@ class TrackerManager(cmd2.Cmd):
         rank = str(rank)
         if rank in year:
             return year[rank]
+        return None
+    
+    def _vote_by_game(self, game: str) -> Optional[str]:
+        year = self.get_year_data(self.year)
+        for rank in year:
+            if game == year[rank]:
+                return rank
         return None
    
     def _render_votes_table(self) -> None:
@@ -678,6 +1362,22 @@ class TrackerManager(cmd2.Cmd):
         if name in self._votes and str(self.year) in self._votes[name]['vote_ranks']:
             return self._votes[name]['vote_ranks'][str(self.year)]
         return "N/A"
+
+    def _all_result_games(self, src_year: Optional[Union[str, int]]) -> List[str]:
+        all_games: Set[str] = set()
+        if src_year is None:
+            for year in self._results.years.values():
+                for game in year.all_game_names():
+                    all_games.add(game)
+        elif not str(src_year).isdigit():
+            return list(all_games)
+        else:
+            year = self._results.year(int(src_year))
+            if year is None:
+                return list(all_games)
+            for game in year.all_game_names():
+                all_games.add(game)
+        return list(all_games)
 
     def get_result_year_items(self, year: int) -> Iterator[Tuple[int, ResultGame]]:
         result_year = self._results.year(year)
@@ -757,213 +1457,71 @@ class TrackerManager(cmd2.Cmd):
         self.console.print(table)
         self.poutput(f'{result_rows} results')
 
-    delete_parser: cmd2.Cmd2ArgumentParser = cmd2.Cmd2ArgumentParser()
-    delete_parser.add_argument(
-        '--force', action='store_true', default=False
-    )
-    delete_parser_typ = delete_parser.add_subparsers(dest='command', title='commands')
-    delete_typ_vote: cmd2.Cmd2ArgumentParser = delete_parser_typ.add_parser('vote')
-    delete_typ_vote.add_argument(
-        'vote', type=str
-    )
+    # delete_parser: cmd2.Cmd2ArgumentParser = cmd2.Cmd2ArgumentParser()
+    # delete_parser.add_argument(
+    #     '--force', action='store_true', default=False
+    # )
+    # delete_parser_typ = delete_parser.add_subparsers(dest='command', title='commands')
+    # delete_typ_vote: cmd2.Cmd2ArgumentParser = delete_parser_typ.add_parser('vote')
+    # delete_typ_vote.add_argument(
+    #     'vote', type=str
+    # )
 
-    delete_typ_game: cmd2.Cmd2ArgumentParser = delete_parser_typ.add_parser('game')
-    delete_typ_game.add_argument(
-        'game', type=str,
-        choices_provider=choices_game_name
-    )
+    # delete_typ_game: cmd2.Cmd2ArgumentParser = delete_parser_typ.add_parser('game')
+    # delete_typ_game.add_argument(
+    #     'game', type=str,
+    #     choices_provider=choices_game_name
+    # )
 
-    @cmd2.with_argparser(delete_parser)
-    def do_delete(self, args: argparse.Namespace) -> None:
-        if not args.command or args.command not in [ 'vote', 'game' ]:
-            self.perror('invalid delete command: "delete vote" or "delete game" is required')
-            return
-        match args.command:
-            case 'vote':
-                year = int(self.year)
-                vote = str(args.vote)
-                year_data = self.get_year_data(year)
-                if vote in year_data:
-                    self.delete_vote(year, vote, year_data[vote].name, force=args.force)
-            case 'game':
-                if args.game in self._votes:
-                    self.delete_game(args.game, force=args.force)
+    # @cmd2.with_argparser(delete_parser)
+    # def do_delete(self, args: argparse.Namespace) -> None:
+    #     if not args.command or args.command not in [ 'vote', 'game' ]:
+    #         self.perror('invalid delete command: "delete vote" or "delete game" is required')
+    #         return
+    #     match args.command:
+    #         case 'vote':
+    #             year = int(self.year)
+    #             vote = str(args.vote)
+    #             year_data = self.get_year_data(year)
+    #             if vote in year_data:
+    #                 self.delete_vote(year, vote, year_data[vote].name, force=args.force)
+    #         case 'game':
+    #             if args.game in self._votes:
+    #                 self.delete_game(args.game, force=args.force)
 
-    show_parser = cmd2.Cmd2ArgumentParser()
-    show_parser_typ = show_parser.add_subparsers(dest='command', title='commands')
-    show_typ_votes = show_parser_typ.add_parser('votes')
+    # show_parser = cmd2.Cmd2ArgumentParser()
+    # show_parser_typ = show_parser.add_subparsers(dest='command', title='commands')
+    # show_typ_votes = show_parser_typ.add_parser('votes')
 
-    show_typ_games: cmd2.Cmd2ArgumentParser = show_parser_typ.add_parser('games')
-    show_typ_games.add_argument(
-        'name', nargs='*', type=str,
-        choices_provider=choices_game_name
-    )
+    # show_typ_games: cmd2.Cmd2ArgumentParser = show_parser_typ.add_parser('games')
+    # show_typ_games.add_argument(
+    #     'name', nargs='*', type=str,
+    #     choices_provider=choices_game_name
+    # )
 
-    @cmd2.with_argparser(show_parser)
-    def do_show(self, args: argparse.Namespace) -> None:
-        command = args.command
-        if command is None:
-            # Default to show votes
-            self._render_votes_table()
-            return
-        match command:
-            case 'games':
-                game_names = self._sorted_game_names()
-                if args.name:
-                    for name in args.name:
-                        if name in game_names:
-                            self._render_one_game(name)
-                        else:
-                            self.perror(f'No data found: {name}')
-                    return
-                self._render_games_table()
-            case 'votes':
-                self._render_votes_table()
-            case _:
-                print (f"not found: {command}")
+    # @cmd2.with_argparser(show_parser)
+    # def do_show(self, args: argparse.Namespace) -> None:
+    #     command = args.command
+    #     if command is None:
+    #         # Default to show votes
+    #         self._render_votes_table()
+    #         return
+    #     match command:
+    #         case 'games':
+    #             game_names = self._sorted_game_names()
+    #             if args.name:
+    #                 for name in args.name:
+    #                     if name in game_names:
+    #                         self._render_one_game(name)
+    #                     else:
+    #                         self.perror(f'No data found: {name}')
+    #                 return
+    #             self._render_games_table()
+    #         case 'votes':
+    #             self._render_votes_table()
+    #         case _:
+    #             print (f"not found: {command}")
 
-    game_parser: cmd2.Cmd2ArgumentParser = cmd2.Cmd2ArgumentParser()
-    game_parser.add_argument('--force', action='store_true', default=False)
-    game_parser.add_argument(
-        'command', choices=[ 'list', 'show', 'add', 'delete' ] 
-    )
-    game_parser.add_argument(
-        'name', choices_provider=choices_game_name, default='', nargs='?' 
-    )
-
-    @cmd2.with_argparser(game_parser)
-    def do_game(self, args: argparse.Namespace) -> None:
-        if not args.command or args.command not in [ 'list', 'show', 'add', 'delete' ]:
-            self.perror('Invalid command: must choose \'game show\', \'game add\', or \'game delete\'.')
-            return
-
-        match args.command: 
-            case 'list':
-                return self._render_games_table()
-            case 'show':
-                    if args.name is None or len(args.name) == 0:
-                        self.perror('game show: must provide game name(s)')
-                    match = self.partial_command(args.name, self._sorted_game_names())
-                    self._render_one_game(match)
-                    return
-            case 'add':
-                self.add_game(args.name)
-                return
-            case 'delete':
-                if args.name is None or len(args.name) == 0:
-                    self.perror('game delete: must specify game name(s)')
-                    return
-                self.delete_game(args.name, force=args.force)
-                return
-        
-        self.perror('Invalid \'game\' command. You should not see this.')
-
-
-    vote_parser: argparse.ArgumentParser = cmd2.Cmd2ArgumentParser()
-    vote_parser.add_argument(
-        'vote', type=str
-    )
-    vote_parser.add_argument(
-        'game', choices_provider=choices_game_name
-    )
-
-    @cmd2.with_argparser(vote_parser)
-    def do_vote(self, args: argparse.Namespace) -> None:
-        self.set_vote(self.year, args.vote, args.game)
-
-    groupings_parser: cmd2.Cmd2ArgumentParser = cmd2.Cmd2ArgumentParser()
-    groupings_parser_cmd: argparse._SubParsersAction = groupings_parser.add_subparsers(dest='command', title='subcommands')
-
-    groupings_parser_list: cmd2.Cmd2ArgumentParser = groupings_parser_cmd.add_parser('list')
-
-    groupings_parser_show: cmd2.Cmd2ArgumentParser = groupings_parser_cmd.add_parser('show')
-    groupings_parser_show.add_argument(
-        'name', choices_provider=choices_groupings_name
-    )
-
-    groupings_parser_clear: cmd2.Cmd2ArgumentParser = groupings_parser_cmd.add_parser('clear')
-
-    groupings_parser_import: cmd2.Cmd2ArgumentParser = groupings_parser_cmd.add_parser('import')
-    groupings_parser_import.add_argument(
-        'import_file', completer=cmd2.Cmd.path_complete,
-        help='Path to raw groupings file'
-    )
-
-    @cmd2.with_argparser(groupings_parser)
-    def do_groupings(self, args: argparse.Namespace) -> None:
-        if args.command is None:
-            self.perror('groupings: must choose subcommand: list, show, import, clear')
-            return
-        match args.command:
-            case 'list':
-                self._render_groupings_table()
-            case 'show':
-                self._render_one_grouping(args.name)
-            case 'import':
-                self._import_groupings(args.import_file)
-            case 'clear':
-                self._clear_groupings()
-            case _:
-                self.perror('groupings: must choose subcommand: list, show, import, clear')
-        return
-
-    def _render_groupings_table(self) -> None:
-        if self._groupings is None:
-            return
-        table = Table(title='Groupings')
-        table.add_column('# Entries')
-        table.add_column('Grouping')
-        groupings = sorted([
-            name for name in self._groupings
-        ])
-
-        for name in groupings:
-            table.add_row(str(len(self._groupings[name])), name)
-
-        self.console.print(table)
-
-    def _render_one_grouping(self, name: str) -> None:
-        if self._groupings is None:
-            return
-        if name not in self._groupings:
-            self.pwarning(f'warning: could not find grouping: {name}')
-            return
-        table = Table(title='GROUPING DATA')
-        table.add_column(name)
-
-        for entry in self._groupings[name]:
-            if entry != name:
-                table.add_row(entry)
-        
-        self.console.print(table)
-    
-    def _clear_groupings(self) -> bool:
-        if self.confirm('CONFIRM: clear groupings data?'):
-            self._groupings = dict()
-            return True
-        return False
-
-    def _import_groupings(self, groupings_raw: str) -> None:
-        try:
-            with open(groupings_raw, 'r') as f:
-                raw_groupings = json.load(f)
-        except:
-            import pdb; pdb.set_trace()
-            return
-        if not isinstance(raw_groupings, list):
-            self.perror('error: groupings import: invalid data')
-            return
-        for group in raw_groupings:
-            lead_game = group['leadGame']['name']
-            if lead_game in self._groupings:
-                self.pwarning(f'EXISTING GROUP: replacing {lead_game}')
-                del self._groupings[lead_game] # type: ignore
-            names = [ game['name'] for game in group['games'] ]
-            for name in names:
-                existing = self._game_in_grouping(name)
-                if existing is not None:
-                    self.pwarning(f'warning: game {name} found in existing grouping: {existing}')
-            self._groupings[lead_game] = list(set(names)) # type: ignore
 
     results_parser: cmd2.Cmd2ArgumentParser = cmd2.Cmd2ArgumentParser()
     results_parser_cmd = results_parser.add_subparsers(dest='command', title='subcommands')
