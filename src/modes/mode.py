@@ -8,7 +8,7 @@ from typing import TYPE_CHECKING, Dict, List, Optional, Union
 
 
 if TYPE_CHECKING:
-    from src.TrackerManager import TrackerManager
+    from src.tracker_manager import TrackerManager
 
 class ManagerMode:
     _cmd_sets = []

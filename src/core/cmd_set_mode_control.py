@@ -4,7 +4,7 @@ import argparse
 from typing import TYPE_CHECKING, List, Optional, Type
 
 if TYPE_CHECKING:
-    from src.TrackerManager import TrackerManager
+    from src.tracker_manager import TrackerManager
     from src.modes.mode import ManagerMode
 
 @cmd2.with_default_category('MODE')

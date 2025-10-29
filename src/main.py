@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 
 import argparse
-from typing import Generator, List, Optional, Union
 
-from src.TrackerManager import TrackerManager
+from typing import List
+
+from src.tracker_manager import TrackerManager
 from src.util.util import CALYEAR
 
 
