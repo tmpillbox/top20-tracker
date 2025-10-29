@@ -49,10 +49,13 @@ class CmdResultsMode(cmd2.CommandSet):
         return self.parent._results_next()
 
     show_parser = cmd2.Cmd2ArgumentParser()
+    show_parser.add_argument(
+        '--show-unowned', action='store_true', default=False
+    )
 
     @cmd2.with_argparser(show_parser)
     def do_show(self, ns: argparse.Namespace) -> Optional[bool]:
-        return self.parent._results_show()
+        return self.parent._results_show(ns.show_unowned)
 
     # @cmd2.as_subcommand_to('results', 'show', show_parser)
     # def results_show(self, ns: argparse.Namespace):

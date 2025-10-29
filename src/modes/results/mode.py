@@ -42,7 +42,13 @@ class ResultsMode(ManagerMode):
         self.manager._update_prompt()
 
     def _results_next(self) -> None:
-        curr_rank = int(self.context[-1])
+        curr_rank = self._get_context_rank()
+        if curr_rank is None:
+            self.perror('results: must select rank before next')
+            return
+        if curr_rank == 1:
+            self.warning('results: cannot advance beyond #1')
+            return
         self.context = [ str(curr_rank - 1) ]
         self.manager._update_prompt()
 
@@ -55,10 +61,11 @@ class ResultsMode(ManagerMode):
             return None
         return None
 
-    def _results_show(self) -> None:
+    def _results_show(self, show_unowned=False) -> None:
         rank = self._get_context_rank()
 
         if rank is None:
+            self.perror('results: no rank to show. select rank first')
             return
         year = self.manager._results.year(self.manager.year)
         if year is None:
@@ -77,6 +84,15 @@ class ResultsMode(ManagerMode):
         table.add_row('WISHLIST', result.wishlist)
         table.add_row('PLAYED', 'Yes' if result.played else 'No')
         table.add_row('OWNED ITEMS', '\n'.join(result.owned_items))
+
+        if show_unowned:
+            unowned_items = list()
+            items = self._choices_grouped_items()
+            for item in items:
+                if item not in result.owned_items:
+                    unowned_items.append(item)
+            table.add_row('UNOWNED ITEMS', '\n'.join(unowned_items))
+
 
         self.manager.console.print(table)
 

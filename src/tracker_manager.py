@@ -61,6 +61,8 @@ class TrackerManager(cmd2.Cmd):
 
     def __init__(self, votes_file: str, groupings_file: str, results_file: str, year: int, interactive: bool = False):
         super(TrackerManager, self).__init__(allow_cli_args=False, include_ipy=True, include_py=True)
+        self.register_precmd_hook(self._precmd_hook_semicolon_handler)
+        self.self_in_py = True
 
         # self.register_command_set(CmdResults(self))
         for cmd_set in self._static_cmds:
@@ -81,6 +83,18 @@ class TrackerManager(cmd2.Cmd):
         self._load_vote_data()
         self._load_groupings_data()
         self._load_results_data()
+
+    def _precmd_hook_semicolon_handler(self, data: cmd2.plugin.PrecommandData) -> cmd2.plugin.PrecommandData:
+        orig = data.statement
+        lexer = shlex.shlex(data.statement.raw, posix=True)
+        lexer.whitespace = ';'
+        lexer.whitespace_split = True
+        cmds = [ tok.lstrip() for tok in list(lexer) ]
+        if len(cmds) <= 1:
+            return data
+        self.runcmds_plus_hooks(cmds[:-1])
+        data.statement = self.statement_parser.parse(cmds[-1])
+        return data
 
     def _update_mode(self, mode: Optional[ManagerMode]) -> None:
         """Do mode update de-init and init"""
