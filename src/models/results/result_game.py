@@ -1,6 +1,5 @@
 from typing import Dict, List, Optional, Union
 
-
 class ResultGame:
     def __init__(self, name: str, own: bool = False, wishlist: str = "no", played: bool = False, prev_owned: bool = False, owned_items: Optional[List] = None) -> None:
         self.name = str(name)

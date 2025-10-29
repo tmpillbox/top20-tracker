@@ -1,6 +1,5 @@
-from src.ResultYear import ResultYear
-from src.ResultGame import ResultGame
-
+from .result_game import ResultGame
+from .result_year import ResultYear
 
 from typing import Dict, Optional
 

@@ -1,5 +1,4 @@
-from src.ResultGame import ResultGame
-
+from .result_game import ResultGame
 
 from typing import Dict, List, Optional
 

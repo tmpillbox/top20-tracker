@@ -1,7 +1,10 @@
-from src.modes.mode_commands import CmdModeControl
-from src.ResultGame import ResultGame
-from src.Results import Results
-from src.VoteGame import VoteGame
+from src.modes.groupings.mode import GroupingsMode
+from src.modes.results.mode import ResultsMode
+from src.modes.votes.mode import VotesMode
+from src.modes.games.mode import GamesMode
+from src.core.cmd_set_mode_control import CmdModeControl
+from src.models.results import Results, ResultGame
+from src.models.votes import VoteGame
 
 
 import cmd2
@@ -15,7 +18,7 @@ import pdb
 import shlex
 from typing import Dict, Iterator, List, Optional, Set, Tuple, Type, Union
 
-from src.modes.modes import GamesMode, GroupingsMode, ManagerMode, ResultsMode, VotesMode
+from src.modes.mode import ManagerMode
 
 
 class TrackerManager(cmd2.Cmd):
