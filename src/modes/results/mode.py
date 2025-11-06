@@ -1,12 +1,15 @@
 import argparse
 
 from rich.table import Table
+from rich.text import Text
 
 from src.modes.mode import ManagerMode
 from src.modes.results.cmd_set import CmdResultsMode
 from src.models.results import ResultYear, ResultGame
 
 from typing import TYPE_CHECKING, List, Optional, Union
+
+from src.util.markup import Markup
 
 if TYPE_CHECKING:
     from src.modes.results.mode import ResultsMode
@@ -47,7 +50,7 @@ class ResultsMode(ManagerMode):
             self.perror('results: must select rank before next')
             return
         if curr_rank == 1:
-            self.warning('results: cannot advance beyond #1')
+            self.pwarning('results: cannot advance beyond #1')
             return
         self.context = [ str(curr_rank - 1) ]
         self.manager._update_prompt()
@@ -189,3 +192,114 @@ class ResultsMode(ManagerMode):
             rank,
             ResultGame.from_dict(target_game.as_dict)
         )
+    
+    @staticmethod
+    def vote_position(position, rank, game_name):
+        row_markup = Markup.markup_row(rank)
+        if rank is not None and rank != "N/A":
+            result = f'{rank:>4}'
+        else:
+            result = '   ?'
+            game_name = ''.join([ '?' ] * len(game_name))
+        rank_result = (
+            f'#{position:>2} ({result})',
+            f'bold {row_markup}'
+        )
+        return Text.assemble(
+            rank_result,
+            ('  '),
+            (game_name.ljust(65 - len(rank_result[0])), row_markup)
+        )
+
+
+    def show_summary(self, short=False) -> None:
+        output: List[Union[str, Text]] = [
+            "╔═════════════════════════════════════════════════════════════════════╗",
+            "║                       PILLBOX'S GAME STATISTICS                     ║",
+            "╠═════════╤═══════════╤═══════════╤═══════════╤═══════════╤═══════════╣",
+        ]
+
+        for n in range(200, 1, -10):
+            hi, low = n, n - 9
+            range_label = f'{hi:>3}-{low:>3}'
+            results_found = 0
+            own_count = 0
+            sold_count = 0
+            want_count = 0
+            played_count = 0
+            voted_count = 0
+
+            for n in range(low, hi + 1):
+                result = self.get_result(n)
+                if result is None:
+                    continue
+                results_found += 1
+                own_count += 1 if result.own else 0
+                sold_count += 1 if result.prev_owned else 0
+                want_count += 1 if result.wishlist != 'no' else 0
+                played_count += 1 if result.played else 0
+                voted_count += 1 if self.manager.vote_by_name(result.name) != "N/A" else 0
+            
+            if results_found == 0:
+                continue
+
+            row_markup_style = Markup.markup_row(hi)
+            range_markup = (range_label, f'{row_markup_style} bold')
+
+            own_markup = (f'OWN{own_count:>6}', row_markup_style)
+            sold_markup = (f'SOLD{sold_count:>5}', row_markup_style)
+            want_markup = (f'WANT{want_count:>5}', row_markup_style)
+            played_markup = (f'PLAYED{played_count:>3}', row_markup_style)
+            voted_markup = (f'VOTED{voted_count:>4}', row_markup_style)
+
+            if n < 200 and n % 50 == 0:
+                output.append('╠═════════╪═══════════╪═══════════╪═══════════╪═══════════╪═══════════╣')
+
+            line = Text.assemble(
+                ('║ '),
+                range_markup,
+                (' │ '),
+                own_markup,
+                (' ┊ '),
+                sold_markup,
+                (' ┊ '),
+                want_markup,
+                (' ┊ '),
+                played_markup,
+                (' ┊ '),
+                voted_markup,
+                (' ║')
+            )
+            output.append(line)
+        
+        if short:
+            output.append('╚═════════════════════════════════════════════════════════════════════╝')
+            for line in output:
+                self.manager.console.print(line)
+            return
+
+        output.append('╠═════════╧═══════════╧═══════════╧═══════════╧═══════════╧═══════════╣')
+
+        for v in range(1, 21):
+            vote = self._game_by_vote(str(v))
+            if vote is None:
+                continue
+
+            result = self.result_by_name(vote.name)
+            if result is None:
+                rank = None
+            else:
+                rank = self.rank_by_result(result)
+
+            output.append(
+                Text.assemble(
+                   '║ ',
+                   self.vote_position(v, rank, vote.name),
+                   ' ║' 
+                )
+            )
+
+        output.append('╠═════════════════════════════════════════════════════════════════════╣')
+
+        for line in output:
+            self.console.print(line)

@@ -1,3 +1,4 @@
+from src.models.results.result_year import ResultYear
 from src.modes.groupings.mode import GroupingsMode
 from src.modes.results.mode import ResultsMode
 from src.modes.votes.mode import VotesMode
@@ -395,6 +396,13 @@ class TrackerManager(cmd2.Cmd):
             if name in entries:
                 return group
         return None
+    
+    def get_group(self, group: str) -> Optional[List[str]]:
+        if self._groupings is None:
+            return None
+        if group in self._groupings:
+            return self._groupings[group]
+        return None
 
     def _game_by_vote(self, rank: Union[int, str]) -> Optional[VoteGame]:
         year = self.get_year_data(self.year)
@@ -472,6 +480,35 @@ class TrackerManager(cmd2.Cmd):
         if name in self._votes and str(self.year) in self._votes[name]['vote_ranks']:
             return self._votes[name]['vote_ranks'][str(self.year)]
         return "N/A"
+
+    def get_result_year(self, year: int) -> Optional["ResultYear"]:
+        return self._results.year(year)        
+    
+    def result_by_name(self, name: str) -> Optional[ResultGame]:
+        group = self._game_in_grouping(name)
+        if group is not None:
+            name = group
+        year = self.get_result_year(self.year)
+        if year is None:
+            return None
+        return year.by_name(name)
+
+    def num_revealed_results(self) -> int:
+        if self._results is None:
+            return 0
+        year = self._results.year(self.year)
+        if year is None:
+            return 0
+        return year.num_results
+    
+    def rank_by_result(self, target: ResultGame) -> Union[int, str]:
+        year = self.get_result_year(self.year)
+        if year is None:
+            return 'N/A'
+        rank = year.rank_by_name(target.name)
+        if rank is None:
+            return 'N/A'
+        return rank
 
     def _all_result_games(self, src_year: Optional[Union[str, int]]) -> List[str]:
         all_games: Set[str] = set()

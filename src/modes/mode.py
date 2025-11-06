@@ -1,3 +1,4 @@
+from src.models.results.result_game import ResultGame
 from src.models.votes.vote_game import VoteGame
 
 
@@ -85,4 +86,8 @@ class ManagerMode:
     def delete_vote(self, year: int, vote: str, game: str, force: bool) -> Optional[bool]:
         return self.manager.delete_vote(year, vote, game, force)
 
-
+    def result_by_name(self, game_name: str) -> Optional["ResultGame"]:
+        return self.manager.result_by_name(game_name)
+    
+    def rank_by_result(self, result: "ResultGame") -> Union[str, int]:
+        return self.manager.rank_by_result(result)

@@ -1087,12 +1087,6 @@
         "HEXplore It: The Mountains of Godai",
         "HEXplore It: The Domain of Mirza Noctis"
     ],
-    "High Frontier": [
-        "High Frontier 4 All",
-        "High Frontier",
-        "High Frontier (Third Edition)",
-        "High Frontier Lite"
-    ],
     "Hoplomachus: Victorum": [
         "Hoplomachus: Origins",
         "Hoplomachus: Victorum",
@@ -2586,5 +2580,11 @@
     "Zuuli": [
         "Moving Wild",
         "Zuuli"
+    ],
+    "High Frontier 4 All": [
+        "High Frontier 4 All",
+        "High Frontier",
+        "High Frontier (Third Edition)",
+        "High Frontier Lite"
     ]
 }

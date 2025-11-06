@@ -189,3 +189,14 @@ class CmdResultsMode(cmd2.CommandSet):
         else:
             year = ns.year
         self.parent.set_import(ns.game)
+
+    summary_parser = cmd2.Cmd2ArgumentParser()
+    summary_parser.add_argument(
+        '--short', '-S',
+        action='store_true',
+        help='Only show summarized table'
+    )
+
+    @cmd2.with_argparser(summary_parser)
+    def do_summary(self, ns: argparse.Namespace) -> Optional[bool]:
+        return self.parent.show_summary(short=ns.short)

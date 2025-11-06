@@ -7,6 +7,7 @@ class ResultYear:
 
     def __init__(self, year: int) -> None:
         self._by_name = dict()
+        self._rank_by_name = dict()
         self._by_gid = dict()
         self._by_rank = dict()
 
@@ -17,9 +18,13 @@ class ResultYear:
     def register_game(self, rank: int, game: "ResultGame") -> None:
         self._by_name[game.name] = game
         self._by_rank[rank] = game
+        self._rank_by_name[game.name] = rank
 
     def by_name(self, name: str) -> Optional["ResultGame"]:
         return self._by_name.get(name)
+
+    def rank_by_name(self, name: str) -> Optional[int]:
+        return self._rank_by_name.get(name)
 
     def by_gid(self, gid: int) -> Optional["ResultGame"]:
         return self._by_gid.get(gid)

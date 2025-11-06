@@ -13,6 +13,12 @@ class GroupingsMode(ManagerMode):
 
     def choices_groupings_name(self) -> List[str]:
         return self.manager.choices_groupings_name()
+    
+    def _choices_selected_grouped_items(self, group: str) -> List[str]:
+        items = self.manager.get_group(group)
+        if items is None:
+            return list()
+        return items
 
     def _render_groupings_table(self) -> None:
         if self.manager._groupings is None:
@@ -52,3 +58,17 @@ class GroupingsMode(ManagerMode):
 
     def _import_groupings(self, groupings_raw: str) -> None:
         return self.manager._import_groupings(groupings_raw)
+
+    def promote_group_item(self, group: str, root_item: str) -> None:
+        if self.manager._groupings is None:
+            return
+        if group == root_item:
+            return
+        new_items = [ root_item ]
+        old_items = self.manager._groupings[group]
+        for item in old_items:
+            if item in new_items:
+                continue
+            new_items.append(item)
+        del self.manager._groupings[group]
+        self.manager._groupings[root_item] = new_items

@@ -1,7 +1,7 @@
 import cmd2
 import argparse
 
-from typing import List, TYPE_CHECKING, Optional
+from typing import Any, Dict, List, TYPE_CHECKING, Optional
 
 if TYPE_CHECKING:
     from .mode import GroupingsMode
@@ -17,6 +17,11 @@ class CmdGroupingsMode(cmd2.CommandSet):
 
     def choices_groupings_name(self) -> List[str]:
         return self.parent.choices_groupings_name()
+
+    def _choices_selected_grouped_items(self, arg_tokens: Dict[str, Any]) -> List[str]:
+        if 'group' in arg_tokens:
+            return self.parent._choices_selected_grouped_items(arg_tokens['group'][0])
+        return list()
 
     groupings_parser = cmd2.Cmd2ArgumentParser()
     groupings_parser_cmd = groupings_parser.add_subparsers(dest='command', title='subcommands')
@@ -66,6 +71,18 @@ class CmdGroupingsMode(cmd2.CommandSet):
     @cmd2.with_argparser(clear_parser)
     def do_clear(self, ns: argparse.Namespace) -> Optional[bool]:
         return self.parent._clear_groupings()
+    
+    promote_parser = cmd2.Cmd2ArgumentParser()
+    promote_parser.add_argument(
+        'group', choices_provider=choices_groupings_name
+    )
+    promote_parser.add_argument(
+        'root', choices_provider=_choices_selected_grouped_items
+    )
+    @cmd2.with_argparser(promote_parser)
+    def do_promote(self, ns: argparse.Namespace) -> Optional[bool]:
+        self.parent.promote_group_item(ns.group, ns.root)
+
 
 
 # @cmd2.with_argparser(groupings_parser)
