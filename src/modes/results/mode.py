@@ -213,6 +213,9 @@ class ResultsMode(ManagerMode):
 
 
     def show_summary(self, short=False) -> None:
+
+        revealed_count = self.manager.num_revealed_results
+
         output: List[Union[str, Text]] = [
             "╔═════════════════════════════════════════════════════════════════════╗",
             "║                       PILLBOX'S GAME STATISTICS                     ║",
@@ -300,6 +303,8 @@ class ResultsMode(ManagerMode):
             )
 
         output.append('╠═════════════════════════════════════════════════════════════════════╣')
+
+        
 
         for line in output:
             self.console.print(line)
