@@ -60,7 +60,7 @@ class TrackerManager(cmd2.Cmd):
     def combobulate_line(args: List[str]):
         return ' '.join([ shlex.quote(arg) for arg in args ])
 
-    def __init__(self, votes_file: str, groupings_file: str, results_file: str, year: int, interactive: bool = False):
+    def __init__(self, votes_file: str, groupings_file: str, results_file: str, year: int, interactive: bool = False, startup_mode: Optional[str] = None):
         super(TrackerManager, self).__init__(allow_cli_args=False, include_ipy=True, include_py=True)
         self.register_precmd_hook(self._precmd_hook_semicolon_handler)
         self.self_in_py = True
@@ -85,6 +85,10 @@ class TrackerManager(cmd2.Cmd):
         self._load_groupings_data()
         self._load_results_data()
 
+        if startup_mode is not None:
+            self._set_mode(startup_mode)
+
+
     def _precmd_hook_semicolon_handler(self, data: cmd2.plugin.PrecommandData) -> cmd2.plugin.PrecommandData:
         orig = data.statement
         lexer = shlex.shlex(data.statement.raw, posix=True)
@@ -96,6 +100,12 @@ class TrackerManager(cmd2.Cmd):
         self.runcmds_plus_hooks(cmds[:-1])
         data.statement = self.statement_parser.parse(cmds[-1])
         return data
+    
+    def _set_mode(self, new_mode: str):
+        if new_mode in self._mode_maps:
+            clazz: Type[ManagerMode] = self._mode_maps[new_mode]
+            mode: ManagerMode = clazz(new_mode, self, list(), dict())
+            self._update_mode(mode)
 
     def _update_mode(self, mode: Optional[ManagerMode]) -> None:
         """Do mode update de-init and init"""
@@ -352,9 +362,12 @@ class TrackerManager(cmd2.Cmd):
                 group = self._game_in_grouping(target)
                 if self._groupings and group:
                     return self._groupings[group]
+        if game_name:
+            return [ game_name ]
         return list()
 
     def _choices_selected_grouped_items(self, target: str) -> List[str]:
+        game_name = None
         if target:
             # target could be rank or game
             if target.isdigit():
@@ -372,6 +385,8 @@ class TrackerManager(cmd2.Cmd):
                 group = self._game_in_grouping(target)
                 if self._groupings and group:
                     return self._groupings[group]
+        if game_name:
+            return [ game_name ]
         return list()
 
     def _sorted_groupings_names(self) -> List[str]:

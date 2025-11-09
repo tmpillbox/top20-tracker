@@ -30,6 +30,7 @@ class CmdModeControl(cmd2.CommandSet):
         if ns.mode is None:
             self.parent.do_help('mode')
         elif ns.mode in self.parent._mode_maps:
-            clazz: Type[ManagerMode] = self.parent._mode_maps[ns.mode]
-            mode: ManagerMode = clazz(ns.mode, self.parent, list(), dict())
-            self.parent._update_mode(mode)
+            self.parent._set_mode(ns.mode)
+            # clazz: Type[ManagerMode] = self.parent._mode_maps[ns.mode]
+            # mode: ManagerMode = clazz(ns.mode, self.parent, list(), dict())
+            # self.parent._update_mode(mode)

@@ -25,7 +25,8 @@ def main(params: argparse.Namespace, args: List[str]) -> None:
         groupings_file=params.groupings_file,
         results_file=params.results_file,
         year=year,
-        interactive=interactive
+        interactive=interactive,
+        startup_mode = params.startup_mode
     )
     if interactive:
         votes_manager.cmdloop(TrackerManager.combobulate_line(args))

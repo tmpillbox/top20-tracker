@@ -37,6 +37,11 @@ if __name__ == '__main__':
         action='store_true',
         help='Force disable interactive mode'
     )
+    parser.add_argument(
+        '--startup-mode', '-m', default='results',
+        choices=['results', 'votes', 'groupings', 'games'],
+        help='startup in mode'
+    )
 
     params = parser.parse_known_args()
     args = list()

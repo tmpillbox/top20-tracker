@@ -48,6 +48,12 @@ class CmdResultsMode(cmd2.CommandSet):
     def do_next(self, ns: argparse.Namespace) -> Optional[bool]:
         return self.parent._results_next()
 
+    prev_parser = cmd2.Cmd2ArgumentParser()
+
+    @cmd2.with_argparser(prev_parser)
+    def do_prev(self, ns: argparse.Namespace) -> Optional[bool]:
+        return self.parent._results_prev()
+
     show_parser = cmd2.Cmd2ArgumentParser()
     show_parser.add_argument(
         '--show-unowned', action='store_true', default=False

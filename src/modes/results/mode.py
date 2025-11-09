@@ -47,12 +47,18 @@ class ResultsMode(ManagerMode):
     def _results_next(self) -> None:
         curr_rank = self._get_context_rank()
         if curr_rank is None:
-            self.perror('results: must select rank before next')
-            return
+            curr_rank = self._get_lowest_rank()
         if curr_rank == 1:
             self.pwarning('results: cannot advance beyond #1')
             return
         self.context = [ str(curr_rank - 1) ]
+        self.manager._update_prompt()
+
+    def _results_prev(self) -> None:
+        curr_rank = self._get_context_rank()
+        if curr_rank is None:
+            curr_rank = self._get_highest_rank()
+        self.context = [ str(curr_rank + 1) ]
         self.manager._update_prompt()
 
     def _get_context_rank(self) -> Optional[int]:
@@ -63,6 +69,19 @@ class ResultsMode(ManagerMode):
         except:
             return None
         return None
+    
+    def _get_highest_rank(self) -> int:
+        year = self.manager.get_result_year(self.year)
+        if year is None:
+            return 200
+        return year.highest_rank()
+    
+    def _get_lowest_rank(self) -> int:
+        year = self.manager.get_result_year(self.year)
+        if year is None:
+            return 200
+        return year.lowest_rank()
+
 
     def _results_show(self, show_unowned=False) -> None:
         rank = self._get_context_rank()
@@ -210,11 +229,49 @@ class ResultsMode(ManagerMode):
             ('  '),
             (game_name.ljust(65 - len(rank_result[0])), row_markup)
         )
+    
+    @staticmethod
+    def _coerce_wishlist_priority(wishlist_priority: str) -> str:
+        coercion_map = {
+            'H': 'H',
+            'HIGH': 'H',
+            'HI': 'H',
+            'M': 'M',
+            'MED': 'M',
+            'MEDIUM': 'M',
+            'L': 'L',
+            'LO': 'L',
+            'LOW': 'L'
+        }
+        if wishlist_priority.upper() in coercion_map:
+            return coercion_map[wishlist_priority.upper()]
+        return 'no'
+    
+    @staticmethod
+    def _output_summary_game_item(rank, game_name, wishlist_priority='no'):
+        row_markup = Markup.markup_row(rank)
+        wishlist_priority = ResultsMode._coerce_wishlist_priority(wishlist_priority)
+        if wishlist_priority not in ('H', 'M', 'L'):
+            name_format = game_name.ljust(61)
+            if len(name_format) > 61:
+                name_format = name_format[:57] + '...'
+        else:
+            name_format = game_name.ljust(58)
+            if len(name_format) > 58:
+                name_format = name_format[:54] + '...'
+            name_format = f'{name_format}({wishlist_priority})'
+        return Text.assemble(
+            ('#', row_markup),
+            (f'{rank:>4}', f'{row_markup} bold'),
+            (f' {name_format}', row_markup)
+        )
 
 
     def show_summary(self, short=False) -> None:
 
-        revealed_count = self.manager.num_revealed_results
+        revealed_count = self.manager.num_revealed_results()
+        total_owned = 0
+        total_wishlist = 0
 
         output: List[Union[str, Text]] = [
             "╔═════════════════════════════════════════════════════════════════════╗",
@@ -242,6 +299,9 @@ class ResultsMode(ManagerMode):
                 want_count += 1 if result.wishlist != 'no' else 0
                 played_count += 1 if result.played else 0
                 voted_count += 1 if self.manager.vote_by_name(result.name) != "N/A" else 0
+            
+            total_owned += own_count
+            total_wishlist += want_count
             
             if results_found == 0:
                 continue
@@ -298,13 +358,68 @@ class ResultsMode(ManagerMode):
                 Text.assemble(
                    '║ ',
                    self.vote_position(v, rank, vote.name),
-                   ' ║' 
+                   ' ║'
                 )
             )
 
         output.append('╠═════════════════════════════════════════════════════════════════════╣')
 
+        # Owned games
+        year = self.manager.get_result_year(self.year)
+        if year is not None:
+            output.append(
+                Text.assemble(
+                    f'║                                                  OWN ',
+                    Text(f'{total_owned:>3} / {revealed_count:>3}', style="bold"),
+                    '      ║'
+                )
+            )
+            for rank in range(self._get_highest_rank(), self._get_lowest_rank() - 1, -1):
+                result = year.by_rank(rank)
+                if result is None:
+                    continue
+                if result.own:
+                    if result.owned_items:
+                        for item in result.owned_items:
+                            output.append(Text.assemble(
+                                '║ ',
+                                self._output_summary_game_item(rank, item),
+                                ' ║'
+                            ))
+                    else:
+                        output.append(Text.assemble(
+                            f'║ ',
+                            self._output_summary_game_item(rank, result.name),
+                            ' ║'
+                        ))
+        else:
+            output.append('║                      ERROR: RESULTS NOT FOUND                       ║')
+
+        output.append('╠═════════════════════════════════════════════════════════════════════╣')
+
+        # Wishlist games
+        if year is not None:
+            output.append(
+                Text.assemble(
+                    f'║                                             WISHLIST ',
+                    Text(f'{total_wishlist:>3} / {revealed_count:>3}', style="bold"),
+                    '      ║'
+                )
+            )
+            for rank in range(self._get_highest_rank(), self._get_lowest_rank() - 1, -1):
+                result = year.by_rank(rank)
+                if result is None:
+                    continue
+                if result.wishlist != 'no': 
+                    output.append(Text.assemble(
+                        f'║ ',
+                        self._output_summary_game_item(rank, result.name, wishlist_priority=result.wishlist),
+                        ' ║'
+                    ))
+        else:
+            output.append('║                      ERROR: RESULTS NOT FOUND                       ║')
         
+        output.append('╚═════════════════════════════════════════════════════════════════════╝')
 
         for line in output:
             self.console.print(line)

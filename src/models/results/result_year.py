@@ -34,6 +34,16 @@ class ResultYear:
 
     def all_game_names(self) -> List[str]:
         return [ k for k in self._by_name ]
+    
+    def highest_rank(self) -> int:
+        if self._by_rank:
+            return max(self._by_rank.keys())
+        return 200
+    
+    def lowest_rank(self) -> int:
+        if self._by_rank:
+            return min(self._by_rank.keys())
+        return 200
 
     @property
     def as_dict(self) -> Dict:
