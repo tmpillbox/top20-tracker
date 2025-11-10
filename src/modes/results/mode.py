@@ -254,11 +254,11 @@ class ResultsMode(ManagerMode):
         if wishlist_priority not in ('H', 'M', 'L'):
             name_format = game_name.ljust(61)
             if len(name_format) > 61:
-                name_format = name_format[:57] + '...'
+                name_format = name_format[:58] + '...'
         else:
             name_format = game_name.ljust(58)
             if len(name_format) > 58:
-                name_format = name_format[:54] + '...'
+                name_format = name_format[:55] + '...'
             name_format = f'{name_format}({wishlist_priority})'
         return Text.assemble(
             ('#', row_markup),
