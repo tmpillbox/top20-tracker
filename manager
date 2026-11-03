@@ -1,0 +1,50 @@
+#!/usr/bin/env python3
+
+import cmd2
+
+from src.main import CALYEAR, main
+
+
+if __name__ == '__main__':
+    parser = cmd2.Cmd2ArgumentParser("votes", description="manage votes")
+    parser.add_argument(
+        '--year', '-Y',
+        default='',
+        help=f'Specify a year. Defaults to the current calendar year. CURRENTLY: {CALYEAR}'
+    )
+    parser.add_argument(
+        '--votes-file', '-V',
+        default='votes.json',
+        help='file to load and save voting data'
+    )
+    parser.add_argument(
+        '--groupings-file', '-G',
+        default='groupings.json',
+        help='file to lad and save groupings'
+    )
+    parser.add_argument(
+        '--results-file', '-R',
+        default='results.json',
+        help='file to load and save results'
+    )
+    parser.add_argument(
+        '--interactive', '-i',
+        action='store_true',
+        help='Force interactive mode'
+    )
+    parser.add_argument(
+        '--no-interactive', '-I',
+        action='store_true',
+        help='Force disable interactive mode'
+    )
+    parser.add_argument(
+        '--startup-mode', '-m', default='results',
+        choices=['results', 'votes', 'groupings', 'games'],
+        help='startup in mode'
+    )
+
+    params = parser.parse_known_args()
+    args = list()
+    if isinstance(params, tuple):
+        params, args = params
+    main(params, args)

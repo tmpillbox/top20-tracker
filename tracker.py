@@ -4,6 +4,7 @@ import argparse
 import json
 from typing import Dict, Union
 
+DEBUG = False
 
 class GameResult:
   ranks = dict()
@@ -64,8 +65,9 @@ class GameResult:
     for item in self.items:
       self.by_name[item] = self
 
-  def vote(self, position):
-    print(f'CASTING VOTE FOR {self.name} @ {position}')
+  def vote(self, position, verbose=False):
+    if verbose:
+      print(f'CASTING VOTE FOR {self.name} @ {position}')
     self.vote_position = position
 
   def is_voted(self):
@@ -79,10 +81,12 @@ class GameVote:
 
   @classmethod
   def set_current_year(cls, year: Union[int, str]) -> None:
+    if DEBUG:
+      print(f'# DEBUG: SETTING CURRENT YEAR: {year}')
     cls.current_year = year
 
   def __init__(self, name: str, votes: Dict[Union[int, str], Union[int, str]]) -> None:
-    self.position = votes[self.current_year]
+    self.position = votes.get(self.current_year, "N/A")
     self.name = name
     self.by_name[name] = self
     try:
@@ -299,12 +303,19 @@ def main(args):
   with open(args.results) as f:
     data_raw_results = json.load(f)
 
-  current_year = data_raw_results['year']
+  years = sorted([ int(k) for k in data_raw_results.keys() if k.isdigit() ], reverse=True)
+  years = [ str(y) for y in years ]
+  current_year = years[0]
+  if args.year and args.year in years:
+    current_year = args.year
+
   GameVote.set_current_year(current_year)
 
-  for rank, result in data_raw_results['results'].items():
+  revealed_count = 0
+  for rank, result in data_raw_results[current_year].items():
     if rank == '':
       continue
+    revealed_count += 1
     result.update( { "rank": rank } )
     result['is_owned'] = result['own']
     del result['own']
@@ -317,10 +328,12 @@ def main(args):
 
   for game_name, game_data in data_raw_votes.items():
     if 'vote_ranks' in game_data:
+      if current_year not in game_data['vote_ranks']:
+        continue
       game: GameVote = GameVote(game_name, game_data['vote_ranks'])
       if game_name in GameResult.by_name:
-        GameResult.by_name[game_name].vote(game.position)
-      elif game.is_top_20:
+        GameResult.by_name[game_name].vote(game.position, args.verbose)
+      elif game.is_top_20 and args.verbose:
         print(f'# MISSING Result: {game_name}')
 
   output = f"""{markup.BLOCK_START}
@@ -352,8 +365,14 @@ def main(args):
     if n < 200 and n % 50 == 0:
       output += '╠═════════╪═══════════╪═══════════╪═══════════╪═══════════╪═══════════╣\n'
     output += f'║ {row_markup_leader}{range_markup} │ {own_markup} ┊ {sold_markup} ┊ {want_markup} ┊ {played_markup} ┊ {voted_markup}{row_markup_trailer} ║\n'
-
-  output += '╠═════════╧═══════════╧═══════════╧═══════════╧═══════════╧═══════════╣\n'
+  
+  if args.short:
+    output += '╚═════════════════════════════════════════════════════════════════════╝\n'
+    output += f'{markup.BLOCK_END}\n'
+    print(output)
+    return
+  else:
+    output += '╠═════════╧═══════════╧═══════════╧═══════════╧═══════════╧═══════════╣\n'
 
   for v in range(1, 21):
     v_game = GameVote.votes[v]
@@ -367,7 +386,7 @@ def main(args):
   output += '╠═════════════════════════════════════════════════════════════════════╣\n'
 
   own_count = GameResult.count_owned()
-  output += f'║                                                  OWN [b]{own_count:>3} / 200[/b]      ║\n'
+  output += f'║                                                  OWN [b]{own_count:>3} / {revealed_count:>3}[/b]      ║\n'
 
   for n in range(200, 0, -1):
     if n not in GameResult.ranks:
@@ -380,7 +399,7 @@ def main(args):
   output += '╠═════════════════════════════════════════════════════════════════════╣\n'
 
   wish_count = GameResult.count_want()
-  output += f'║                                             WISHLIST [b]{wish_count:>3} / 200[/b]      ║\n'
+  output += f'║                                             WISHLIST [b]{wish_count:>3} / {revealed_count:>3}[/b]      ║\n'
 
   for n in range(200, 0, -1):
     if n not in GameResult.ranks:
@@ -412,8 +431,38 @@ def main(args):
 
 if __name__ == '__main__':
   parser = argparse.ArgumentParser(prog='top20-tracker', description='Peoples Choice Top20 Results Tracker')
-  parser.add_argument('--votes', nargs='?', type=str, default="votes.json")
-  parser.add_argument('--results', nargs='?', type=str, default="results.json")
-  parser.add_argument('--format', type=str, default="bbcode", choices=["bbcode", "markdown"])
+  parser.add_argument(
+    '--debug', '-D',
+    action='store_true',
+    help='Enable additional debug output'
+  )
+  parser.add_argument(
+    '--verbose', '-v',
+    action='store_true',
+    help='Show additional output'
+  )
+  parser.add_argument(
+    '--short', '-S',
+    action='store_true',
+    help='Do not display the list of owned or wishlist items'
+  )
+  parser.add_argument(
+    '--year', '-Y', default="",
+    help="Process a specific year. Default is most recent year"
+  )
+  parser.add_argument(
+    '--votes', nargs='?', type=str,
+    default="votes.json",
+  )
+  parser.add_argument(
+    '--results', nargs='?', type=str,
+    default="results.json"
+  )
+  parser.add_argument(
+    '--format', type=str,
+    default="bbcode", choices=["bbcode", "markdown"]
+  )
   args = parser.parse_args()
+  if args.debug:
+    DEBUG = True
   main(args)
