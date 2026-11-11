@@ -190,11 +190,44 @@ class ResultsMode(ManagerMode):
             return False
         self.manager._results.add_result(self.year, rank, ResultGame(game_name))
 
+    def set_record(self, game_name: str, year: Optional[int] = None) -> Optional[bool]:
+        """Import game_name from another year's results; if not found, add it fresh."""
+        rank = self._get_context_rank()
+        if rank is None:
+            self.perror('results: must select a result ranking before recording a game')
+            return False
+        if year is not None:
+            search_years = [ int(year) ]
+        else:
+            # All other years, closest to the current year first (earlier year wins ties)
+            search_years = sorted(
+                [ y for y in self.manager._results.years.keys() if y != self.year ],
+                key=lambda y: (abs(y - self.year), y)
+            )
+        for y in search_years:
+            source_year = self.manager._results.year(y)
+            if source_year is None:
+                continue
+            source_game = source_year.by_name(game_name)
+            if source_game is not None:
+                self.manager._results.add_result(
+                    self.year, rank, ResultGame.from_dict(source_game.as_dict)
+                )
+                self.poutput(f'results: imported {game_name} from {y} at #{rank}')
+                return None
+        self.manager._results.add_result(self.year, rank, ResultGame(game_name))
+        self.poutput(f'results: added new entry {game_name} at #{rank}')
+        return None
+
     def set_import(self, game_name: str, year: Optional[int] = None):
         if year is None:
             # Find most recent year other before current year
-            year = max([ y for y in self.manager._results.years.keys() if y < self.year ])
-        target_year = self.manager._results.year(year)
+            prior_years = [ y for y in self.manager._results.years.keys() if y < self.year ]
+            if not prior_years:
+                self.perror('results: no prior years to import from')
+                return False
+            year = max(prior_years)
+        target_year = self.manager._results.year(int(year))
         if target_year is None:
             self.perror('results: this can\'t happen. Have a nice day.')
             return False

@@ -500,13 +500,24 @@ class TrackerManager(cmd2.Cmd):
         return self._results.year(year)        
     
     def result_by_name(self, name: str) -> Optional[ResultGame]:
-        group = self._game_in_grouping(name)
-        if group is not None:
-            name = group
         year = self.get_result_year(self.year)
         if year is None:
             return None
-        return year.by_name(name)
+        # Exact match first: results may be stored under a grouping member's name
+        result = year.by_name(name)
+        if result is not None:
+            return result
+        group = self._game_in_grouping(name)
+        if group is None:
+            return None
+        result = year.by_name(group)
+        if result is not None:
+            return result
+        for member in self.get_group(group) or []:
+            result = year.by_name(member)
+            if result is not None:
+                return result
+        return None
 
     def num_revealed_results(self) -> int:
         if self._results is None:

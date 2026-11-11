@@ -179,7 +179,7 @@ class CmdResultsMode(cmd2.CommandSet):
 
     import_parser = cmd2.Cmd2ArgumentParser()
     import_parser.add_argument(
-        '--year', '-Y',
+        '--year', '-Y', type=int,
         choices_provider=choices_result_years,
         help='specify a year to import from. default is previous year'
     )
@@ -190,11 +190,24 @@ class CmdResultsMode(cmd2.CommandSet):
 
     @cmd2.with_argparser(import_parser)
     def do_import(self, ns: argparse.Namespace) -> Optional[bool]:
-        if ns.year is None:
-            year = CALYEAR - 1
-        else:
-            year = ns.year
-        self.parent.set_import(ns.game)
+        return self.parent.set_import(ns.game, ns.year)
+
+    record_parser = cmd2.Cmd2ArgumentParser(
+        description='Import a game from another year\'s results, or add it fresh if not found'
+    )
+    record_parser.add_argument(
+        '--year', '-Y', type=int,
+        choices_provider=choices_result_years,
+        help='only import from this year. default searches all other years, closest first'
+    )
+    record_parser.add_argument(
+        'game', type=str,
+        choices_provider=choices_import_result_items
+    )
+
+    @cmd2.with_argparser(record_parser)
+    def do_record(self, ns: argparse.Namespace) -> Optional[bool]:
+        return self.parent.set_record(ns.game, ns.year)
 
     summary_parser = cmd2.Cmd2ArgumentParser()
     summary_parser.add_argument(
