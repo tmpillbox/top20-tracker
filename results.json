@@ -19202,6 +19202,86 @@
             "played": false,
             "prev_owned": false,
             "owned": []
+        },
+        "100": {
+            "name": "Forest Shuffle",
+            "own": false,
+            "wishlist": "no",
+            "played": false,
+            "prev_owned": false,
+            "owned": []
+        },
+        "99": {
+            "name": "burncycle",
+            "own": false,
+            "wishlist": "no",
+            "played": false,
+            "prev_owned": false,
+            "owned": []
+        },
+        "98": {
+            "name": "Legendary Encounters: An Alien Deck Building Game",
+            "own": false,
+            "wishlist": "no",
+            "played": false,
+            "prev_owned": false,
+            "owned": []
+        },
+        "97": {
+            "name": "After the Virus",
+            "own": false,
+            "wishlist": "no",
+            "played": false,
+            "prev_owned": false,
+            "owned": []
+        },
+        "96": {
+            "name": "Street Masters",
+            "own": false,
+            "wishlist": "no",
+            "played": false,
+            "prev_owned": false,
+            "owned": []
+        },
+        "95": {
+            "name": "Viticulture Essential Edition",
+            "own": false,
+            "wishlist": "no",
+            "played": true,
+            "prev_owned": false,
+            "owned": []
+        },
+        "94": {
+            "name": "The LOOP",
+            "own": false,
+            "wishlist": "Medium",
+            "played": false,
+            "prev_owned": false,
+            "owned": []
+        },
+        "93": {
+            "name": "The Lord of the Rings: Journeys in Middle-Earth",
+            "own": false,
+            "wishlist": "no",
+            "played": false,
+            "prev_owned": false,
+            "owned": []
+        },
+        "92": {
+            "name": "The Guild of Merchant Explorers",
+            "own": false,
+            "wishlist": "Low",
+            "played": false,
+            "prev_owned": false,
+            "owned": []
+        },
+        "91": {
+            "name": "This War of Mine: The Board Game",
+            "own": false,
+            "wishlist": "no",
+            "played": false,
+            "prev_owned": false,
+            "owned": []
         }
     }
 }
